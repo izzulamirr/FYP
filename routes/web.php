@@ -22,11 +22,24 @@ Route::get('/', function () {
 
 Route::get('/Homepage', function () {
     return view('System.Homepage');
-});
+     })->name('Home');
+
+
+Route::get('/Supplies', function () {
+    return view('System.Supplies');
+    })->name('Supply');
+
+Route::get('/Report', function () {
+    return view('System.Report');
+    })->name('Report');
+
+Route::get('/Inventory', function () {
+    return view('System.Inventory');
+    })->name('Inventory');
 
 Route::get('/Transaction', function () {
     return view('System.Transaction');
-});
+    })->name('Transaction');
 
 
 Route::middleware([
