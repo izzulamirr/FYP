@@ -24,7 +24,6 @@ Route::get('/Homepage', function () {
     return view('System.Homepage');
      })->name('Home');
 
-
 Route::get('/Supplies', function () {
     return view('System.Supplies');
     })->name('Supply');
@@ -40,6 +39,14 @@ Route::get('/Inventory', function () {
 Route::get('/Transaction', function () {
     return view('System.Transaction');
     })->name('Transaction');
+
+    
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/Staff', function () {
+            return view('System.Staff');
+        })->name('Staff');
+    });
+    
 
 
 Route::middleware([

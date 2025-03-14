@@ -19,13 +19,12 @@
 
         <div class="grid grid-cols-4 gap-4">
             <div class="bg-white p-6 shadow-lg rounded-lg text-center">
-              
                 <p class="text-gray-600">Stocks In Delivery</p>
             </div>
             <div class="bg-white p-6 shadow-lg rounded-lg text-center">
                 <p class="text-gray-600">Completed Transactions</p>
             </div>
-            <div class="bg-white p-6 shadow-lg rounded-lg text-center">
+            <div class="bg-white p-6 shadow-lg rounded-lg text-center"> 
                 <p class="text-gray-600">Invoices to be Paid</p>
             </div>
         </div>

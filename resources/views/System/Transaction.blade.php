@@ -30,6 +30,7 @@
     </div>
     <!-- Main Content -->
     <div class="ml-64 p-8 w-full">
+    <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
         <h1 class="mb-4 text-2xl font-bold">Transaction History</h1>
         <ul class="flex border-b">
             <li class="mr-4"><a class="text-blue-500 font-semibold pb-2 border-b-2 border-blue-500" href="#customers">Customers Receipts</a></li>
@@ -47,11 +48,10 @@
                         <th class="p-3 text-left">Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                  
-                </tbody>
             </table>
         </div>
     </div>
 </div>
+</div>
+
 </html>

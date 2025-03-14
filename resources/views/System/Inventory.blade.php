@@ -12,19 +12,39 @@
 <div class="ml-64 p-8 w-full">
         <!-- Header with Username -->
         <div class="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
-            <h1 class="text-2xl font-bold text-gray-800"> Suppliers Dashboard</h1>
+            <h1 class="text-2xl font-bold text-gray-800"> Inventory Dashboard</h1>
             <p class="text-gray-600">👤 {{ Auth::user()->name }}</p>
         </div>
 
+        <div class="p-8 w-full">
 
         <!-- Categories -->
-        <ul class="flex items-center bg-white p-4 shadow-md rounded-lg">
-              <tr>
-                        <th class="p-3 text-left">Food</th>
-                        <th class="p-3 text-left">Hardware</th>
-                        <th class="p-3 text-left">Utilities</th>
-                        <th class="p-3 text-left">Electronics</th>
-                    </tr>
+        <div class="mt-6 bg-white p-6 shadow-lg rounded-lg hover:bg-gray-200">
+    <h2 class="text-xl font-semibold mb-4">Categories</h2>
+    <div class="grid grid-cols-4 gap-4">
+        <!-- Food Category -->
+        <a href="{{ route('dashboard') }}" class="bg-white p-6 shadow-lg rounded-lg text-center hover:bg-blue-100">
+            <p class="text-gray-600 font-semibold">Food</p>
+        </a>
+        
+        <!-- Hardware Category -->
+        <a href="{{ route('Report') }}" class="bg-white p-6 shadow-lg rounded-lg text-center hover:bg-red-100">
+            <p class="text-gray-600 font-semibold">Hardware</p>
+        </a>
+
+        <!-- Electronics Category -->
+        <a href="{{ route('Supply') }}" class="bg-white p-6 shadow-lg rounded-lg text-center hover:bg-yellow-100">
+            <p class="text-gray-600 font-semibold">Electronics</p>
+        </a>
+
+        <!-- Stationery Category -->
+        <a href="{{ route('dashboard') }}" class="bg-white p-6 shadow-lg rounded-lg text-center hover:bg-green-100">
+            <p class="text-gray-600 font-semibold">Stationery</p>
+        </a>
+    </div>
+</div>
+
+
           
         </ul>
         

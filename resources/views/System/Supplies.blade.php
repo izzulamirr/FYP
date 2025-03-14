@@ -19,14 +19,15 @@
 
    <!-- Suppliers Slideshow -->
    <div class="flex overflow-x-auto space-x-4 p-4 bg-gray-200 rounded-lg">
-        <div class="bg-white p-4 shadow-md rounded-lg w-96">
+        <div class="bg-white p-4 shadow-md rounded-lg w-96 hover:bg-blue-200">        
+
             <h2 class="text-xl font-semibold mb-2">Supplier 1</h2>
             <p class="text-gray-600">Contact: John Doe</p>
             <p class="text-gray-600">Email:
         </div>
     </div>
         
- <!-- Cashier System -->
+ <!-- Order history -->
  <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
             <h2 class="text-xl font-semibold mb-4">Order History</h2>
 
