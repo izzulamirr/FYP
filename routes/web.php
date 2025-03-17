@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\InventoryController;
 
 
 /*
@@ -46,8 +47,6 @@ Route::get('/Transaction', function () {
             return view('System.Staff');
         })->name('Staff');
     });
-    
-
 
 Route::middleware([
     'auth:sanctum',
@@ -66,11 +65,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     })->name('admin.dashboard');
 });
 
-
-
 // Logout 
 
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/Homepage'); // Redirect to homepage after logout
 })->name('logout');
+
+
+
+// Inventory routes
+Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
