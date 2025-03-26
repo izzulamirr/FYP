@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // Pages
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+   // return view('welcome');
+//});
 
-Route::get('/Homepage', function () {
+Route::get('/', function () {
     return view('System.Homepage');
      })->name('Home');
 
@@ -46,8 +46,12 @@ Route::get('/Transaction', function () {
             return view('System.Staff');
         })->name('Staff');
     });
-    
 
+
+    //camera
+    Route::get('/camera', function () {
+        return view('System.cameratest');
+    })->name('camera');
 
 Route::middleware([
     'auth:sanctum',
