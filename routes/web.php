@@ -17,11 +17,11 @@ use App\Http\Controllers\InventoryController;
 */
 
 // Pages
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+   // return view('welcome');
+//});
 
-Route::get('/Homepage', function () {
+Route::get('/', function () {
     return view('System.Homepage');
      })->name('Home');
 
@@ -47,6 +47,8 @@ Route::get('/Transaction', function () {
             return view('System.Staff');
         })->name('Staff');
     });
+    
+
 
 Route::middleware([
     'auth:sanctum',
