@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\SuppliersController;
+
 
 
 /*
@@ -71,11 +73,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::post('/logout', function () {
     Auth::logout();
-    return redirect('/Homepage'); // Redirect to homepage after logout
+    return redirect('/'); // Redirect to homepage after logout
 })->name('logout');
 
 
+Route::get('/Inventory', [InventoryController::class, 'index']);
+Route::post('/Inventory', [InventoryController::class, 'store'])->name('Inventory');
 
-// Inventory routes
-Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
-Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+
+
+Route::get('/Supplies', [SuppliersController::class, 'index'])->name('Supply');

@@ -12,14 +12,21 @@
         <div class="mt-6 bg-white p-6 shadow-lg rounded-lg hover:bg-gray-200">
             <h2 class="text-xl font-semibold mb-4">Categories</h2>
             <div class="grid grid-cols-5 gap-4">
-                @foreach(['all', 'Food', 'Hardware', 'Electronics', 'Stationery'] as $cat)
-                    
-                @endforeach
+            @php
+            // Define the categories
+            $categories = ['Hardware', 'Stationery', 'Consumable', 'Electronics'];
+        @endphp
+
+        @foreach ($categories as $category)
+            <div class="bg-gray-100 p-4 shadow-md rounded-lg text-center hover:bg-gray-300 cursor-pointer">
+                <h3 class="text-lg font-bold">{{ $category }}</h3>
+            </div>
+        @endforeach
             </div>
         </div>
 
         <!-- Add Product Form -->
-        <form action="{{ route('inventory.store') }}" method="POST" class="mt-4 p-4 bg-white shadow-md rounded-lg">
+        <form action="{{ route('Inventory') }}" method="POST" class="mt-4 p-4 bg-white shadow-md rounded-lg">
             @csrf
             <input type="text" name="sku" placeholder="SKU" required class="p-2 border rounded">
             <input type="text" name="name" placeholder="Name" required class="p-2 border rounded">
@@ -49,16 +56,17 @@
                     </tr>
                 </thead>
                 <tbody id="product-table">
-                    @foreach($products as $product)
-                        <tr class="product-row" data-category="{{ $product->category }}">
-                            <td class="p-3">{{ $product->sku }}</td>
-                            <td class="p-3">{{ $product->name }}</td>
-                            <td class="p-3">{{ $product->quantity }}</td>
-                            <td class="p-3">{{ number_format($product->price, 2) }}</td>
-                            <td class="p-3">{{ $product->category }}</td>
-                            <td class="p-3">{{ $product->supplier_code }}</td>
-                        </tr>
-                    @endforeach
+                @foreach($products as $product)
+    <tr class="product-row" data-category="{{ $product->category }}">
+        <td class="p-3">{{ $product->sku }}</td>
+        <td class="p-3">{{ $product->name }}</td>
+        <td class="p-3">{{ $product->quantity }}</td>
+        <td class="p-3">{{ number_format($product->price, 2) }}</td>
+        <td class="p-3">{{ $product->category }}</td>
+        <td class="p-3">{{ $product->supplier_code }}</td>
+    </tr>
+@endforeach
+            
                 </tbody>
             </table>
         </div>
