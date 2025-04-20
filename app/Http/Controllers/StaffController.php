@@ -33,11 +33,11 @@ class StaffController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'staff', // Default role for new staff
+            'role' => 'user', // Default role for new staff
         ]);
 
         // Redirect back with a success message
-        return redirect()->route('staff.index')->with('success', 'Staff member added successfully.');
+        return redirect()->route('Staff')->with('success', 'Staff member added successfully.');
     }
 
     // Delete a staff member

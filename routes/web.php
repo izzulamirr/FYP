@@ -96,3 +96,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
 });
+
+
+
+
+//Products pages
+Route::post('/products', [InventoryController::class, 'store'])->name('products.store');
+Route::get('/products/add', [InventoryController::class, 'create'])->name('products.add');
