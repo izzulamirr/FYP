@@ -9,7 +9,13 @@ class Product extends Model
 {
     protected $table = 'products'; // Explicitly define the table name (optional)
 
-    protected $fillable = ['sku', 'name', 'quantity', 'price', 'category', 'supplier_code'];
+    protected $fillable = [
+    'sku', 
+    'name',
+    'quantity', 
+    'price', 
+    'category',
+    'supplier_code'];
 
       // Relationship with Supplier
       public function supplier()

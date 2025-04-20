@@ -17,6 +17,14 @@ class InventoryController extends Controller
         return view('System.Inventory', compact('products'));
     }
 
+    public function list()
+    {
+ // Retrieve all products from the database
+ $products = Product::all();
+
+ // Pass the products to the view
+ return view('System.Products.List', compact('products'));
+    }
 
     public function create()
     {

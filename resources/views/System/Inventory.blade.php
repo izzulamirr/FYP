@@ -28,8 +28,8 @@
    <!-- Add Product Button -->
 <a href="{{ route('products.add') }}" class="bg-blue-500 text-white p-2 rounded inline-block">Add Product</a>
 
-        <!-- Products Table -->
-        <div class="mt-3 overflow-auto max-h-[400px]">
+               <!-- Products Table -->
+               <div class="mt-3 overflow-auto max-h-[400px]">
             <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
                 <thead class="bg-gray-200">
                     <tr>
@@ -51,13 +51,11 @@
         <td class="p-3">{{ $product->category }}</td>
         <td class="p-3">{{ $product->supplier_code }}</td>
     </tr>
-@endforeach
-            
+@endforeach 
                 </tbody>
             </table>
         </div>
     </div>
-</div>
 
 <script>
     // Handle category button clicks

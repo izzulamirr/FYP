@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 
 
 /*
@@ -56,22 +58,22 @@ Route::get('/Transaction', function () {
         return view('System.cameratest');
     })->name('camera');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('System.Dashboard');
-    })->name('dashboard');
-});
 
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-});
+    Route::middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ])->group(function () {
+        // Dashboard route using DashboardController
+        Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    });
+    
+    
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+    });
+
 
 // Logout 
 
@@ -101,5 +103,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
 //Products pages
-Route::post('/products', [InventoryController::class, 'store'])->name('products.store');
+Route::post('/products', [InventoryController::class, 'list'])->name('products.store');
 Route::get('/products/add', [InventoryController::class, 'create'])->name('products.add');

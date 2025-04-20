@@ -17,25 +17,33 @@
 
         <!-- Add Product Form -->
         <form action="{{ route('products.store') }}" method="POST" class="mt-6 bg-white p-6 shadow-md rounded-lg">
-            @csrf
-            <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-bold mb-2">Product Name</label>
-                <input type="text" name="name" id="name" placeholder="Enter product name" required class="p-2 border rounded w-full">
-            </div>
-            <div class="mb-4">
-                <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
-                <textarea name="description" id="description" placeholder="Enter product description" required class="p-2 border rounded w-full"></textarea>
-            </div>
-            <div class="mb-4">
-                <label for="price" class="block text-gray-700 font-bold mb-2">Price</label>
-                <input type="number" name="price" id="price" placeholder="Enter product price" required class="p-2 border rounded w-full">
-            </div>
-            <div class="mb-4">
-                <label for="quantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
-                <input type="number" name="quantity" id="quantity" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
-            </div>
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Product</button>
-        </form>
+    @csrf
+    <div class="mb-4">
+        <label for="sku" class="block text-gray-700 font-bold mb-2">SKU</label>
+        <input type="text" name="sku" id="sku" placeholder="Enter product SKU" required class="p-2 border rounded w-full">
+    </div>
+    <div class="mb-4">
+        <label for="name" class="block text-gray-700 font-bold mb-2">Product Name</label>
+        <input type="text" name="name" id="name" placeholder="Enter product name" required class="p-2 border rounded w-full">
+    </div>
+    <div class="mb-4">
+        <label for="quantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
+        <input type="number" name="quantity" id="quantity" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
+    </div>
+    <div class="mb-4">
+        <label for="price" class="block text-gray-700 font-bold mb-2">Price</label>
+        <input type="number" step="0.01" name="price" id="price" placeholder="Enter product price" required class="p-2 border rounded w-full">
+    </div>
+    <div class="mb-4">
+        <label for="category" class="block text-gray-700 font-bold mb-2">Category</label>
+        <input type="text" name="category" id="category" placeholder="Enter product category" required class="p-2 border rounded w-full">
+    </div>
+    <div class="mb-4">
+        <label for="supplier_code" class="block text-gray-700 font-bold mb-2">Supplier Code</label>
+        <input type="text" name="supplier_code" id="supplier_code" placeholder="Enter supplier code" required class="p-2 border rounded w-full">
+    </div>
+    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Product</button>
+</form>
     </div>
 </body>
 </html>
