@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SuppliersController;
-
+use App\Http\Controllers\StaffController;
 
 
 /*
@@ -83,3 +83,12 @@ Route::post('/Inventory', [InventoryController::class, 'store'])->name('Inventor
 
 
 Route::get('/Supplies', [SuppliersController::class, 'index'])->name('Supply');
+
+
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/staff', [StaffController::class, 'index'])->name('Staff');
+    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
+    Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+});
