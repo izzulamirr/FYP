@@ -28,13 +28,13 @@
                 <p class="text-gray-600">Today's Sales: <span class="font-bold">$2,150.00</span></p>
             </div>
 
-            <!-- Product Summary -->
-            <div class="bg-white p-6 shadow-lg rounded-lg w-1/2 px-4 py-3 hover:bg-gray-100">
-                <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
-                <p class="text-gray-600">Total Products: <span class="font-bold">320</span></p>
-                <p class="text-gray-600">Low Stock: <span class="text-red-500 font-bold">12</span></p>
-            </div>
+           <!-- Product Summary -->
+        <div class="bg-white p-6 shadow-lg rounded-lg w-1/2 px-4 py-3 hover:bg-gray-100">
+            <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
+            <p class="text-gray-600">Total Products: <span class="font-bold">{{ $totalProducts }}</span></p>
+            <p class="text-gray-600">Low Stock: <span class="text-red-500 font-bold">{{ $lowStockProducts }}</span></p>
         </div>
+    </div>
 
         <!-- Cashier System & QR Scanner -->
         <div class="mt-6 flex gap-4">
