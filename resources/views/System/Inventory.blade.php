@@ -12,18 +12,14 @@
         <div class="mt-6 bg-white p-6 shadow-lg rounded-lg hover:bg-gray-200">
             <h2 class="text-xl font-semibold mb-4">Categories</h2>
             <div class="grid grid-cols-5 gap-4">
-            @php
-            // Define the categories
-            $categories = ['Hardware', 'Stationery', 'Consumable', 'Electronics'];
-        @endphp
-
-        @foreach ($categories as $category)
-            <div class="bg-gray-100 p-4 shadow-md rounded-lg text-center hover:bg-gray-300 cursor-pointer">
-                <h3 class="text-lg font-bold">{{ $category }}</h3>
-            </div>
-        @endforeach
+                @foreach ($categories as $category)
+                    <a href="{{ route('products.view', ['category' => $category]) }}" class="bg-gray-100 p-4 shadow-md rounded-lg text-center hover:bg-gray-300 cursor-pointer">
+                        <h3 class="text-lg font-bold">{{ $category }}</h3>
+                    </a>
+                @endforeach
             </div>
         </div>
+
 
    <!-- Add Product Button -->
 <a href="{{ route('products.add') }}" class="bg-blue-500 text-white p-2 rounded inline-block">Add Product</a>
