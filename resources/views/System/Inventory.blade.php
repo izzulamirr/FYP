@@ -20,22 +20,9 @@
             </div>
         </div>
 
-        <!-- Add Product Form -->
-        <form action="{{ route('Inventory') }}" method="POST" class="mt-4 p-4 bg-white shadow-md rounded-lg">
-            @csrf
-            <input type="text" name="sku" placeholder="SKU" required class="p-2 border rounded">
-            <input type="text" name="name" placeholder="Name" required class="p-2 border rounded">
-            <input type="number" name="quantity" placeholder="Quantity" required class="p-2 border rounded">
-            <input type="number" step="0.01" name="price" placeholder="Price" required class="p-2 border rounded">
-            <select name="category" required class="p-2 border rounded">
-                <option value="Food">Food</option>
-                <option value="Hardware">Hardware</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Stationery">Stationery</option>
-            </select>
-            <input type="text" name="supplier_code" placeholder="Supplier Code" required class="p-2 border rounded">
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Product</button>
-        </form>
+
+   <!-- Add Product Button -->
+<a href="{{ route('products.add') }}" class="bg-blue-500 text-white p-2 rounded inline-block">Add Product</a>
 
                <!-- Products Table -->
                <div class="mt-3 overflow-auto max-h-[400px]">
