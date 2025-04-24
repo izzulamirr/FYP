@@ -89,26 +89,3 @@ Route::post('/Inventory', [InventoryController::class, 'store'])->name('Inventor
 
 
 Route::get('/Supplies', [SuppliersController::class, 'index'])->name('Supply');
-
-
-
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/staff', [StaffController::class, 'index'])->name('Staff');
-    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
-    Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
-});
-
-
-
-
-//Products pages
-Route::post('/products', [InventoryController::class, 'list'])->name('products.store');
-Route::get('/products/add', [InventoryController::class, 'create'])->name('products.add');
-
-Route::get('/products/category/{category}', [InventoryController::class, 'list'])->name('products.view');
-
-Route::get('/products/edit/{id}', [InventoryController::class, 'edit'])->name('products.edit');
-Route::put('/products/update/{id}', [InventoryController::class, 'update'])->name('products.update');
-Route::delete('/products/delete/{id}', [InventoryController::class, 'destroy'])->name('products.delete');
-
