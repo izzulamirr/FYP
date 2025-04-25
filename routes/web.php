@@ -7,6 +7,8 @@ use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CustomerReceiptController;
+use App\Http\Controllers\SupplierInvoiceController;
 
 
 /*
@@ -99,9 +101,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
 });
 
-
-
-
 //Products pages
 Route::post('/products', [InventoryController::class, 'list'])->name('products.store');
 Route::get('/products/add', [InventoryController::class, 'create'])->name('products.add');
+
+
+// Customer Receipts Routes
+Route::get('customer-receipts', [CustomerReceiptController::class, 'index'])->name('customer.receipts.index');
+Route::get('customer-receipts/create', [CustomerReceiptController::class, 'create'])->name('customer.receipts.create');
+Route::post('customer-receipts', [CustomerReceiptController::class, 'store'])->name('customer.receipts.store');
+
+// Supplier Invoices Routes
+Route::get('supplier-invoices', [SupplierInvoiceController::class, 'index'])->name('supplier.invoices.index');
+Route::get('supplier-invoices/create', [SupplierInvoiceController::class, 'create'])->name('supplier.invoices.create');
+Route::post('supplier-invoices', [SupplierInvoiceController::class, 'store'])->name('supplier.invoices.store');
+
