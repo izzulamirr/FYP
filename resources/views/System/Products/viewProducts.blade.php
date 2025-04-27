@@ -1,12 +1,5 @@
 
-
 @extends('layouts.app')
-
-@section('content')
-
-
-
-
 
 <div class="ml-64 p-8 w-full">
     <!-- Header -->
@@ -15,6 +8,19 @@
     </div>
 
 
+    
+     <!-- Categories Dropdown -->
+     <div class="mt-4">
+        <form action="{{ route('products.list') }}" method="GET">
+            <label for="category" class="block text-gray-700 font-bold mb-2">Filter by Category:</label>
+            <select name="category" id="category" class="p-2 border rounded w-full" onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                @foreach ($categories as $cat)
+                    <option value="{{ $cat }}" {{ $category == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                @endforeach
+            </select>
+        </form>
+    </div>
     
 
     <div class="p-8 w-full">

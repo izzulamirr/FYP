@@ -58,9 +58,13 @@
         <p class="p-2 border rounded w-full bg-gray-100">{{ $product->supplier_code}}</p> 
        </div>
 
-
-    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Confirm ?</button>
-</form>
+       <!-- Supplier Code  <div class="mb-4">
+    <label for="image" class="block text-gray-700 font-bold mb-2">Product Image</label>
+    <input type="file" name="image" id="image" class="p-2 border rounded w-full">
+</div>--> 
+            <!-- Submit Button -->
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Update Product</button>
+        </form>
     </div>
 </body>
 </html>

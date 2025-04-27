@@ -15,11 +15,20 @@ class Product extends Model
     'quantity', 
     'price', 
     'category',
-    'supplier_code'];
+    'supplier_code',
+    'image',
+
+];
 
       // Relationship with Supplier
       public function supplier()
       {
           return $this->belongsTo(Supplier::class, 'supplier_code', 'id');
       }
+
+        // Accessor for Image URL
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? asset('storage/' . $this->image) : asset('images/default-product.png');
+    }
 }

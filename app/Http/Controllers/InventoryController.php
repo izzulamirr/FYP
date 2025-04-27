@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-
+use App\Models\Supplier;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -10,9 +10,9 @@ class InventoryController extends Controller
 
     public function index()
     {
-        // Retrieve all products from the database
-        $products = Product::all();
-
+        // Retrieve the 10 most recently added products
+    $products = Product::latest()->take(10)->get();
+    
           // Fetch unique categories from the products table
     $categories = Product::select('category')->distinct()->pluck('category');
 
@@ -20,27 +20,39 @@ class InventoryController extends Controller
         return view('System.Inventory', compact('products','categories'));
     }
 
-    public function list($category)
-{   
-    // Fetch products for the selected category
-    $products = Product::where('category', $category)->get();
+    
+    public function list(Request $request)
+    {
+ // Get the selected category from the request
+ $category = $request->get('category');
 
-   
-    // Pass the products and category to the view
-    return view('System.Products.viewProducts', compact('products', 'category'));
-}
+ // Fetch all unique categories
+ $categories = Product::select('category')->distinct()->pluck('category');
 
+ // Fetch products for the selected category, or all products if no category is specified
+ $products = $category 
+     ? Product::where('category', $category)->get()
+     : Product::all();
+
+ // Pass the products and categories to the view
+ return view('System.Products.viewProducts', compact('products', 'category', 'categories'));
+    }
 
     
 
     public function create()
-    {
-        // Return the Add Product view
-        return view('System.Products.add');
+{
 
-          // Return the Add Product view with suppliers
-    return view('System.Products.add', compact('suppliers'));
-    }
+    // Fetch all unique categories
+    $categories = Product::select('category')->distinct()->pluck('category');
+
+   // If you need to pass additional data (e.g., categories or suppliers), fetch them here.
+   $suppliers = Supplier::all(); // Assuming you have a Supplier model and table.
+
+   // Return the Add Product view with suppliers
+   return view('System.Products.add', compact('suppliers', 'categories'));
+
+}
 
 
     public function edit($id)
@@ -71,33 +83,42 @@ class InventoryController extends Controller
 
 
 
-    public function store(Request $request)
-    {
-        // Validate the request
-        $request->validate([
-            'sku' => 'required|string|unique:products,sku',
-            'name' => 'required|string|max:255',
-            'quantity' => 'required|integer',
-            'price' => 'required|numeric',
-            'category' => 'required|string',
-            'supplier_code' => 'required|string|max:255',
-        ]);
+public function store(Request $request)
+{
+   
 
-        // Create a new product
-        Product::create([
-            'sku' => $request->sku,
-            'name' => $request->name,
-            'quantity' => $request->quantity,
-            'price' => $request->price,
-            'category' => $request->category,
-            'supplier_code' => $request->supplier_code,
-        ]);
+    // Validate the request
+    $validated = $request->validate([
+        'sku' => 'required|string|unique:products,sku',
+        'name' => 'required|string|max:255',
+        'quantity' => 'required|integer',
+        'price' => 'required|numeric',
+        'category' => 'required|string|max:255',
+        'supplier_code' => 'required|string|max:255',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+    \Log::info('Validation Passed:', $validated);
 
-        // Redirect back with a success message
-        return redirect()->route('inventory.index')->with('success', 'Product added successfully.');
+    // Handle the image upload
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('products', 'public');
+        \Log::info('Image Path:', [$imagePath]);
     }
 
-
+    // Save the product
+    $product = Product::create([
+        'sku' => $request->sku,
+        'name' => $request->name,
+        'quantity' => $request->quantity,
+        'price' => $request->price,
+        'category' => $request->category,
+        'supplier_code' => $request->supplier_code,
+        'image' => $imagePath,
+    ]);
+   
+    return redirect()->route('products.create')->with('success', 'Product added successfully.');
+}
     public function destroy($id)
 {
     // Fetch the product to delete

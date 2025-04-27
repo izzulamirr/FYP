@@ -103,12 +103,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
 //Products pages
-Route::post('/products', [InventoryController::class, 'list'])->name('products.store');
-Route::get('/products/add', [InventoryController::class, 'create'])->name('products.add');
-
+Route::get('/products', [InventoryController::class, 'list'])->name('products.list');
+Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
 Route::get('/products/category/{category}', [InventoryController::class, 'list'])->name('products.view');
 
 Route::get('/products/edit/{id}', [InventoryController::class, 'edit'])->name('products.edit');
 Route::put('/products/update/{id}', [InventoryController::class, 'update'])->name('products.update');
 Route::delete('/products/delete/{id}', [InventoryController::class, 'destroy'])->name('products.delete');
-
+Route::post('/products/store', [InventoryController::class, 'store'])->name('products.store');
