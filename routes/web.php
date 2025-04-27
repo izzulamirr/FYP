@@ -7,6 +7,10 @@ use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ReportController;
+
+
 
 
 /*
@@ -33,17 +37,13 @@ Route::get('/Supplies', function () {
     return view('System.Supplies');
     })->name('Supply');
 
-Route::get('/Report', function () {
-    return view('System.Report');
-    })->name('Report');
+
+    // Report
+    Route::get('/reports', [ReportController::class, 'reportDashboard'])->name('reports.dashboard');
 
 Route::get('/Inventory', function () {
     return view('System.Inventory');
     })->name('Inventory');
-
-Route::get('/Transaction', function () {
-    return view('System.Transaction');
-    })->name('Transaction');
 
     
     Route::middleware(['auth', 'admin'])->group(function () {
@@ -111,3 +111,16 @@ Route::get('/products/edit/{id}', [InventoryController::class, 'edit'])->name('p
 Route::put('/products/update/{id}', [InventoryController::class, 'update'])->name('products.update');
 Route::delete('/products/delete/{id}', [InventoryController::class, 'destroy'])->name('products.delete');
 Route::post('/products/store', [InventoryController::class, 'store'])->name('products.store');
+
+
+
+//scanner
+
+Route::get('/api/products/{barcode}', [InventoryController::class, 'getProductByBarcode']);
+
+//Transaction
+// Route to list all transactions
+Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+
+// Route to show a specific transaction
+Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');

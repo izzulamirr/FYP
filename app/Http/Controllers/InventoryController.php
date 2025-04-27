@@ -23,19 +23,15 @@ class InventoryController extends Controller
     
     public function list(Request $request)
     {
- // Get the selected category from the request
- $category = $request->get('category');
-
- // Fetch all unique categories
- $categories = Product::select('category')->distinct()->pluck('category');
-
- // Fetch products for the selected category, or all products if no category is specified
- $products = $category 
-     ? Product::where('category', $category)->get()
-     : Product::all();
-
- // Pass the products and categories to the view
- return view('System.Products.viewProducts', compact('products', 'category', 'categories'));
+        $category = $request->get('category'); // Get the selected category from the request
+        $categories = Product::select('category')->distinct()->pluck('category'); // Fetch all unique categories
+    
+        // Filter products by category if a category is selected
+        $products = $category 
+            ? Product::where('category', $category)->paginate(10)->appends(['category' => $category]) // Append category to pagination links
+            : Product::paginate(10);
+    
+        return view('System.Products.viewProducts', compact('products', 'category', 'categories'));
     }
 
     
@@ -71,6 +67,8 @@ class InventoryController extends Controller
         'quantity' => 'required|integer',
         'price' => 'required|numeric',
         'category' => 'required',
+        'barcode' => 'nullable|string|unique:products,barcode,' . $id, // Allow updating barcode
+
     ]);
 
     // Find the product and update its details
@@ -97,7 +95,6 @@ public function store(Request $request)
         'supplier_code' => 'required|string|max:255',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
-    \Log::info('Validation Passed:', $validated);
 
     // Handle the image upload
     $imagePath = null;
@@ -105,6 +102,9 @@ public function store(Request $request)
         $imagePath = $request->file('image')->store('products', 'public');
         \Log::info('Image Path:', [$imagePath]);
     }
+
+    // Generate a unique barcode
+    $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT); // Generates a 9-digit numeric barcode
 
     // Save the product
     $product = Product::create([
@@ -114,6 +114,7 @@ public function store(Request $request)
         'price' => $request->price,
         'category' => $request->category,
         'supplier_code' => $request->supplier_code,
+        'barcode' => $barcode, // Save the generated barcode
         'image' => $imagePath,
     ]);
    
@@ -129,6 +130,51 @@ public function store(Request $request)
 
     // Redirect back with a success message
     return redirect()->back()->with('success', 'Product deleted successfully.');
+}
+
+
+
+
+public function getProductByBarcode($barcode)
+{
+    $product = Product::where('barcode', $barcode)->first();
+
+    if ($product) {
+        return response()->json([
+            'success' => true,
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => $product->quantity,
+                'barcode' => $product->barcode,
+            ],
+        ]);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Product not found!']);
+}
+
+public function processTransaction(Request $request)
+{
+    $request->validate([
+        'products' => 'required|array',
+        'products.*.id' => 'required|exists:products,id',
+        'products.*.quantity' => 'required|integer|min:1',
+    ]);
+
+    foreach ($request->products as $productData) {
+        $product = Product::findOrFail($productData['id']);
+
+        if ($product->quantity < $productData['quantity']) {
+            return response()->json(['success' => false, 'message' => "Not enough stock for product: {$product->name}"]);
+        }
+
+        $product->quantity -= $productData['quantity'];
+        $product->save();
+    }
+
+    return response()->json(['success' => true, 'message' => 'Transaction completed successfully!']);
 }
 
    

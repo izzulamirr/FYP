@@ -17,8 +17,18 @@ class Product extends Model
     'category',
     'supplier_code',
     'image',
+    'barcode',
+
+    
 
 ];
+
+
+  // Generate barcode dynamically
+  public function generateBarcode()
+  {
+      return \DNS1D::getBarcodeHTML($this->barcode, 'C39');
+  }
 
       // Relationship with Supplier
       public function supplier()
