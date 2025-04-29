@@ -8,10 +8,10 @@
         <nav class="mt-4">
             <ul>
                 <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('dashboard') }}" class="flex items-center"><span class="mr-3">🏠</span> Dashboard</a></li>
-                <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('Transaction') }}" class="flex items-center"><span class="mr-3">💰</span> Transaction</a></li>
+                <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('transactions.index') }}" class="flex items-center"><span class="mr-3">💰</span> Transaction</a></li>
                 <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('Inventory') }}" class="flex items-center"><span class="mr-3">📦</span> Inventory</a></li>
                 <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('Supply') }}" class="flex items-center"><span class="mr-3">📊</span> Supplies </a></li>
-                <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('Report') }}" class="flex items-center"><span class="mr-3">📊</span>  Report</a></li>
+                <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('reports.dashboard') }}" class="flex items-center"><span class="mr-3">📊</span>  Report</a></li>
                 <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('Staff') }}" class="flex items-center"><span class="mr-3">🏠</span> Staff</a></li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
