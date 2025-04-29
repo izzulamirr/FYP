@@ -9,12 +9,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
-<<<<<<< HEAD
-=======
 use App\Http\Controllers\ProductController;
 
 
->>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
 
 
 
@@ -122,20 +119,13 @@ Route::post('/products/store', [InventoryController::class, 'store'])->name('pro
 
 //scanner
 
-<<<<<<< HEAD
-Route::get('/api/products/{barcode}', [InventoryController::class, 'getProductByBarcode']);
-=======
 Route::get('/api/products/{barcode}', [ProductController::class, 'getProductByBarcode']);
->>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
 
 //Transaction
 // Route to list all transactions
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
 // Route to show a specific transaction
-<<<<<<< HEAD
-Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
-=======
 Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
 
 
@@ -143,4 +133,3 @@ Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('
 Route::post('/transactions/finalize', [TransactionController::class, 'finalize'])->name('transactions.finalize');
 Route::get('/purchased/summary', [TransactionController::class, 'summary'])->name('transactions.summary');
 Route::post('/transactions/confirm', [TransactionController::class, 'confirm'])->name('transactions.confirm');
->>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
