@@ -70,12 +70,9 @@
     <h2 class="text-xl font-semibold mb-4">QR Scanner</h2>
     <div id="reader" class="w-full h-64 border rounded-md"></div>
     <p class="mt-4">Scanned Result: <span id="qrResult" class="font-bold text-green-600"></span></p>
+    <p class="mt-4"><button id="finalizeTransaction" class="bg-green-500 text-white p-2 rounded mt-4">Finalize Transaction</button></p>
 </div>
 
-<div>
-<button id="finalizeTransaction" class="bg-green-500 text-white p-2 rounded mt-4">Finalize Transaction</button>
-
-</div>
 
     <script>
     const scannedItemsTable = document.getElementById('scannedItems');

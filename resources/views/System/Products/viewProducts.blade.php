@@ -33,6 +33,7 @@
                         <th class="p-3 text-left">Name</th>
                         <th class="p-3 text-left">Barcode</th>
                         <th class="p-3 text-left">Quantity</th>
+                        <th class="p-3 text-left">Cost Price</th>
                         <th class="p-3 text-left">Price</th>
                         <th class="p-3 text-left">Supplier Code</th>
                         <th class="p-3 text-left">Actions</th>
@@ -52,6 +53,7 @@
                                 @endif
                             </td>
                             <td class="p-3 border-b">{{ $product->quantity }}</td>
+                            <td class="p-3 border-b">${{ number_format($product->cost_price, 2) }}</td>
                             <td class="p-3 border-b">${{ number_format($product->price, 2) }}</td>
                             <td class="p-3 border-b">{{ $product->supplier_code }}</td>
                             <td class="p-3 border-b">

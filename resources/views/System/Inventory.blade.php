@@ -47,6 +47,7 @@
                     <th class="p-3 text-center font-semibold text-gray-700">Name</th>
                     <th class="p-3 text-center font-semibold text-gray-700">Quantity Left</th>
                     <th class="p-3 text-center font-semibold text-gray-700">Price</th>
+                    <th class="p-3 text-center font-semibold text-gray-700">Cost Price</th>
                     <th class="p-3 text-center font-semibold text-gray-700">Category</th>
                     <th class="p-3 text-center font-semibold text-gray-700">Supplier Code</th>
                 </tr>
@@ -65,6 +66,7 @@
                         <td class="p-3 text-center p-3 text-gray-800">{{ $product->sku }}</td>
                         <td class="p-3 text-center p-3 text-gray-800">{{ $product->name }}</td>
                         <td class="p-3 text-center p-3 text-gray-800">{{ $product->quantity }}</td>
+                        <td class="p-3 text-center p-3 text-gray-800">${{ number_format($product->cost_price, 2) }}</td>
                         <td class="p-3 text-center p-3 text-gray-800">${{ number_format($product->price, 2) }}</td>
                         <td class="p-3 text-center p-3 text-gray-800">{{ $product->category }}</td>
                         <td class="p-3 text-center p-3 text-gray-800">{{ $product->supplier_code }}</td>

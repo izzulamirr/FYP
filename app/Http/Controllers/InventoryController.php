@@ -65,6 +65,7 @@ class InventoryController extends Controller
     $request->validate([
         'name' => 'required',
         'quantity' => 'required|integer',
+        'cost_price' => 'required|numeric',
         'price' => 'required|numeric',
         'category' => 'required',
         'barcode' => 'nullable|string|unique:products,barcode,' . $id, // Allow updating barcode
@@ -90,6 +91,7 @@ public function store(Request $request)
         'sku' => 'required|string|unique:products,sku',
         'name' => 'required|string|max:255',
         'quantity' => 'required|integer',
+        'cost_price' => 'required|numeric',
         'price' => 'required|numeric',
         'category' => 'required|string|max:255',
         'supplier_code' => 'required|string|max:255',
@@ -111,6 +113,7 @@ public function store(Request $request)
         'sku' => $request->sku,
         'name' => $request->name,
         'quantity' => $request->quantity,
+        'cost_price' => $request->cost_price,
         'price' => $request->price,
         'category' => $request->category,
         'supplier_code' => $request->supplier_code,
@@ -146,6 +149,7 @@ public function getProductByBarcode($barcode)
             'product' => [
                 'id' => $product->id,
                 'name' => $product->name,
+                'cost_price' => $product->cost_price,
                 'price' => $product->price,
                 'quantity' => $product->quantity,
                 'barcode' => $product->barcode,
