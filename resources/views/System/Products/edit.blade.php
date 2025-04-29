@@ -40,6 +40,15 @@
                 <input type="number" name="quantity" id="quantity" value="{{ $product->quantity }}" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
             </div>
 
+<<<<<<< HEAD
+=======
+            <!-- Cost Price -->
+            <div class="mb-4">
+                <label for="cost price" class="block text-gray-700 font-bold mb-2">Price</label>
+                <input type="number" step="0.01" name="cost_price" id="cost_price" value="{{ $product->cost_price }}" placeholder="Enter product cost price" required class="p-2 border rounded w-full">
+            </div>
+
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
             <!-- Price -->
             <div class="mb-4">
                 <label for="price" class="block text-gray-700 font-bold mb-2">Price</label>

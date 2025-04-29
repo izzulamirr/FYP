@@ -32,7 +32,12 @@
    
 
         <!-- Add Product Form -->
+<<<<<<< HEAD
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">              @csrf
+=======
+        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">             
+             @csrf
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
     <div class="mb-4">
         <label for="sku" class="block text-gray-700 font-bold mb-2">SKU</label>
         <input type="text" name="sku" id="sku" placeholder="Enter product SKU" required class="p-2 border rounded w-full">
@@ -51,12 +56,17 @@
     </div>
     <div class="mb-4">
     <label for="category" class="block text-gray-700 font-bold mb-2">Category</label>
+<<<<<<< HEAD
     <select name="category" id="category" class="p-2 border rounded w-full" required>
         <option value="">Select a category</option>
         @foreach ($categories as $cat)
             <option value="{{ $cat }}">{{ $cat }}</option>
         @endforeach
     </select>
+=======
+    <input name="category" id="category" class="p-2 border rounded w-full" placeholder="Enter product category" required class="p-2 border rounded w-full">
+
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
 </div>
     <div class="mb-4">
         <label for="supplier_code" class="block text-gray-700 font-bold mb-2">Supplier Code</label>

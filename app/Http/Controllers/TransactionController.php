@@ -69,4 +69,66 @@ class TransactionController extends Controller
     
         return response()->json(['success' => true, 'message' => 'Transaction completed successfully!']);
     }
+
+    public function finalize(Request $request)
+    {
+        $items = $request->input('items'); // Items sent from the frontend
+        $total = $request->input('total'); // Total price sent from the frontend
+    
+        // Add name and price to each item and reduce product quantities in the database
+        foreach ($items as &$item) { // Use reference to modify the array
+            $product = Product::find($item['id']); // Find the product in the database
+            if ($product) {
+                $product->quantity -= $item['quantity']; // Reduce the quantity
+                $product->save();
+    
+                // Add the name and price of the product to the item
+                $item['name'] = $product->name;
+                $item['price'] = $product->price;
+            }
+        }
+    
+        // Store transaction details in the session for the summary page
+        session(['transaction' => ['items' => $items, 'total' => $total]]);
+    
+        return response()->json(['success' => true]); // Return success response
+    }
+
+    public function summary()
+    {
+        $transaction = session('transaction', null);
+    
+        if (!$transaction) {
+            return redirect()->back()->with('error', 'No transaction data found.');
+        }
+    
+        // Debugging: Check the session data
+      
+        return view('System.TransactionSummary', ['transaction' => $transaction]);
+    }
+
+    public function confirm()
+{
+    // Retrieve the transaction details from the session
+    $transaction = session('transaction', null);
+
+    if (!$transaction) {
+        return redirect()->route('dashboard')->with('error', 'No transaction data found.');
+    }
+
+    // Optionally store the transaction in the database
+    Transaction::create([
+        'order_id' => uniqid('ORD'),
+        'products' => json_encode($transaction['items']),
+        'quantity' => array_sum(array_column($transaction['items'], 'quantity')),
+        'total_price' => $transaction['total'],
+        'payment_method' => 'Cash', // You can replace this with a dynamic value if needed
+    ]);
+
+    // Clear the session data
+    session()->forget('transaction');
+
+    // Redirect to the dashboard with a success message
+    return redirect()->route('dashboard')->with('success', 'Transaction confirmed successfully!');
+}
 }

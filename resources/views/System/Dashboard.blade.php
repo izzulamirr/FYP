@@ -50,6 +50,7 @@
         <h3 class="text-lg font-semibold">Scanned Items</h3>
         <table class="w-full mt-2 border-collapse border border-gray-300">
             <thead>
+<<<<<<< HEAD
                 <tr class="bg-gray-200">
                     <th class="border p-2">Item</th>
                     <th class="border p-2">Price</th>
@@ -61,6 +62,21 @@
                 <!-- Scanned items will be added here dynamically -->
             </tbody>
         </table>
+=======
+            <table class="w-full mt-2 border-collapse border border-gray-300">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="border p-2">Item</th>
+            <th class="border p-2">Price</th>
+            <th class="border p-2">Qty</th>
+            <th class="border p-2">Total</th>
+        </tr>
+    </thead>
+    <tbody id="scannedItems">
+        <!-- Scanned items will be added here dynamically -->
+    </tbody>
+</table>
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
     </div>
 </div>
             
@@ -68,19 +84,69 @@
     <h2 class="text-xl font-semibold mb-4">QR Scanner</h2>
     <div id="reader" class="w-full h-64 border rounded-md"></div>
     <p class="mt-4">Scanned Result: <span id="qrResult" class="font-bold text-green-600"></span></p>
+<<<<<<< HEAD
 </div>
 
 <div>
 <button id="finalizeTransaction" class="bg-green-500 text-white p-2 rounded mt-4">Finalize Transaction</button>
 
 </div>
+=======
+    <p class="mt-4"><button id="finalizeTransaction" class="bg-green-500 text-white p-2 rounded mt-4">Finalize Transaction</button></p>
+</div>
+
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
 
     <script>
     const scannedItemsTable = document.getElementById('scannedItems');
     const barcodeInput = document.getElementById('barcodeInput');
 
+<<<<<<< HEAD
 
     const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+=======
+    // Transactions 
+
+    const finalizeTransactionButton = document.getElementById('finalizeTransaction');
+ finalizeTransactionButton.addEventListener('click', function () {
+    const rows = document.querySelectorAll('#scannedItems tr');
+const scannedItems = [];
+
+rows.forEach(row => {
+    const id = row.getAttribute('data-id');
+    const qty = row.querySelector('.qty').innerText;
+    scannedItems.push({ id, quantity: parseInt(qty) });
+});
+
+        const totalPrice = Array.from(rows).reduce((total, row) => {
+            const totalCell = row.querySelector('.total').innerText;
+            return total + parseFloat(totalCell);
+        }, 0);
+
+        fetch('/transactions/finalize', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    },
+    body: JSON.stringify({ items: scannedItems, total: totalPrice })
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        window.location.href = '/purchased/summary';
+    } else {
+        alert('Failed to finalize transaction!');
+    }
+})
+.catch(error => console.error('Error:', error));
+    });
+
+    // QR Scanner
+
+
+    const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 300 });
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
 
 qrScanner.render(onScanSuccess);
 
@@ -124,24 +190,39 @@ barcodeInput.addEventListener('keypress', function (e) {
 });
 
 function addScannedItem(product) {
+<<<<<<< HEAD
     // Check if the product is already in the table
     const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
     if (existingRow) {
         // Update quantity and total price
+=======
+
+    const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
+    if (existingRow) {
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
         const qtyCell = existingRow.querySelector('.qty');
         const totalCell = existingRow.querySelector('.total');
         const newQty = parseInt(qtyCell.innerText) + 1;
         qtyCell.innerText = newQty;
         totalCell.innerText = (newQty * product.price).toFixed(2);
     } else {
+<<<<<<< HEAD
         // Add a new row for the product
+=======
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
         const row = document.createElement('tr');
         row.setAttribute('data-id', product.id);
         row.innerHTML = `
             <td class="border p-2">${product.name}</td>
+<<<<<<< HEAD
             <td class="border p-2">${product.price.toFixed(2)}</td>
             <td class="border p-2 qty">1</td>
             <td class="border p-2 total">${product.price.toFixed(2)}</td>
+=======
+            <td class="border p-2">${parseFloat(product.price).toFixed(2)}</td>
+            <td class="border p-2 qty">1</td>
+            <td class="border p-2 total">${parseFloat(product.price).toFixed(2)}</td>
+>>>>>>> f94268b96abb02bfaf1fd5a059322493e9019696
         `;
         scannedItemsTable.appendChild(row);
     }

@@ -12,11 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('order_id')->unique()->after('id');
-            $table->json('products')->nullable()->after('order_id');
-            $table->integer('quantity')->nullable()->after('products');
-            $table->decimal('total_price', 10, 2)->nullable()->after('quantity');
-            $table->string('payment_method')->nullable()->after('total_price');
+            Schema::table('transactions', function (Blueprint $table) {
+                if (!Schema::hasColumn('transactions', 'order_id')) {
+                    $table->string('order_id')->after('id');
+                }
+                if (!Schema::hasColumn('transactions', 'products')) {
+                    $table->json('products')->nullable()->after('order_id');
+                }
+                if (!Schema::hasColumn('transactions', 'quantity')) {
+                    $table->integer('quantity')->nullable()->after('products');
+                }
+                if (!Schema::hasColumn('transactions', 'total_price')) {
+                    $table->decimal('total_price', 10, 2)->nullable()->after('quantity');
+                }
+                if (!Schema::hasColumn('transactions', 'payment_method')) {
+                    $table->string('payment_method')->nullable()->after('total_price');
+                }
+            });
         });
     }
 
