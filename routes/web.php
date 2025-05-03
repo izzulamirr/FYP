@@ -7,8 +7,13 @@ use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CustomerReceiptController;
-use App\Http\Controllers\SupplierInvoiceController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProductController;
+
+
+
+
 
 
 /*
@@ -35,17 +40,13 @@ Route::get('/Supplies', function () {
     return view('System.Supplies');
     })->name('Supply');
 
-Route::get('/Report', function () {
-    return view('System.Report');
-    })->name('Report');
+
+    // Report
+    Route::get('/reports', [ReportController::class, 'reportDashboard'])->name('reports.dashboard');
 
 Route::get('/Inventory', function () {
     return view('System.Inventory');
     })->name('Inventory');
-
-Route::get('/Transaction', function () {
-    return view('System.Transaction');
-    })->name('Transaction');
 
     
     Route::middleware(['auth', 'admin'])->group(function () {
@@ -102,17 +103,30 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 //Products pages
-Route::post('/products', [InventoryController::class, 'list'])->name('products.store');
-Route::get('/products/add', [InventoryController::class, 'create'])->name('products.add');
+Route::get('/products', [InventoryController::class, 'list'])->name('products.list');
+Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
+Route::get('/products/category/{category}', [InventoryController::class, 'list'])->name('products.view');
+
+Route::get('/products/edit/{id}', [InventoryController::class, 'edit'])->name('products.edit');
+Route::put('/products/update/{id}', [InventoryController::class, 'update'])->name('products.update');
+Route::delete('/products/delete/{id}', [InventoryController::class, 'destroy'])->name('products.delete');
+Route::post('/products/store', [InventoryController::class, 'store'])->name('products.store');
 
 
-// Customer Receipts Routes
-Route::get('customer-receipts', [CustomerReceiptController::class, 'index'])->name('customer.receipts.index');
-Route::get('customer-receipts/create', [CustomerReceiptController::class, 'create'])->name('customer.receipts.create');
-Route::post('customer-receipts', [CustomerReceiptController::class, 'store'])->name('customer.receipts.store');
 
-// Supplier Invoices Routes
-Route::get('supplier-invoices', [SupplierInvoiceController::class, 'index'])->name('supplier.invoices.index');
-Route::get('supplier-invoices/create', [SupplierInvoiceController::class, 'create'])->name('supplier.invoices.create');
-Route::post('supplier-invoices', [SupplierInvoiceController::class, 'store'])->name('supplier.invoices.store');
+//scanner
 
+Route::get('/api/products/{barcode}', [ProductController::class, 'getProductByBarcode']);
+
+//Transaction
+// Route to list all transactions
+Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+
+// Route to show a specific transaction
+Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
+
+
+
+Route::post('/transactions/finalize', [TransactionController::class, 'finalize'])->name('transactions.finalize');
+Route::get('/purchased/summary', [TransactionController::class, 'summary'])->name('transactions.summary');
+Route::post('/transactions/confirm', [TransactionController::class, 'confirm'])->name('transactions.confirm');

@@ -4,19 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product; // Import the Product model
+use App\Models\Transaction; // Import the Transaction model
 
 
 class DashboardController extends Controller
 {
     public function index()
-    {
-        // Fetch total number of products
-        $totalProducts = Product::count();
+{
+    // Fetch total transactions
+    $totalTransactions = Transaction::count();
 
-        // Fetch count of low-stock products (e.g., quantity < 10)
-        $lowStockProducts = Product::where('quantity', '<', 10)->count();
+    // Fetch today's sales
+    $todaysSales = Transaction::whereDate('created_at', today())->sum('total_price');
 
-        // Pass the data to the dashboard view
-        return view('System.Dashboard', compact('totalProducts', 'lowStockProducts'));
-    }
+    // Fetch product summary data
+    $totalProducts = Product::count();
+    $lowStockProducts = Product::where('quantity', '<', 10)->count();
+
+    return view('System.Dashboard', compact('totalTransactions', 'todaysSales', 'totalProducts', 'lowStockProducts'));
+}
 }

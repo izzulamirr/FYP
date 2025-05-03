@@ -21,6 +21,7 @@ class ProductsTableSeeder extends Seeder
                     'price' => rand(100, 1000) / 10, // Random price between 10.0 and 100.0
                     'category' => $category,
                     'supplier_code' => rand(1, 5), // Assuming supplier IDs range from 1 to 5
+                    'image' => 'products/' . strtolower($category) . '_product_' . $i . '.png', // Image path
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
