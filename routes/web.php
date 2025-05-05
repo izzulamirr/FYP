@@ -10,11 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
-
-
-
-
-
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +36,8 @@ Route::get('/Supplies', function () {
     return view('System.Supplies');
     })->name('Supply');
 
+    Route::get('/suppliers', [SuppliersController::class, 'list'])->name('suppliers.list');
+
 
     // Report
     Route::get('/reports', [ReportController::class, 'reportDashboard'])->name('reports.dashboard');
@@ -55,6 +53,7 @@ Route::get('/Inventory', function () {
         })->name('Staff');
     });
 
+    
 
     //camera
     Route::get('/camera', function () {
@@ -130,3 +129,7 @@ Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('
 Route::post('/transactions/finalize', [TransactionController::class, 'finalize'])->name('transactions.finalize');
 Route::get('/purchased/summary', [TransactionController::class, 'summary'])->name('transactions.summary');
 Route::post('/transactions/confirm', [TransactionController::class, 'confirm'])->name('transactions.confirm');
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Display all orders
+Route::get('/orders/invoice_slip/{id}', [OrderController::class, 'showInvoice'])->name('orders.invoice_slip'); // Display invoice for a specific order
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Store a new order

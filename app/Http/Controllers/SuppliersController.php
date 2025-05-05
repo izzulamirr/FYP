@@ -18,4 +18,10 @@ class SuppliersController extends Controller
         // Pass the suppliers to the view
         return view('System.Supplies', compact('suppliers'));
     }
+
+    public function list()
+    {
+        $suppliers = Supplier::all(); // Fetch all suppliers from the database
+        return view('System.SuppliersList', compact('suppliers'));
+    }
 }

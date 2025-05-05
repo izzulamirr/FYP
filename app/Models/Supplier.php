@@ -21,4 +21,10 @@ class Supplier extends Model
     {
         return $this->hasMany(Product::class, 'supplier_code', 'id');
     }
+
+    public function list()
+{
+    $suppliers = Supplier::all(); // Fetch all suppliers from the database
+    return view('System.SuppliersList', compact('suppliers'));
+}
 }
