@@ -90,7 +90,7 @@ Route::post('/Inventory', [InventoryController::class, 'store'])->name('Inventor
 
 
 
-Route::get('/Supplies', [SuppliersController::class, 'index'])->name('Supply');
+
 
 
 
@@ -133,3 +133,19 @@ Route::post('/transactions/confirm', [TransactionController::class, 'confirm'])-
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Display all orders
 Route::get('/orders/invoice_slip/{id}', [OrderController::class, 'showInvoice'])->name('orders.invoice_slip'); // Display invoice for a specific order
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Store a new order
+
+
+
+
+//suppliers
+
+Route::get('/suppliers/dashboard', [SuppliersController::class, 'dashboard'])->name('suppliers.dashboard');
+Route::get('/supplies', [SuppliersController::class, 'dashboard'])->name('suppliers.index');
+//oute::get('/supplies', [OrderController::class, 'index'])->name('supplies.index');
+
+
+// Suppliers Dashboard
+Route::get('/suppliers/dashboard', [SuppliersController::class, 'dashboard'])->name('suppliers.dashboard');
+
+// Orders
+Route::get('/supplies', [SuppliersController::class, 'ordersIndex'])->name('supplies.index');

@@ -21,13 +21,13 @@
                 </button>
                 <ul id="suppliesDropdown" class="hidden pl-6 mt-2 space-y-2">
                     <li>
-                        <a href="{{ route('Supply') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
+                        <a href="{{ route('suppliers.dashboard') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
                             Suppliers Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('suppliers.list') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
-                            View Suppliers
+                        <a href="{{ route('supplies.index') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
+                            View Orders
                         </a>
                     </li>
                 </ul>

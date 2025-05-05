@@ -2,15 +2,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Order; // Assuming you have an Order model
+use App\Models\Supplier; // Assuming you have a Supplier model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class StaffController extends Controller
+class OrderController extends Controller
 {
     public function index()
-    {
-        $users = User::where('role', 'staff')->get(); // Fetch only staff users
-        return view('System.Staff', compact('users'));
+    {  
+            // Fetch all orders from the database
+            $orders = Order::all();
+    
+            // Pass the orders to the view
+            return view('System.Supplies', compact('orders'));
+        
     }
 
     public function create()
