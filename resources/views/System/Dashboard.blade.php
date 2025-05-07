@@ -8,6 +8,7 @@
     <title>Smart Inventory - Cashier</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
+    
 </head>
 <body class="bg-gray-100 flex">
 
@@ -122,26 +123,30 @@ rows.forEach(row => {
 
 
     const qrScanner = new Html5QrcodeScanner("reader", {
-    fps: 20, // Higher FPS for faster detection
-    qrbox: { width: 300, height: 300 } // Larger scanning area
+    fps: 10, // Frames per second
+    qrbox: { width: 300, height: 100 } // Scanning area size
 });
 
 qrScanner.render(onScanSuccess);
 
 function onScanSuccess(decodedText, decodedResult) {
-    document.getElementById('qrResult').innerText = decodedText;
+    console.log(`Scanned QR Code: ${decodedText}`); // Log the scanned QR code
+    document.getElementById('qrResult').innerText = decodedText; // Display the scanned result
 
     // Fetch product details using the scanned QR code
     fetch(`/api/products/${decodedText}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                addScannedItem(data.product);
+                addScannedItem(data.product); // Add the scanned item to the table
             } else {
                 alert('Product not found!');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error fetching product:', error);
+            alert('An error occurred while fetching product details.');
+        });
 }
 
 barcodeInput.addEventListener('keypress', function (e) {
