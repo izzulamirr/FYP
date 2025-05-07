@@ -3,6 +3,9 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+
 
 class InventoryController extends Controller
 {
@@ -30,6 +33,11 @@ class InventoryController extends Controller
         $products = $category 
             ? Product::where('category', $category)->paginate(10)->appends(['category' => $category]) // Append category to pagination links
             : Product::paginate(10);
+
+
+
+
+            
     
         return view('System.Products.viewProducts', compact('products', 'category', 'categories'));
     }
@@ -106,6 +114,11 @@ public function store(Request $request)
     // Generate a unique barcode
     $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT); // Generates a 9-digit numeric barcode
 
+  // Generate the QR code as a PNG file
+  $qrCodePath = 'products/qr_codes/' . $barcode . '.png';
+  QrCode::format('png')->size(200)->generate($barcode, storage_path('app/public/' . $qrCodePath));
+
+
     // Save the product
     $product = Product::create([
         'sku' => $request->sku,
@@ -115,6 +128,7 @@ public function store(Request $request)
         'category' => $request->category,
         'supplier_code' => $request->supplier_code,
         'barcode' => $barcode, // Save the generated barcode
+        'qr_code' => $qrCodePath, // Save the QR code file path
         'image' => $imagePath,
     ]);
    

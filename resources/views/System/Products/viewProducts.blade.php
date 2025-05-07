@@ -31,6 +31,7 @@
                         <th class="p-3 text-left">SKU</th>
                         <th class="p-3 text-left">Name</th>
                         <th class="p-3 text-left">Barcode</th>
+                        <th class="p-3 text-left">QR Code</th>
                         <th class="p-3 text-left">Quantity</th>
                         <th class="p-3 text-left">Price</th>
                         <th class="p-3 text-left">Supplier Code</th>
@@ -50,6 +51,13 @@
                                     <p class="text-sm text-red-500">No Barcode</p> <!-- Display a message if barcode is null -->
                                 @endif
                             </td>
+                            <td class="p-3 border-b">
+    @if ($product->qr_code)
+        <img src="{{ asset('storage/' . $product->qr_code) }}" alt="QR Code for {{ $product->name }}" class="w-16 h-16">
+    @else
+        <p class="text-sm text-red-500">No QR Code</p>
+    @endif
+</td>
                             <td class="p-3 border-b">{{ $product->quantity }}</td>
                             <td class="p-3 border-b">${{ number_format($product->price, 2) }}</td>
                             <td class="p-3 border-b">{{ $product->supplier_code }}</td>

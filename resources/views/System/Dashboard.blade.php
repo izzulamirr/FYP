@@ -80,7 +80,7 @@
     const barcodeInput = document.getElementById('barcodeInput');
 
 
-    const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+    const qrScanner = new Html5QrcodeScanner("reader", { fps: 40, qrbox: 300 });
 
 qrScanner.render(onScanSuccess);
 
