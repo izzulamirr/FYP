@@ -105,6 +105,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/products', [InventoryController::class, 'list'])->name('products.list');
 Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
 Route::get('/products/category/{category}', [InventoryController::class, 'list'])->name('products.view');
+Route::get('/products/category' , [InventoryController::class, 'list'])->name('products.catagories');
+
 
 Route::get('/products/edit/{id}', [InventoryController::class, 'edit'])->name('products.edit');
 Route::put('/products/update/{id}', [InventoryController::class, 'update'])->name('products.update');

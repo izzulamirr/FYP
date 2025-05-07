@@ -66,13 +66,16 @@
     </div>
 </div>
             
-            <div class="bg-white p-6 shadow-lg rounded-lg w-1/2">
+<div class="bg-white p-6 shadow-lg rounded-lg w-full lg:w-1/2">
     <h2 class="text-xl font-semibold mb-4">QR Scanner</h2>
-    <div id="reader" class="w-full h-64 border rounded-md"></div>
-    <p class="mt-4">Scanned Result: <span id="qrResult" class="font-bold text-green-600"></span></p>
-    <p class="mt-4"><button id="finalizeTransaction" class="bg-green-500 text-white p-2 rounded mt-4">Finalize Transaction</button></p>
+    <div id="reader" class="w-full h-40 border rounded-md"></div> <!-- Reduced height -->
 </div>
 
+<div class="mt-4">
+        <button id="finalizeTransaction" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition duration-200">
+            Finalize Transaction
+        </button>
+    </div>
 
     <script>
     const scannedItemsTable = document.getElementById('scannedItems');
@@ -118,7 +121,7 @@ rows.forEach(row => {
     // QR Scanner
 
 
-    const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 300 });
+    const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 200 });
 
 qrScanner.render(onScanSuccess);
 

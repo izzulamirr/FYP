@@ -9,8 +9,25 @@
         <ul>
             <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('dashboard') }}" class="flex items-center"><span class="mr-3">🏠</span> Dashboard</a></li>
             <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('transactions.index') }}" class="flex items-center"><span class="mr-3">💰</span> Transaction</a></li>
-            <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('Inventory') }}" class="flex items-center"><span class="mr-3">📦</span> Inventory</a></li>
-            
+            <li class="px-4 py-3 hover:bg-gray-700">
+                <button class="w-full flex items-center text-left" onclick="toggleDropdown('suppliesDropdown')">
+                    <span class="mr-3">📊</span> Inventory
+                    <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <ul id="suppliesDropdown" class="hidden pl-6 mt-2 space-y-2">
+                    <li>
+                        <a href="{{ route('Inventory') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
+Inventory Dashboard                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('products.catagories') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
+                            By catagories
+                        </a>
+                    </li>
+                </ul>
+            </li>            
             <!-- Supplies with Dropdown -->
             <li class="px-4 py-3 hover:bg-gray-700">
                 <button class="w-full flex items-center text-left" onclick="toggleDropdown('suppliesDropdown')">
