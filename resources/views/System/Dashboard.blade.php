@@ -70,6 +70,7 @@
 <div class="bg-white p-6 shadow-lg rounded-lg w-full lg:w-1/2">
     <h2 class="text-xl font-semibold mb-4">QR Scanner</h2>
     <div id="reader" class="w-full h-40 border rounded-md"></div> <!-- Reduced height -->
+    <p class="mt-4">Scanned Result: <span id="qrResult" class="font-bold text-green-600"></span></p>
 </div>
 
 <div class="mt-4">
@@ -82,9 +83,10 @@
     const scannedItemsTable = document.getElementById('scannedItems');
     const barcodeInput = document.getElementById('barcodeInput');
 
-    // Transactions 
 
-    const finalizeTransactionButton = document.getElementById('finalizeTransaction');
+     // Transactions 
+
+     const finalizeTransactionButton = document.getElementById('finalizeTransaction');
  finalizeTransactionButton.addEventListener('click', function () {
     const rows = document.querySelectorAll('#scannedItems tr');
 const scannedItems = [];
@@ -119,34 +121,27 @@ rows.forEach(row => {
 .catch(error => console.error('Error:', error));
     });
 
-    // QR Scanner
-
-
-    const qrScanner = new Html5QrcodeScanner("reader", {
-    fps: 10, // Frames per second
-    qrbox: { width: 300, height: 100 } // Scanning area size
-});
-
+    const qrScanner = new Html5QrcodeScanner("reader", { fps: 40, 
+        qrbox: { width: 300, height: 100 } // Set width to 300 and height to 100
+    });
 qrScanner.render(onScanSuccess);
 
 function onScanSuccess(decodedText, decodedResult) {
     console.log(`Scanned QR Code: ${decodedText}`); // Log the scanned QR code
-    document.getElementById('qrResult').innerText = decodedText; // Display the scanned result
+    document.getElementById('qrResult').innerText = decodedText;
 
     // Fetch product details using the scanned QR code
     fetch(`/api/products/${decodedText}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                addScannedItem(data.product); // Add the scanned item to the table
+                console.log('Product found:', data.product); // Log the product details
+                addScannedItem(data.product);
             } else {
                 alert('Product not found!');
             }
         })
-        .catch(error => {
-            console.error('Error fetching product:', error);
-            alert('An error occurred while fetching product details.');
-        });
+        .catch(error => console.error('Error fetching product:', error));
 }
 
 barcodeInput.addEventListener('keypress', function (e) {
@@ -173,22 +168,32 @@ barcodeInput.addEventListener('keypress', function (e) {
 });
 
 function addScannedItem(product) {
+    // Ensure product.price is a number
+    const price = parseFloat(product.price);
 
+    if (isNaN(price)) {
+        alert('Invalid product price!');
+        return;
+    }
+
+    // Check if the product is already in the table
     const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
     if (existingRow) {
+        // Update quantity and total price
         const qtyCell = existingRow.querySelector('.qty');
         const totalCell = existingRow.querySelector('.total');
         const newQty = parseInt(qtyCell.innerText) + 1;
         qtyCell.innerText = newQty;
-        totalCell.innerText = (newQty * product.price).toFixed(2);
+        totalCell.innerText = (newQty * price).toFixed(2);
     } else {
+        // Add a new row for the product
         const row = document.createElement('tr');
         row.setAttribute('data-id', product.id);
         row.innerHTML = `
             <td class="border p-2">${product.name}</td>
-            <td class="border p-2">${parseFloat(product.price).toFixed(2)}</td>
+            <td class="border p-2">${price.toFixed(2)}</td>
             <td class="border p-2 qty">1</td>
-            <td class="border p-2 total">${parseFloat(product.price).toFixed(2)}</td>
+            <td class="border p-2 total">${price.toFixed(2)}</td>
         `;
         scannedItemsTable.appendChild(row);
     }

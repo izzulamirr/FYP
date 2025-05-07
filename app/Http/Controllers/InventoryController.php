@@ -3,8 +3,6 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
 
 class InventoryController extends Controller
 {
@@ -18,15 +16,6 @@ class InventoryController extends Controller
           // Fetch unique categories from the products table
     $categories = Product::select('category')->distinct()->pluck('category');
 
- // Generate QR codes for each product
- foreach ($products as $product) {
-    $qrCode = QrCode::create($product->barcode)
-        ->setSize(100)
-        ->setMargin(10);
-
-    $writer = new PngWriter();
-    $product->qrCode = $writer->write($qrCode)->getDataUri();
-}
 
 
         // Pass the products to the view
@@ -130,18 +119,7 @@ public function store(Request $request)
         'image' => $imagePath,
     ]);
 
-    // Generate and save the QR code
-    $qrCode = QrCode::create($barcode)
-        ->setSize(200)
-        ->setMargin(10);
-
-    $writer = new PngWriter();
-    $qrCodePath = 'products/qr_codes/' . $barcode . '.png';
-    $writer->write($qrCode)->saveToFile(storage_path('app/public/' . $qrCodePath));
-
-    // Update the product with the QR code path
-    $product->update(['qr_code' => $qrCodePath]);
-
+   
     return redirect()->route('products.create')->with('success', 'Product added successfully.');
 // Redirect back with a success message
 
