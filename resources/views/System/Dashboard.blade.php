@@ -125,6 +125,14 @@ barcodeInput.addEventListener('keypress', function (e) {
 });
 
 function addScannedItem(product) {
+    // Ensure product.price is a number
+    const price = parseFloat(product.price);
+
+    if (isNaN(price)) {
+        alert('Invalid product price!');
+        return;
+    }
+
     // Check if the product is already in the table
     const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
     if (existingRow) {
@@ -133,16 +141,16 @@ function addScannedItem(product) {
         const totalCell = existingRow.querySelector('.total');
         const newQty = parseInt(qtyCell.innerText) + 1;
         qtyCell.innerText = newQty;
-        totalCell.innerText = (newQty * product.price).toFixed(2);
+        totalCell.innerText = (newQty * price).toFixed(2);
     } else {
         // Add a new row for the product
         const row = document.createElement('tr');
         row.setAttribute('data-id', product.id);
         row.innerHTML = `
             <td class="border p-2">${product.name}</td>
-            <td class="border p-2">${product.price.toFixed(2)}</td>
+            <td class="border p-2">${price.toFixed(2)}</td>
             <td class="border p-2 qty">1</td>
-            <td class="border p-2 total">${product.price.toFixed(2)}</td>
+            <td class="border p-2 total">${price.toFixed(2)}</td>
         `;
         scannedItemsTable.appendChild(row);
     }
