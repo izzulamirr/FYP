@@ -101,6 +101,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
 });
 
+// Staff Routes
+Route::get('/staff', [StaffController::class, 'index'])->name('staff.index'); // Display staff dashboard
+Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create'); // Add staff form
+Route::post('/staff', [StaffController::class, 'store'])->name('staff.store'); // Store new staff
+Route::get('/staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit'); // Edit staff form
+Route::put('/staff/{id}', [StaffController::class, 'update'])->name('staff.update'); // Update staff details
+Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
 //Products pages
 Route::get('/products', [InventoryController::class, 'list'])->name('products.list');
 Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
@@ -124,7 +132,7 @@ Route::get('/transactions', [TransactionController::class, 'index'])->name('tran
 // Route to show a specific transaction
 Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
 
-
+Route::get('/transactions/supplier-invoice/{id}', [TransactionController::class, 'showSupplierInvoice'])->name('transactions.supplier-invoice');
 
 Route::post('/transactions/finalize', [TransactionController::class, 'finalize'])->name('transactions.finalize');
 Route::get('/purchased/summary', [TransactionController::class, 'summary'])->name('transactions.summary');
@@ -133,9 +141,6 @@ Route::post('/transactions/confirm', [TransactionController::class, 'confirm'])-
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Display all orders
 Route::get('/orders/invoice_slip/{id}', [OrderController::class, 'showInvoice'])->name('orders.invoice_slip'); // Display invoice for a specific order
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Store a new order
-
-
-
 
 //suppliers
 

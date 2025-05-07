@@ -1,4 +1,3 @@
-<!-- filepath: c:\xampp\htdocs\FYP\resources\views\System\Invoice.blade.php -->
 @extends('layouts.app')
 
 <div class="ml-64 p-8 w-full">

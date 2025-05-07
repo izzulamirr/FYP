@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 <!DOCTYPE html>
@@ -22,7 +21,7 @@
 
         <!-- Staff Cards -->
         <div class="mt-6 grid grid-cols-3 gap-6">
-            @forelse ($users as $user)
+            @forelse ($users as $user) <!-- Loop through $users and define each as $user -->
                 <div class="bg-white p-6 shadow-md rounded-lg hover:bg-gray-100">
                     <h2 class="text-xl font-semibold mb-2">{{ $user->name }}</h2>
                     <p class="text-gray-600 mb-2">Email: {{ $user->email }}</p>

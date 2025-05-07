@@ -3,19 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Assuming staff are stored in the User model
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
-    // Display all users
+    // Display all staff users
     public function index()
     {
-        // Fetch all users from the database
-        $users = User::all();
-
-        // Pass the users to the view
+        $users = User::where('role', 'staff')->get(); // Fetch only staff users
         return view('System.Staff', compact('users'));
+    }
+
+    // Show the form for creating a new staff member
+    public function create()
+    {
+        return view('System.StaffCreate'); // View for adding new staff
     }
 
     // Store a new staff member
@@ -33,11 +36,39 @@ class StaffController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Default role for new staff
+            'role' => 'staff', // Assign the role as 'staff'
         ]);
 
         // Redirect back with a success message
-        return redirect()->route('Staff')->with('success', 'Staff member added successfully.');
+        return redirect()->route('staff.index')->with('success', 'Staff added successfully.');
+    }
+
+    // Show the form for editing a staff member
+    public function edit($id)
+    {
+        $user = User::findOrFail($id); // Fetch the staff by ID
+        return view('System.StaffEdit', compact('user')); // View for editing staff
+    }
+
+    // Update a staff member
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        // Validate the incoming request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+        ]);
+
+        // Update the user's information
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        // Redirect back with a success message
+        return redirect()->route('staff.index')->with('success', 'Staff updated successfully.');
     }
 
     // Delete a staff member
@@ -48,6 +79,6 @@ class StaffController extends Controller
         $user->delete();
 
         // Redirect back with a success message
-        return redirect()->route('Staff')->with('success', 'Staff member deleted successfully.');
+        return redirect()->route('staff.index')->with('success', 'Staff deleted successfully.');
     }
 }
