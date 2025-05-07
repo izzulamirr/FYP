@@ -121,7 +121,10 @@ rows.forEach(row => {
     // QR Scanner
 
 
-    const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 20 });
+    const qrScanner = new Html5QrcodeScanner("reader", {
+    fps: 20, // Higher FPS for faster detection
+    qrbox: { width: 300, height: 300 } // Larger scanning area
+});
 
 qrScanner.render(onScanSuccess);
 

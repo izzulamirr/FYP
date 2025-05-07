@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class InventoryController extends Controller
 {
@@ -15,6 +17,17 @@ class InventoryController extends Controller
     
           // Fetch unique categories from the products table
     $categories = Product::select('category')->distinct()->pluck('category');
+
+ // Generate QR codes for each product
+ foreach ($products as $product) {
+    $qrCode = QrCode::create($product->barcode)
+        ->setSize(100)
+        ->setMargin(10);
+
+    $writer = new PngWriter();
+    $product->qrCode = $writer->write($qrCode)->getDataUri();
+}
+
 
         // Pass the products to the view
         return view('System.Inventory', compact('products','categories'));
@@ -84,9 +97,6 @@ class InventoryController extends Controller
 
 public function store(Request $request)
 {
-   
-
-    // Validate the request
     $validated = $request->validate([
         'sku' => 'required|string|unique:products,sku',
         'name' => 'required|string|max:255',
@@ -102,11 +112,10 @@ public function store(Request $request)
     $imagePath = null;
     if ($request->hasFile('image')) {
         $imagePath = $request->file('image')->store('products', 'public');
-        \Log::info('Image Path:', [$imagePath]);
     }
 
     // Generate a unique barcode
-    $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT); // Generates a 9-digit numeric barcode
+    $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT);
 
     // Save the product
     $product = Product::create([
@@ -117,9 +126,25 @@ public function store(Request $request)
         'price' => $request->price,
         'category' => $request->category,
         'supplier_code' => $request->supplier_code,
-        'barcode' => $barcode, // Save the generated barcode
+        'barcode' => $barcode,
         'image' => $imagePath,
     ]);
+
+    // Generate and save the QR code
+    $qrCode = QrCode::create($barcode)
+        ->setSize(200)
+        ->setMargin(10);
+
+    $writer = new PngWriter();
+    $qrCodePath = 'products/qr_codes/' . $barcode . '.png';
+    $writer->write($qrCode)->saveToFile(storage_path('app/public/' . $qrCodePath));
+
+    // Update the product with the QR code path
+    $product->update(['qr_code' => $qrCodePath]);
+
+    return redirect()->route('products.create')->with('success', 'Product added successfully.');
+// Redirect back with a success message
+
    
     return redirect()->route('products.create')->with('success', 'Product added successfully.');
 }
