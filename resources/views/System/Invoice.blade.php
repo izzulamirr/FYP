@@ -6,6 +6,7 @@
         <p><strong>Supplier Name:</strong> {{ $order->supplier_name }}</p>
         <p><strong>Total (RM):</strong> RM {{ number_format($order->total, 2) }}</p>
         <p><strong>Delivery Status:</strong> {{ $order->delivery_status }}</p>
+        <p><strong>Payment Status:</strong> {{ ucfirst($order->payment_status) }}</p> <!-- Add this line -->
         <p><strong>Order Date:</strong> {{ $order->order_date }}</p>
         <p><strong>Completed Date:</strong> {{ $order->completed_date ?? 'N/A' }}</p>
         <div class="mt-4">

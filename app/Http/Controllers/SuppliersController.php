@@ -15,12 +15,14 @@ class SuppliersController extends Controller
      */
     public function dashboard()
     {
-        // Fetch supplier statistics
-        $totalSuppliers = Supplier::count();
-        $suppliers = Supplier::all();
+        $totalSuppliers = Supplier::count(); // Count total suppliers
+        $pendingPayments = Order::where('payment_status', 'pending')->count(); // Count pending payments
+        $pendingDeliveries = Order::where('delivery_status', 'pending')->count(); // Count pending deliveries
+
+        $suppliers = Supplier::all(); // Fetch all suppliers
 
         // Pass data to the view
-        return view('System.Supplies.dashboard', compact('totalSuppliers', 'suppliers'));
+        return view('System.Supplies.dashboard', compact('totalSuppliers', 'pendingPayments', 'pendingDeliveries', 'suppliers'));
     }
 
     /**

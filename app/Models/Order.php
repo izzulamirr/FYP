@@ -15,5 +15,6 @@ class Order extends Model
         'order_date',
         'completed_date',
         'invoice_slip',
+        'payment_status',
     ];
 }
