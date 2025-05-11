@@ -151,3 +151,6 @@ Route::get('/suppliers/dashboard', [SuppliersController::class, 'dashboard'])->n
 
 // Orders
 Route::get('/supplies', [SuppliersController::class, 'ordersIndex'])->name('supplies.index');
+
+// Staff
+Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create'); // Add Staff form

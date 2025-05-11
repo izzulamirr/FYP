@@ -25,6 +25,7 @@
                                 <th class="p-3 text-left">Order ID</th>
                                 <th class="p-3 text-left">Total Price</th>
                                 <th class="p-3 text-left">Payment Method</th>
+                                <th class="p-3 text-left">Payment Time</th>
                                 <th class="p-3 text-left">Date</th>
                                 <th class="p-3 text-left">Actions</th>
                             </tr>
@@ -35,6 +36,9 @@
                                     <td class="p-3">{{ $transaction->order_id }}</td>
                                     <td class="p-3">RM {{ number_format($transaction->total_price, 2) }}</td>
                                     <td class="p-3">{{ $transaction->payment_method }}</td>
+                                    <td class="p-3">
+                                        {{ $transaction->payment_time ? $transaction->payment_time->format('H:i:s') : 'N/A' }}
+                                    </td>
                                     <td class="p-3">{{ $transaction->created_at->format('Y-m-d') }}</td>
                                     <td class="p-3">
                                         <a href="{{ route('transactions.show', $transaction->id) }}" class="bg-blue-500 text-white p-2 rounded">View</a>
