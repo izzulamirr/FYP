@@ -120,10 +120,7 @@ public function store(Request $request)
     ]);
 
    
-    return redirect()->route('products.create')->with('success', 'Product added successfully.');
 // Redirect back with a success message
-
-   
     return redirect()->route('products.create')->with('success', 'Product added successfully.');
 }
     public function destroy($id)
