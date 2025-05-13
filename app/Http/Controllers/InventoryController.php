@@ -115,7 +115,7 @@ public function store(Request $request)
             'quantity' => $request->quantity,
             'price' => $request->price,
             'category' => $request->category,
-        'barcode' => $barcode,
+          'barcode' => $barcode,
 
             'supplier_code' => $request->supplier_code,
         ]);
