@@ -85,48 +85,44 @@ class InventoryController extends Controller
 
 
 public function store(Request $request)
-{
-    // Validate the incoming request data
-    $validated = $request->validate([
-    'sku' => 'required|string|unique:products,sku',
-    'name' => 'required|string|max:255',
-    'quantity' => 'required|integer|min:0',
-    'cost_price' => 'required|numeric|min:0',
-    'price' => 'required|numeric|min:0',
-    'category' => 'required|string|max:255',
-    'supplier_code' => 'required|string|max:255',
-    'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    {
+        // Validate the request
+        $request->validate([
+            'sku' => 'required|string|unique:products,sku',
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|integer',
+            'cost_price' => 'required|numeric|min:0',
 
-    \Log::info('Validation passed:', $validated);
+            'price' => 'required|numeric',
+            'category' => 'required|string',
+            'supplier_code' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
 
-    // Handle the image upload
-    $imagePath = null;
+        ]);
+
+         // Generate a unique barcode
+    $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT);
+
+ $imagePath = null;
     if ($request->hasFile('image')) {
         $imagePath = $request->file('image')->store('products', 'public');
     }
 
-    // Generate a unique barcode
-    $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT);
-
-    // Save the product to the database
-    $product = Product::create([
-        'sku' => $validated['sku'],
-        'name' => $validated['name'],
-        'quantity' => $validated['quantity'],
-        'cost_price' => $validated['cost_price'],
-        'price' => $validated['price'],
-        'category' => $validated['category'],
-        'supplier_code' => $validated['supplier_code'],
+        // Create a new product
+        Product::create([
+            'sku' => $request->sku,
+            'name' => $request->name,
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'category' => $request->category,
         'barcode' => $barcode,
-        'image' => $imagePath,
-    ]);
 
-    // Redirect back with a success message
-    return redirect()->route('products.create')->with('success', 'Product added successfully.');
+            'supplier_code' => $request->supplier_code,
+        ]);
 
-    \Log::info('Product created successfully:', $product->toArray());
-}
+        // Redirect back with a success message
+        return redirect()->route('inventory.index')->with('success', 'Product added successfully.');
+    }
     public function destroy($id)
 {
     // Fetch the product to delete
