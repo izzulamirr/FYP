@@ -68,7 +68,7 @@
 </div>
             
 <div class="bg-white p-6 shadow-lg rounded-lg w-full lg:w-1/2">
-    <h2 class="text-xl font-semibold mb-4">QR Scanner</h2>
+    <h2 class="text-xl font-semibold mb-4">Barcode Scanner</h2>
     <div id="reader" class="w-full h-40 border rounded-md"></div> <!-- Reduced height -->
     <p class="mt-4">Scanned Result: <span id="qrResult" class="font-bold text-green-600"></span></p>
 </div>

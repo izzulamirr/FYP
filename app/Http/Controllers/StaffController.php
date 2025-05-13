@@ -18,6 +18,38 @@ class StaffController extends Controller
         return view('System.Staff', compact('users'));
     }
 
+    public function create()
+{
+    // Return the view for creating a new staff member
+    return view('System.Staff.create');
+}
+
+    public function edit($id)
+{
+    // Fetch the staff member by ID
+    $user = User::findOrFail($id);
+
+    // Return the edit view with the user data
+    return view('System.Staff.edit', compact('user'));
+}
+
+public function update(Request $request, $id)
+{
+    // Validate the request
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $id,
+        'role' => 'required|string|in:admin,staff',
+    ]);
+
+    // Find the user and update their details
+    $user = User::findOrFail($id);
+    $user->update($request->only('name', 'email', 'role'));
+
+    // Redirect back with a success message
+    return redirect()->route('Staff')->with('success', 'Staff updated successfully.');
+}
+
     // Store a new staff member
     public function store(Request $request)
     {

@@ -11,7 +11,7 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $transactions = Transaction::all(); // Fetch all transactions
+        $transactions = Transaction::orderBy('created_at', 'desc')->get(); // Fetch transactions ordered by date
         return view('System.Transactions.index', compact('transactions'));
     }
 

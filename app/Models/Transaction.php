@@ -9,5 +9,16 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order_id', 'receipt_id', 'products', 'quantity', 'price', 'total_price', 'payment_method'];
+    protected $fillable = [
+        'order_id',
+        'products',
+        'quantity',
+        'total_price',
+        'payment_method',
+        'payment_time', // Ensure this is fillable
+    ];
+
+    protected $casts = [
+        'payment_time' => 'datetime', // Cast payment_time to a datetime instance
+    ];
 }
