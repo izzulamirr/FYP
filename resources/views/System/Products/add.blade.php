@@ -32,7 +32,7 @@
    
 
         <!-- Add Product Form -->
-        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">             
+<form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
              @csrf
     <div class="mb-4">
         <label for="sku" class="block text-gray-700 font-bold mb-2">SKU</label>

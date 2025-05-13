@@ -116,7 +116,6 @@ Route::delete('/products/delete/{id}', [InventoryController::class, 'destroy'])-
 Route::post('/products/store', [InventoryController::class, 'store'])->name('products.store');
 
 
-
 //scanner
 
 Route::get('/api/products/{barcode}', [ProductController::class, 'getProductByBarcode']);
