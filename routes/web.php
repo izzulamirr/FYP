@@ -39,8 +39,7 @@ Route::get('/Supplies', function () {
     Route::get('/suppliers', [SuppliersController::class, 'list'])->name('suppliers.list');
 
 
-    // Report
-    Route::get('/reports', [ReportController::class, 'reportDashboard'])->name('reports.dashboard');
+  
 
 Route::get('/Inventory', function () {
     return view('System.Inventory');
@@ -157,3 +156,14 @@ Route::get('/supplies', [SuppliersController::class, 'ordersIndex'])->name('supp
 
 // Staff
 Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create'); // Add Staff form
+
+
+
+// Report
+//Route::get('/reports', [DashboardController::class, 'index'])->name('reports.dashboard'); // Report Dashboard
+
+  // Report
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.dashboard');
+
+
+    

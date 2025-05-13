@@ -21,4 +21,9 @@ class Transaction extends Model
     protected $casts = [
         'payment_time' => 'datetime', // Cast payment_time to a datetime instance
     ];
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

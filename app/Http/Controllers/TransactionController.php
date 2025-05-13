@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\Product;
+use App\Models\OrderItem;
 
 use Illuminate\Http\Request;
 
@@ -23,53 +24,74 @@ class TransactionController extends Controller
 
 
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'products' => 'required|array',
-            'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
-            'payment_method' => 'required|string',
-        ]);
-    
-        $totalPrice = 0;
-        $purchasedProducts = [];
-    
-        foreach ($request->products as $productData) {
-            $product = Product::findOrFail($productData['id']);
-    
-            if ($product->quantity < $productData['quantity']) {
-                return response()->json(['success' => false, 'message' => "Not enough stock for product: {$product->name}"]);
-            }
-    
-            // Decrease product quantity
-            $product->quantity -= $productData['quantity'];
-            $product->save();
-    
-            // Calculate total price and prepare product details
-            $productTotal = $product->price * $productData['quantity'];
-            $totalPrice += $productTotal;
-    
-            $purchasedProducts[] = [
-                'id' => $product->id,
-                'name' => $product->name,
+public function store(Request $request)
+{
+    $request->validate([
+        'products' => 'required|array',
+        'products.*.id' => 'required|exists:products,id',
+        'products.*.quantity' => 'required|integer|min:1',
+        'payment_method' => 'required|string',
+    ]);
+
+    $totalPrice = 0;
+
+    // Debug: Check the incoming request
+    \Log::info('Request data:', $request->all());
+
+    // Create the transaction
+    $transaction = Transaction::create([
+        'order_id' => uniqid('ORD'),
+        'total_price' => 0, // Temporary, will update later
+        'payment_method' => $request->payment_method,
+    ]);
+
+    // Debug: Check if the transaction was created
+    \Log::info('Transaction created:', $transaction->toArray());
+
+    foreach ($request->products as $productData) {
+        $product = Product::findOrFail($productData['id']);
+
+        if ($product->quantity < $productData['quantity']) {
+            return response()->json(['success' => false, 'message' => "Not enough stock for product: {$product->name}"]);
+        }
+
+        // Decrease product quantity
+        $product->quantity -= $productData['quantity'];
+        $product->save();
+
+        // Debug: Check if the product quantity was updated
+        \Log::info('Product updated:', $product->toArray());
+
+        // Calculate total price
+        $productTotal = $product->price * $productData['quantity'];
+        $totalPrice += $productTotal;
+
+        // Save the purchased item in the order_items table
+         OrderItem::create([
+                'transaction_id' => $transaction->id,
+                'product_id' => $product->id,
                 'quantity' => $productData['quantity'],
                 'price' => $product->price,
-            ];
-        }
-    
-        // Create the transaction
-        Transaction::create([
-            'order_id' => uniqid('ORD'),
-            'products' => json_encode($purchasedProducts),
-            'quantity' => array_sum(array_column($purchasedProducts, 'quantity')),
-            'total_price' => $totalPrice,
-            'payment_method' => $request->payment_method,
+            ]);
+        
+
+        // Debug: Check if the order item was created
+        \Log::info('Order item created:', [
+            'transaction_id' => $transaction->id,
+            'product_id' => $product->id,
+            'quantity' => $productData['quantity'],
+            'price' => $product->price,
         ]);
-    
-        return response()->json(['success' => true, 'message' => 'Transaction completed successfully!']);
     }
 
+    // Update the total price in the transaction
+    $transaction->update(['total_price' => $totalPrice]);
+
+    // Debug: Check if the transaction total price was updated
+    \Log::info('Transaction updated:', $transaction->toArray());
+
+    return response()->json(['success' => true, 'message' => 'Transaction completed successfully!']);
+}
     public function finalize(Request $request)
     {
         $items = $request->input('items'); // Items sent from the frontend

@@ -42,4 +42,9 @@ class Product extends Model
     {
         return $this->image ? asset('storage/' . $this->image) : asset('images/default-product.png');
     }
+
+     public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
