@@ -86,7 +86,6 @@ class InventoryController extends Controller
 
 public function store(Request $request)
 {
-    \Log::info('Store method called with data:', $request->all()); // Log the incoming request data
 
     $validated = $request->validate([
         'sku' => 'required|string|unique:products,sku',
@@ -108,7 +107,6 @@ public function store(Request $request)
 
     // Generate a unique barcode
     $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT);
-    \Log::info('Generated barcode:', ['barcode' => $barcode]); // Log the generated barcode
 
     // Save the product
     $product = Product::create([
@@ -122,8 +120,6 @@ public function store(Request $request)
         'barcode' => $barcode,
         'image' => $imagePath,
     ]);
-
-    \Log::info('Product created successfully:', $product->toArray()); // Log the created product
 
     return redirect()->route('products.create')->with('success', 'Product added successfully.');
 }
