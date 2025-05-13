@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 <!DOCTYPE html>
@@ -15,8 +16,8 @@
             <h1 class="text-2xl font-bold text-gray-800">Add Product</h1>
         </div>
 
-    <!-- Success Notification -->
-    @if (session('success'))
+        <!-- Success Notification -->
+        @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
                 <strong class="font-bold">Success!</strong>
                 <span class="block sm:inline">{{ session('success') }}</span>
@@ -29,45 +30,83 @@
             </div>
         @endif
 
-   
+        <!-- Error Notification -->
+        @if ($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none';">
+                    <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <title>Close</title>
+                        <path d="M14.348 5.652a1 1 0 10-1.414-1.414L10 7.586 7.066 4.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 12.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934z"/>
+                    </svg>
+                </button>
+            </div>
+        @endif
 
         <!-- Add Product Form -->
-<form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
-             @csrf
-    <div class="mb-4">
-        <label for="sku" class="block text-gray-700 font-bold mb-2">SKU</label>
-        <input type="text" name="sku" id="sku" placeholder="Enter product SKU" required class="p-2 border rounded w-full">
-    </div>
-    <div class="mb-4">
-        <label for="name" class="block text-gray-700 font-bold mb-2">Product Name</label>
-        <input type="text" name="name" id="name" placeholder="Enter product name" required class="p-2 border rounded w-full">
-    </div>
-    <div class="mb-4">
-        <label for="quantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
-        <input type="number" name="quantity" id="quantity" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
-    </div>
-    <div class="mb-4">
-        <label for="price" class="block text-gray-700 font-bold mb-2">Price</label>
-        <input type="number" step="0.01" name="price" id="price" placeholder="Enter product price" required class="p-2 border rounded w-full">
-    </div>
-    <div class="mb-4">
+        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-4">
+                <label for="sku" class="block text-gray-700 font-bold mb-2">SKU</label>
+                <input type="text" name="sku" id="sku" placeholder="Enter product SKU" required class="p-2 border rounded w-full">
+            </div>
+            <div class="mb-4">
+                <label for="name" class="block text-gray-700 font-bold mb-2">Product Name</label>
+                <input type="text" name="name" id="name" placeholder="Enter product name" required class="p-2 border rounded w-full">
+            </div>
+            <div class="mb-4">
+                <label for="quantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
+                <input type="number" name="quantity" id="quantity" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
+            </div>
+            <div class="mb-4">
+                <label for="price" class="block text-gray-700 font-bold mb-2">Price</label>
+                <input type="number" step="0.01" name="price" id="price" placeholder="Enter product price" required class="p-2 border rounded w-full">
+            </div>
+            <div class="mb-4">
+                <label for="cost_price" class="block text-gray-700 font-bold mb-2">Cost Price</label>
+                <input type="number" step="0.01" name="cost_price" id="cost_price" placeholder="Enter product cost price" required class="p-2 border rounded w-full">
+            </div>
+            <div class="mb-4">
     <label for="category" class="block text-gray-700 font-bold mb-2">Category</label>
-    <input name="category" id="category" class="p-2 border rounded w-full" placeholder="Enter product category" required class="p-2 border rounded w-full">
-
+    <select name="category" id="category" class="p-2 border rounded w-full">
+        <option value="" disabled selected>Select an existing category</option>
+        @foreach ($categories as $category)
+            <option value="{{ $category }}">{{ $category }}</option>
+        @endforeach
+        <option value="new">Create New Category</option>
+    </select>
 </div>
-    <div class="mb-4">
-        <label for="supplier_code" class="block text-gray-700 font-bold mb-2">Supplier Code</label>
-        <input type="text" name="supplier_code" id="supplier_code" placeholder="Enter supplier code" required class="p-2 border rounded w-full">
-    </div>
-    
-         <!-- Products Table--> 
-         <div class="mb-4">
-    <label for="image" class="block text-gray-700 font-bold mb-2">Product Image</label>
-    <input type="file" name="image" id="image" class="p-2 border rounded w-full">
-</div> 
 
-    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Product</button>
-</form>
+<div class="mb-4" id="new-category-field" style="display: none;">
+    <label for="new_category" class="block text-gray-700 font-bold mb-2">New Category</label>
+    <input type="text" name="new_category" id="new_category" placeholder="Enter new category" class="p-2 border rounded w-full">
+</div>
+            <div class="mb-4">
+                <label for="supplier_code" class="block text-gray-700 font-bold mb-2">Supplier Code</label>
+                <input type="text" name="supplier_code" id="supplier_code" placeholder="Enter supplier code" required class="p-2 border rounded w-full">
+            </div>
+            <div class="mb-4">
+                <label for="image" class="block text-gray-700 font-bold mb-2">Product Image</label>
+                <input type="file" name="image" id="image" class="p-2 border rounded w-full">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Product</button>
+        </form>
     </div>
 </body>
 </html>
+
+<script>
+    document.getElementById('category').addEventListener('change', function () {
+        const newCategoryField = document.getElementById('new-category-field');
+        if (this.value === 'new') {
+            newCategoryField.style.display = 'block';
+        } else {
+            newCategoryField.style.display = 'none';
+        }
+    });
+</script>
