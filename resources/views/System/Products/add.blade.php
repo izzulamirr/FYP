@@ -63,29 +63,18 @@
                 <label for="quantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
                 <input type="number" name="quantity" id="quantity" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
             </div>
-            <div class="mb-4">
+             <div class="mb-4">
                 <label for="price" class="block text-gray-700 font-bold mb-2">Price</label>
                 <input type="number" step="0.01" name="price" id="price" placeholder="Enter product price" required class="p-2 border rounded w-full">
             </div>
             <div class="mb-4">
-                <label for="cost_price" class="block text-gray-700 font-bold mb-2">Cost Price</label>
-                <input type="number" step="0.01" name="cost_price" id="cost_price" placeholder="Enter product cost price" required class="p-2 border rounded w-full">
+                <label for="cost_price" class="block text-gray-700 font-bold mb-2">Cost price</label>
+                <input type="number" step="0.01" name="cost_price" id="cost_price" placeholder="Enter product cost_price" required class="p-2 border rounded w-full">
             </div>
             <div class="mb-4">
-    <label for="category" class="block text-gray-700 font-bold mb-2">Category</label>
-    <select name="category" id="category" class="p-2 border rounded w-full">
-        <option value="" disabled selected>Select an existing category</option>
-        @foreach ($categories as $category)
-            <option value="{{ $category }}">{{ $category }}</option>
-        @endforeach
-        <option value="new">Create New Category</option>
-    </select>
-</div>
-
-<div class="mb-4" id="new-category-field" style="display: none;">
-    <label for="new_category" class="block text-gray-700 font-bold mb-2">New Category</label>
-    <input type="text" name="new_category" id="new_category" placeholder="Enter new category" class="p-2 border rounded w-full">
-</div>
+                <label for="category" class="block text-gray-700 font-bold mb-2">Category</label>
+                <input type="text" name="category" id="category" placeholder="Enter product category" required class="p-2 border rounded w-full">
+            </div>
             <div class="mb-4">
                 <label for="supplier_code" class="block text-gray-700 font-bold mb-2">Supplier Code</label>
                 <input type="text" name="supplier_code" id="supplier_code" placeholder="Enter supplier code" required class="p-2 border rounded w-full">
@@ -99,14 +88,3 @@
     </div>
 </body>
 </html>
-
-<script>
-    document.getElementById('category').addEventListener('change', function () {
-        const newCategoryField = document.getElementById('new-category-field');
-        if (this.value === 'new') {
-            newCategoryField.style.display = 'block';
-        } else {
-            newCategoryField.style.display = 'none';
-        }
-    });
-</script>

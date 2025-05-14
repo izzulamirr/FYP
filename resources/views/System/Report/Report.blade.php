@@ -20,7 +20,9 @@
     <!-- Low Stock Inventory -->
     <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
         <h2 class="text-xl font-semibold">Low Stock Inventory</h2>
-        <table class="w-full mt-2 border-collapse border border-gray-300">
+        <canvas id="lowStockChart" class="mt-4" style="max-width: 400px; max-height: 400px; margin: 0 auto;"></canvas> <!-- Graph -->
+
+        <table class="w-full mt-6 border-collapse border border-gray-300">
             <thead>
                 <tr class="bg-gray-200">
                     <th class="border p-2">Name</th>
@@ -41,10 +43,10 @@
                         @endif
                     </td>
                 </tr>
-            @empty
-                    <tr>
-                        <td colspan="2" class="border p-2 text-center text-gray-500">No low stock products.</td>
-                    </tr>
+                @empty
+                <tr>
+                    <td colspan="3" class="border p-2 text-center text-gray-500">No low stock products.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
@@ -77,3 +79,41 @@
         </table>
     </div>
 </div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Prepare data for the Low Stock Inventory chart
+    const lowStockLabels = @json($lowStockInventory->pluck('name')); // Product names
+    const lowStockData = @json($lowStockInventory->pluck('quantity')); // Quantities
+
+    // Create the chart
+    const ctx = document.getElementById('lowStockChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar', // Bar chart
+        data: {
+            labels: lowStockLabels,
+            datasets: [{
+                label: 'Quantity',
+                data: lowStockData,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allow resizing
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
