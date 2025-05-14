@@ -10,16 +10,16 @@ class Supplier extends Model
     use HasFactory;
     
     protected $table = 'suppliers'; // Table name
-    protected $primaryKey = 'id';  // Primary key is 'id' (supplier_code)
+    protected $primaryKey = 'supplier_code'; // Set the primary key to supplier_code
     public $incrementing = false;  // Disable auto-incrementing for the primary key
     protected $keyType = 'string'; // Primary key is a string
 
-    protected $fillable = ['id', 'name', 'email', 'phone'];
+    protected $fillable = ['supplier_code', 'name', 'email', 'phone'];
 
     // Relationship with Product
     public function products()
     {
-        return $this->hasMany(Product::class, 'supplier_code', 'id');
+        return $this->hasMany(Product::class, 'supplier_code', 'supplier_code');
     }
 
     public function list()

@@ -121,7 +121,7 @@ rows.forEach(row => {
 .catch(error => console.error('Error:', error));
     });
 
-    const qrScanner = new Html5QrcodeScanner("reader", { fps: 40, 
+    const qrScanner = new Html5QrcodeScanner("reader", { fps: 1, 
         qrbox: { width: 300, height: 100 } // Set width to 300 and height to 100
     });
 qrScanner.render(onScanSuccess);

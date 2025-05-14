@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Order; // Assuming you have an Order model
 use App\Models\Supplier; // Assuming you have a Supplier model
+use App\Models\Product; // Assuming you have an Inventory model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,61 +16,56 @@ class OrderController extends Controller
             $orders = Order::all();
     
             // Pass the orders to the view
-            return view('System.Supplies', compact('orders'));
+            return view('System.Supplies.Supplies', compact('orders'));
         
     }
 
-    public function create()
-    {
-        return view('System.StaffCreate'); // View for adding new staff
-    }
+    public function restock()
+{
+    // Fetch all suppliers
+    $suppliers = Supplier::all();
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-        ]);
+    // Return the restock view
+    return view('System.Supplies.restock', compact('suppliers'));
+}
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'staff', // Assign the role as 'staff'
-        ]);
+public function processRestock(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'supplier_code' => 'required|exists:suppliers,supplier_code',
+        'product_id' => 'required|exists:products,id',
+        'quantity' => 'required|integer|min:1',
+    ]);
 
-        return redirect()->route('staff.index')->with('success', 'Staff added successfully.');
-    }
+    // Fetch the supplier and product details
+    $supplier = Supplier::where('supplier_code', $request->supplier_code)->firstOrFail();
+    $product = Product::findOrFail($request->product_id);
 
-    public function edit($id)
-    {
-        $user = User::findOrFail($id); // Fetch the staff by ID
-        return view('System.StaffEdit', compact('user')); // View for editing staff
-    }
+    // Calculate the total (assuming the product has a price field)
+    $total = $product->cost_price * $request->quantity;
 
-    public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+    // Create a new order
+    Order::create([
+        'order_id' => 'ORD' . strtoupper(uniqid()), // Generate a unique order ID
+        'supplier_code' => $supplier->supplier_code,
+        'supplier_name' => $supplier->name,
+        'total' => $total,
+        'delivery_status' => 'pending',
+        'order_date' => now(),
+    ]);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-        ]);
+    // Redirect back with a success message
+    return redirect()->route('orders.restock')->with('success', 'Order placed successfully.');
+}
+public function getProductsBySupplier($supplier_code)
+{
+    // Fetch products for the given supplier
+    $products = Product::where('supplier_code', $supplier_code)->get(['id', 'name']);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+    // Return the products as JSON
+    return response()->json($products);
+}
 
-        return redirect()->route('staff.index')->with('success', 'Staff updated successfully.');
-    }
-
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        return redirect()->route('staff.index')->with('success', 'Staff deleted successfully.');
-    }
+   
 }

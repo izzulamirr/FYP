@@ -35,11 +35,17 @@ class InventoryController extends Controller
     // Show the form to create a new product
     public function create()
     {
+
+        $suppliers = Supplier::all();
+
+        // Generate a unique SKU
+    $sku = 'PD'  . mt_rand(10000, 99999);
+
         // Fetch any necessary data for the form (e.g., categories, suppliers)
         $categories = Product::select('category')->distinct()->pluck('category');
        
         // Return the view for creating a product
-        return view('System.Products.add', compact('categories'));
+        return view('System.Products.add', compact('categories','suppliers','sku'));
     }
 
     public function edit($id)
@@ -95,15 +101,25 @@ class InventoryController extends Controller
     // Generate a unique barcode
     $barcode = str_pad(mt_rand(1, 999999999), 9, '0', STR_PAD_LEFT);
 
+      // Find the supplier by supplier_code
+    $supplier = Supplier::where('supplier_code', $validated['supplier_code'])->first();
+
+    // If the supplier does not exist, return an error
+    if (!$supplier) {
+        return redirect()->back()->withErrors(['supplier_code' => 'Supplier with the given code does not exist.']);
+    }
+
+    
+
     // Save the product to the database
     Product::create([
-        'sku' => $validated['sku'],
+        'sku' => $validated['sku'], // Use the SKU from the form
         'name' => $validated['name'],
         'quantity' => $validated['quantity'],
         'cost_price' => $validated['cost_price'],
         'price' => $validated['price'],
         'category' => $validated['category'],
-        'supplier_code' => $validated['supplier_code'],
+        'supplier_code' => $supplier->supplier_code, // Use supplier_id instead of supplier_code
         'image' => $imagePath,
         'barcode' => $barcode, // Save the generated barcode
     ]);

@@ -50,6 +50,11 @@
                             View Orders
                         </a>
                     </li>
+                     <li>
+                        <a href="{{ route('orders.restock') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
+                            Restock Inventory
+                         </a>
+                    </li>
                 </ul>
             </li>
 

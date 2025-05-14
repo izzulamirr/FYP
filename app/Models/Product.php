@@ -22,7 +22,7 @@ class Product extends Model
       // Relationship with Supplier
       public function supplier()
       {
-          return $this->belongsTo(Supplier::class, 'supplier_code', 'id');
+        return $this->belongsTo(Supplier::class, 'supplier_code', 'supplier_code');
       }
 
         // Accessor for Image URL

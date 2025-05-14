@@ -51,10 +51,10 @@
         <!-- Add Product Form -->
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="mb-4">
-                <label for="sku" class="block text-gray-700 font-bold mb-2">SKU</label>
-                <input type="text" name="sku" id="sku" placeholder="Enter product SKU" required class="p-2 border rounded w-full">
-            </div>
+      <div class="mb-4">
+    <label for="sku" class="block text-gray-700 font-bold mb-2">SKU</label>
+    <input type="text" name="sku" id="sku" value="{{ $sku }}" readonly class="p-2 border rounded w-full bg-gray-100">
+</div>
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-bold mb-2">Product Name</label>
                 <input type="text" name="name" id="name" placeholder="Enter product name" required class="p-2 border rounded w-full">
@@ -76,9 +76,14 @@
                 <input type="text" name="category" id="category" placeholder="Enter product category" required class="p-2 border rounded w-full">
             </div>
             <div class="mb-4">
-                <label for="supplier_code" class="block text-gray-700 font-bold mb-2">Supplier Code</label>
-                <input type="text" name="supplier_code" id="supplier_code" placeholder="Enter supplier code" required class="p-2 border rounded w-full">
-            </div>
+    <label for="supplier_code" class="block text-gray-700 font-bold mb-2">Supplier Code</label>
+    <select name="supplier_code" id="supplier_code" required class="p-2 border rounded w-full">
+        <option value="" disabled selected>Select a supplier</option>
+        @foreach ($suppliers as $supplier)
+            <option value="{{ $supplier->supplier_code }}">{{ $supplier->supplier_code }} - {{ $supplier->name }}</option>
+        @endforeach
+    </select>
+</div>
             <div class="mb-4">
                 <label for="image" class="block text-gray-700 font-bold mb-2">Product Image</label>
                 <input type="file" name="image" id="image" class="p-2 border rounded w-full">

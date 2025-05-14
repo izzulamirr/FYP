@@ -136,14 +136,24 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
 
 //suppliers
+Route::get('/suppliers/create', [SuppliersController::class, 'create'])->name('suppliers.create');
+Route::post('/suppliers', [SuppliersController::class, 'store'])->name('suppliers.store');
 Route::get('/suppliers/dashboard', [SuppliersController::class, 'dashboard'])->name('suppliers.dashboard');
 Route::get('/supplies', [SuppliersController::class, 'dashboard'])->name('suppliers.index');
+Route::put('/suppliers/{supplier_code}', [SuppliersController::class, 'update'])->name('suppliers.update');
+Route::get('/suppliers/{supplier_code}/edit', [SuppliersController::class, 'edit'])->name('suppliers.edit');
+Route::delete('/suppliers/{supplier_code}', [SuppliersController::class, 'destroy'])->name('suppliers.destroy');
+
+
+
 
 // Suppliers Dashboard
 Route::get('/suppliers/dashboard', [SuppliersController::class, 'dashboard'])->name('suppliers.dashboard');
 // Orders
-Route::get('/supplies', [SuppliersController::class, 'ordersIndex'])->name('supplies.index');
-
+Route::get('/orders', [OrderController::class, 'index'])->name('supplies.index');
+Route::get('/orders/restock', [OrderController::class, 'restock'])->name('orders.restock');
+Route::post('/orders/restock', [OrderController::class, 'processRestock'])->name('orders.restock.process');
+Route::get('/api/suppliers/{supplier_code}/products', [OrderController::class, 'getProductsBySupplier']);
 
 
 
