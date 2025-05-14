@@ -39,8 +39,7 @@ Route::get('/Supplies', function () {
     Route::get('/suppliers', [SuppliersController::class, 'list'])->name('suppliers.list');
 
 
-    // Report
-    Route::get('/reports', [ReportController::class, 'reportDashboard'])->name('reports.dashboard');
+  
 
 Route::get('/Inventory', function () {
     return view('System.Inventory');
@@ -85,8 +84,6 @@ Route::post('/logout', function () {
 })->name('logout');
 
 
-Route::get('/Inventory', [InventoryController::class, 'index']);
-Route::post('/Inventory', [InventoryController::class, 'store'])->name('Inventory');
 
 
 
@@ -105,17 +102,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 //Products pages
+Route::get('/Inventory', [InventoryController::class, 'index'])->name('Inventory');
 Route::get('/products', [InventoryController::class, 'list'])->name('products.list');
-Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
+//Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
 Route::get('/products/category/{category}', [InventoryController::class, 'list'])->name('products.view');
 Route::get('/products/category' , [InventoryController::class, 'list'])->name('products.catagories');
 
-
+Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
+Route::post('/products/store', [InventoryController::class, 'store'])->name('products.store');
 Route::get('/products/edit/{id}', [InventoryController::class, 'edit'])->name('products.edit');
 Route::put('/products/update/{id}', [InventoryController::class, 'update'])->name('products.update');
 Route::delete('/products/delete/{id}', [InventoryController::class, 'destroy'])->name('products.delete');
-Route::post('/products/store', [InventoryController::class, 'store'])->name('products.store');
-
+//Route::post('/products/store', [InventoryController::class, 'store'])->name('products.store');
 
 
 //scanner
@@ -125,16 +123,11 @@ Route::get('/api/products/{barcode}', [ProductController::class, 'getProductByBa
 //Transaction
 // Route to list all transactions
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
-
 // Route to show a specific transaction
 Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
-
-
-
 Route::post('/transactions/finalize', [TransactionController::class, 'finalize'])->name('transactions.finalize');
 Route::get('/purchased/summary', [TransactionController::class, 'summary'])->name('transactions.summary');
 Route::post('/transactions/confirm', [TransactionController::class, 'confirm'])->name('transactions.confirm');
-
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Display all orders
 Route::get('/orders/invoice_slip/{id}', [OrderController::class, 'showInvoice'])->name('orders.invoice_slip'); // Display invoice for a specific order
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Store a new order
@@ -143,17 +136,28 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
 
 //suppliers
-
 Route::get('/suppliers/dashboard', [SuppliersController::class, 'dashboard'])->name('suppliers.dashboard');
 Route::get('/supplies', [SuppliersController::class, 'dashboard'])->name('suppliers.index');
-//oute::get('/supplies', [OrderController::class, 'index'])->name('supplies.index');
-
 
 // Suppliers Dashboard
 Route::get('/suppliers/dashboard', [SuppliersController::class, 'dashboard'])->name('suppliers.dashboard');
-
 // Orders
 Route::get('/supplies', [SuppliersController::class, 'ordersIndex'])->name('supplies.index');
 
+
+
+
+
 // Staff
 Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create'); // Add Staff form
+
+
+
+// Report
+//Route::get('/reports', [DashboardController::class, 'index'])->name('reports.dashboard'); // Report Dashboard
+
+  // Report
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.dashboard');
+
+
+    

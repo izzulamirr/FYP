@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,19 +8,8 @@ class Product extends Model
 {
     protected $table = 'products'; // Explicitly define the table name (optional)
 
-    protected $fillable = [
-    'sku', 
-    'name',
-    'quantity', 
-    'cost_price',
-    'price', 
-    'category',
-    'supplier_code',
-    'image',
-    'barcode',
-
-    
-
+  protected $fillable = [
+    'sku', 'name', 'quantity', 'cost_price', 'price', 'category', 'supplier_code', 'image', 'barcode',
 ];
 
 
@@ -41,5 +29,10 @@ class Product extends Model
     public function getImageUrlAttribute()
     {
         return $this->image ? asset('storage/' . $this->image) : asset('images/default-product.png');
+    }
+
+     public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

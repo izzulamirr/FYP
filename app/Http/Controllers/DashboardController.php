@@ -8,6 +8,8 @@ use App\Models\Transaction; // Import the Transaction model
 use App\Models\Supplier; // Import the Supplier model
 
 
+
+
 class DashboardController extends Controller
 {
     public function index()
