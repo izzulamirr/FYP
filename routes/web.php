@@ -52,8 +52,6 @@ Route::get('/Inventory', function () {
         })->name('Staff');
     });
 
-    
-
     //camera
     Route::get('/camera', function () {
         return view('System.cameratest');
@@ -93,7 +91,7 @@ Route::post('/logout', function () {
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/staff', [StaffController::class, 'index'])->name('Staff');
+    Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
     Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
     Route::get('/staff/edit/{id}', [StaffController::class, 'edit'])->name('staff.edit');
     Route::put('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
@@ -170,4 +168,3 @@ Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.cre
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.dashboard');
 
 
-    

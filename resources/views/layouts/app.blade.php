@@ -61,8 +61,8 @@
             </li>
 
             <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('reports.dashboard') }}" class="flex items-center"><span class="mr-3">📊</span> Report</a></li>
-            @if (Auth::user()->role == 'admin')
-                <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('staff.index') }}" class="flex items-center"><span class="mr-3">👤</span> Staff</a></li>
+            @if (Auth::user()->role === 'admin')
+            <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('staff.index') }}" class="flex items-center"><span class="mr-3">👤</span> Staff</a></li>
             @endif
 
             <form method="POST" action="{{ route('logout') }}">
