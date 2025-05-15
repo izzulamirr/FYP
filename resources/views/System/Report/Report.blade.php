@@ -20,19 +20,19 @@
     <!-- Statistics Section -->
     <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Current Revenue -->
-        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 class="text-lg font-semibold">Current Revenue</h2>
             <p class="text-4xl font-bold mt-2">${{ number_format($currentRevenue, 2) }}</p>
         </div>
 
         <!-- Low Stock Count -->
-        <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <div class="bg-gradient-to-br from-red-500 via-red-400 to-red-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 class="text-lg font-semibold">Low Stock Products</h2>
             <p class="text-4xl font-bold mt-2">{{ $lowStockInventory->count() }}</p>
         </div>
 
         <!-- Top Selling Products Count -->
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 class="text-lg font-semibold">Top Selling Products</h2>
             <p class="text-4xl font-bold mt-2">{{ $topSellingProducts->count() }}</p>
         </div>

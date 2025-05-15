@@ -22,18 +22,20 @@
         <!-- Cards Section -->
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Transactions Summary -->
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300">
                 <h2 class="text-xl font-semibold mb-2">💰 Transactions Summary</h2>
                 <p class="text-lg">Total Transactions: <span class="font-bold">{{ $totalTransactions }}</span></p>
                 <p class="text-lg">Today's Sales: <span class="font-bold">${{ number_format($todaysSales, 2) }}</span></p>
             </div>
 
             <!-- Product Summary -->
-            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
-                <p class="text-lg">Total Products: <span class="font-bold">{{ $totalProducts }}</span></p>
-                <p class="text-lg">Low Stock: <span class="text-red-500 font-bold">{{ $lowStockProducts }}</span></p>
-            </div>
+            <a href="{{ route('Inventory') }}" class="block">
+                <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
+                    <p class="text-lg">Total Products: <span class="font-bold">{{ $totalProducts }}</span></p>
+                    <p class="text-lg">Low Stock: <span class="text-red-500 font-bold">{{ $lowStockProducts }}</span></p>
+                </div>
+            </a>
         </div>
 
         <!-- Cashier System & QR Scanner -->
