@@ -29,9 +29,7 @@
     </div>
 
     <!-- Add Product Button -->
-         
-    
-    @if (Auth::user()->role === 'admin')
+     @if (Auth::user()->role === 'admin')
     <div class="mt-4 flex justify-end">
         <a href="{{ route('products.create') }}" 
            class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition duration-200">
