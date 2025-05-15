@@ -50,16 +50,20 @@
                             View Orders
                         </a>
                     </li>
+                    @if (Auth::user()->role === 'admin')
                      <li>
                         <a href="{{ route('orders.restock') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
                             Restock Inventory
                          </a>
                     </li>
+                    @endif
                 </ul>
             </li>
 
             <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('reports.dashboard') }}" class="flex items-center"><span class="mr-3">📊</span> Report</a></li>
-            <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('Staff') }}" class="flex items-center"><span class="mr-3">🏠</span> Staff</a></li>
+            @if (Auth::user()->role == 'admin')
+                <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('staff.index') }}" class="flex items-center"><span class="mr-3">👤</span> Staff</a></li>
+            @endif
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
