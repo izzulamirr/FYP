@@ -1,74 +1,110 @@
+
 @extends('layouts.app')
 
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Inventory - Supplies Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 <div class="ml-64 p-8 w-full">
     <!-- Header -->
-    <div class="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
-        <h1 class="text-2xl font-bold text-gray-800">Suppliers Dashboard</h1>
-        <p class="text-gray-600">👤 {{ Auth::user()->name }}</p>
+    <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
+        <h1 class="text-3xl font-bold text-gray-800">Suppliers Dashboard</h1>
+        <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
     </div>
 
-    
-
-   <!-- Statistics Section -->
+    <!-- Statistics Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg">
+        <!-- Total Suppliers -->
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 class="text-lg font-semibold">Total Suppliers</h2>
             <p class="text-4xl font-bold mt-2">{{ $totalSuppliers }}</p>
+        </div>
+
+        <!-- Active Suppliers -->
+        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Active Suppliers</h2>
+            <p class="text-4xl font-bold mt-2">{{ $activeSuppliers }}</p>
+        </div>
+
+        <!-- Inactive Suppliers -->
+        <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Inactive Suppliers</h2>
+            <p class="text-4xl font-bold mt-2">{{ $inactiveSuppliers }}</p>
         </div>
     </div>
 
     <!-- Suppliers Table -->
-   <div class="mt-8 bg-white p-6 shadow-lg rounded-lg">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">Suppliers List</h2>
-        <a href="{{ route('suppliers.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition duration-300">
-            + Add New Supplier
-        </a>
-    </div>
+    <div class="mt-8 bg-white p-6 shadow-lg rounded-lg">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-semibold text-gray-800">Suppliers List</h2>
+
+            @if (Auth::user()->role === 'admin')
+            <a href="{{ route('suppliers.create') }}" 
+               class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+                + Add New Supplier
+            </a>
+            @endif
+        </div>
+
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse border border-gray-200">
-                <thead class="bg-gray-100">
+            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-gray-200">
                     <tr>
-                        <th class="border p-4 text-gray-600 font-medium">Supplier Code</th>
-                        <th class="border p-4 text-gray-600 font-medium">Name</th>
-                        <th class="border p-4 text-gray-600 font-medium">Email</th>
-                        <th class="border p-4 text-gray-600 font-medium">Phone</th>
-                        <th class="border p-4 text-gray-600 font-medium">Status</th>
-                        <th class="border p-4 text-gray-600 font-medium">Actions</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Supplier Code</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Name</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Email</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Phone</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Status</th>
+                            @if (Auth::user()->role === 'admin')
+                        <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
+                            @endif
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($suppliers as $supplier)
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="border p-4">{{ $supplier->supplier_code }}</td>
-                        <td class="border p-4">{{ $supplier->name }}</td>
-                        <td class="border p-4">{{ $supplier->email ?? 'N/A' }}</td>
-                        <td class="border p-4">{{ $supplier->phone ?? 'N/A' }}</td>
-                        <td class="border p-4">
-                            @if ($supplier->status === 'active')
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Active</span>
-                            @else
-                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">Inactive</span>
-                            @endif
-                        </td>
+                        <tr class="hover:bg-gray-100 transition duration-200">
+                            <td class="p-4 border-b text-gray-800">{{ $supplier->supplier_code }}</td>
+                            <td class="p-4 border-b text-gray-800">{{ $supplier->name }}</td>
+                            <td class="p-4 border-b text-gray-800">{{ $supplier->email ?? 'N/A' }}</td>
+                            <td class="p-4 border-b text-gray-800">{{ $supplier->phone ?? 'N/A' }}</td>
+                            <td class="p-4 border-b">
+                                @if ($supplier->products->isNotEmpty())
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Active</span>
+                                @else
+                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">Inactive</span>
+                                @endif
+                            </td>
 
-                        <td class="border p-4">
-    <div class="flex space-x-2">
-        <a href="{{ route('suppliers.edit', $supplier->supplier_code) }}" class="text-blue-600 hover:underline">Edit</a>
-        <form action="{{ route('suppliers.destroy', $supplier->supplier_code) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this supplier?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="text-red-600 hover:underline">Delete</button>
-        </form>
-    </div>
-</td>
-                        
-                    </tr>
+                                @if (Auth::user()->role === 'admin')
+                            <td class="p-4 border-b">
+                                <div class="flex space-x-2">
+                                    <!-- Edit Button -->
+                                    <a href="{{ route('suppliers.edit', $supplier->supplier_code) }}" 
+                                       class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-200">
+                                        Edit
+                                    </a>
+
+                                    <!-- Delete Button -->
+                                    <form action="{{ route('suppliers.destroy', $supplier->supplier_code) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this supplier?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition duration-200">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                                @endif
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="6" class="border p-4 text-center text-gray-500">No suppliers found.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="6" class="p-4 text-center text-gray-500">No suppliers found.</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>

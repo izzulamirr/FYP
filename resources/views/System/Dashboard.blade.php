@@ -8,150 +8,126 @@
     <title>Smart Inventory - Cashier</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    
 </head>
 <body class="bg-gray-100 flex">
 
   <!-- Main Content -->
   <div class="ml-64 p-8 w-full">
         <!-- Header with Username -->
-        <div class="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
-            <h1 class="text-2xl font-bold text-gray-800">Cashier Dashboard</h1>
-            <p class="text-gray-600">👤 {{ Auth::user()->name }}</p>
+        <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
+            <h1 class="text-3xl font-bold text-gray-800">Cashier Dashboard</h1>
+            <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
         </div>
 
         <!-- Cards Section -->
-    <div class="mt-6 flex gap-4">
-       <!-- Transactions Summary -->
-<div class="bg-white p-6 shadow-lg rounded-lg w-1/2 px-4 py-3 hover:bg-gray-100">
-    <h2 class="text-xl font-semibold mb-2">💰 Transactions Summary</h2>
-    <p class="text-gray-600">Total Transactions: <span class="font-bold">{{ $totalTransactions }}</span></p>
-    <p class="text-gray-600">Today's Sales: <span class="font-bold">${{ number_format($todaysSales, 2) }}</span></p>
-</div>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Transactions Summary -->
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h2 class="text-xl font-semibold mb-2">💰 Transactions Summary</h2>
+                <p class="text-lg">Total Transactions: <span class="font-bold">{{ $totalTransactions }}</span></p>
+                <p class="text-lg">Today's Sales: <span class="font-bold">${{ number_format($todaysSales, 2) }}</span></p>
+            </div>
 
-           <!-- Product Summary -->
-        <div class="bg-white p-6 shadow-lg rounded-lg w-1/2 px-4 py-3 hover:bg-gray-100">
-            <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
-            <p class="text-gray-600">Total Products: <span class="font-bold">{{ $totalProducts }}</span></p>
-            <p class="text-gray-600">Low Stock: <span class="text-red-500 font-bold">{{ $lowStockProducts }}</span></p>
+            <!-- Product Summary -->
+            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
+                <p class="text-lg">Total Products: <span class="font-bold">{{ $totalProducts }}</span></p>
+                <p class="text-lg">Low Stock: <span class="text-red-500 font-bold">{{ $lowStockProducts }}</span></p>
+            </div>
         </div>
-    </div>
 
         <!-- Cashier System & QR Scanner -->
-        <div class="mt-6 flex gap-4">
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Cashier System -->
-            <div class="bg-white p-6 shadow-lg rounded-lg w-1/2">
-    <h2 class="text-xl font-semibold mb-4">Scan or Enter Barcode</h2>
+            <div class="bg-white p-6 shadow-lg rounded-lg">
+                <h2 class="text-2xl font-semibold mb-4">Scan or Enter Barcode</h2>
 
-    <!-- Barcode Input -->
-    <input type="text" id="barcodeInput" class="border p-2 w-full rounded-md" placeholder="Scan barcode here..." autofocus>
+                <!-- Barcode Input -->
+                <input type="text" id="barcodeInput" class="border p-3 w-full rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Scan barcode here..." autofocus>
 
-    <!-- Scanned Items -->
-    <div class="mt-4">
-        <h3 class="text-lg font-semibold">Scanned Items</h3>
-        <table class="w-full mt-2 border-collapse border border-gray-300">
-            <thead>
-            <table class="w-full mt-2 border-collapse border border-gray-300">
-    <thead>
-        <tr class="bg-gray-200">
-            <th class="border p-2">Item</th>
-            <th class="border p-2">Price</th>
-            <th class="border p-2">Qty</th>
-            <th class="border p-2">Total</th>
-        </tr>
-    </thead>
-    <tbody id="scannedItems">
-        <!-- Scanned items will be added here dynamically -->
-    </tbody>
-</table>
-    </div>
+                <!-- Scanned Items -->
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold mb-2">Scanned Items</h3>
+                    <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="border p-3 text-left">Item</th>
+                                <th class="border p-3 text-left">Price</th>
+                                <th class="border p-3 text-left">Qty</th>
+                                <th class="border p-3 text-left">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scannedItems">
+                            <!-- Scanned items will be added here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                    <!-- Finalize Transaction Button -->
+        <div class="mt-6 flex justify">
+            <button id="finalizeTransaction" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 transition duration-300">
+                Finalize Transaction
+            </button>
+        </div>
+            </div>
+
+            <!-- QR Scanner -->
+            <div class="bg-white p-10 shadow-lg rounded-lg h-auto">
+    <h2 class="text-2xl font-semibold mb-4">Barcode Scanner</h2>
+    <div id="reader" class="w-full h-100 border rounded-md"></div> <!-- Increased height -->
+    <p class="mt-4 text-lg">Scanned Result: <span id="qrResult" class="font-bold text-green-600"></span></p>
 </div>
-            
-<div class="bg-white p-6 shadow-lg rounded-lg w-full lg:w-1/2">
-    <h2 class="text-xl font-semibold mb-4">Barcode Scanner</h2>
-    <div id="reader" class="w-full h-40 border rounded-md"></div> <!-- Reduced height -->
-    <p class="mt-4">Scanned Result: <span id="qrResult" class="font-bold text-green-600"></span></p>
-</div>
 
-<div class="mt-4">
-        <button id="finalizeTransaction" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600 transition duration-200">
-            Finalize Transaction
-        </button>
+    
     </div>
 
     <script>
-    const scannedItemsTable = document.getElementById('scannedItems');
-    const barcodeInput = document.getElementById('barcodeInput');
+        const scannedItemsTable = document.getElementById('scannedItems');
+        const barcodeInput = document.getElementById('barcodeInput');
 
+        // Finalize Transaction
+        const finalizeTransactionButton = document.getElementById('finalizeTransaction');
+        finalizeTransactionButton.addEventListener('click', function () {
+            const rows = document.querySelectorAll('#scannedItems tr');
+            const scannedItems = [];
 
-     // Transactions 
+            rows.forEach(row => {
+                const id = row.getAttribute('data-id');
+                const qty = row.querySelector('.qty').innerText;
+                scannedItems.push({ id, quantity: parseInt(qty) });
+            });
 
-     const finalizeTransactionButton = document.getElementById('finalizeTransaction');
- finalizeTransactionButton.addEventListener('click', function () {
-    const rows = document.querySelectorAll('#scannedItems tr');
-const scannedItems = [];
+            const totalPrice = Array.from(rows).reduce((total, row) => {
+                const totalCell = row.querySelector('.total').innerText;
+                return total + parseFloat(totalCell);
+            }, 0);
 
-rows.forEach(row => {
-    const id = row.getAttribute('data-id');
-    const qty = row.querySelector('.qty').innerText;
-    scannedItems.push({ id, quantity: parseInt(qty) });
-});
+            fetch('/transactions/finalize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ items: scannedItems, total: totalPrice })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/purchased/summary';
+                } else {
+                    alert('Failed to finalize transaction!');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
 
-        const totalPrice = Array.from(rows).reduce((total, row) => {
-            const totalCell = row.querySelector('.total').innerText;
-            return total + parseFloat(totalCell);
-        }, 0);
+        const qrScanner = new Html5QrcodeScanner("reader", { fps: 1, qrbox: { width: 300, height: 100 } });
+        qrScanner.render(onScanSuccess);
 
-        fetch('/transactions/finalize', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    },
-    body: JSON.stringify({ items: scannedItems, total: totalPrice })
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        window.location.href = '/purchased/summary';
-    } else {
-        alert('Failed to finalize transaction!');
-    }
-})
-.catch(error => console.error('Error:', error));
-    });
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Scanned QR Code: ${decodedText}`);
+            document.getElementById('qrResult').innerText = decodedText;
 
-    const qrScanner = new Html5QrcodeScanner("reader", { fps: 1, 
-        qrbox: { width: 300, height: 100 } // Set width to 300 and height to 100
-    });
-qrScanner.render(onScanSuccess);
-
-function onScanSuccess(decodedText, decodedResult) {
-    console.log(`Scanned QR Code: ${decodedText}`); // Log the scanned QR code
-    document.getElementById('qrResult').innerText = decodedText;
-
-    // Fetch product details using the scanned QR code
-    fetch(`/api/products/${decodedText}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('Product found:', data.product); // Log the product details
-                addScannedItem(data.product);
-            } else {
-                alert('Product not found!');
-            }
-        })
-        .catch(error => console.error('Error fetching product:', error));
-}
-
-barcodeInput.addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        const barcode = barcodeInput.value.trim();
-
-        if (barcode) {
-            // Fetch product details using the barcode
-            fetch(`/api/products/${barcode}`)
+            fetch(`/api/products/${decodedText}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -160,45 +136,59 @@ barcodeInput.addEventListener('keypress', function (e) {
                         alert('Product not found!');
                     }
                 })
-                .catch(error => console.error('Error:', error));
-
-            barcodeInput.value = ''; // Clear the input field
+                .catch(error => console.error('Error fetching product:', error));
         }
-    }
-});
 
-function addScannedItem(product) {
-    // Ensure product.price is a number
-    const price = parseFloat(product.price);
+        barcodeInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const barcode = barcodeInput.value.trim();
 
-    if (isNaN(price)) {
-        alert('Invalid product price!');
-        return;
-    }
+                if (barcode) {
+                    fetch(`/api/products/${barcode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                addScannedItem(data.product);
+                            } else {
+                                alert('Product not found!');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
 
-    // Check if the product is already in the table
-    const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
-    if (existingRow) {
-        // Update quantity and total price
-        const qtyCell = existingRow.querySelector('.qty');
-        const totalCell = existingRow.querySelector('.total');
-        const newQty = parseInt(qtyCell.innerText) + 1;
-        qtyCell.innerText = newQty;
-        totalCell.innerText = (newQty * price).toFixed(2);
-    } else {
-        // Add a new row for the product
-        const row = document.createElement('tr');
-        row.setAttribute('data-id', product.id);
-        row.innerHTML = `
-            <td class="border p-2">${product.name}</td>
-            <td class="border p-2">${price.toFixed(2)}</td>
-            <td class="border p-2 qty">1</td>
-            <td class="border p-2 total">${price.toFixed(2)}</td>
-        `;
-        scannedItemsTable.appendChild(row);
-    }
-}
-</script>
+                    barcodeInput.value = '';
+                }
+            }
+        });
+
+        function addScannedItem(product) {
+            const price = parseFloat(product.price);
+
+            if (isNaN(price)) {
+                alert('Invalid product price!');
+                return;
+            }
+
+            const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
+            if (existingRow) {
+                const qtyCell = existingRow.querySelector('.qty');
+                const totalCell = existingRow.querySelector('.total');
+                const newQty = parseInt(qtyCell.innerText) + 1;
+                qtyCell.innerText = newQty;
+                totalCell.innerText = (newQty * price).toFixed(2);
+            } else {
+                const row = document.createElement('tr');
+                row.setAttribute('data-id', product.id);
+                row.innerHTML = `
+                    <td class="border p-3">${product.name}</td>
+                    <td class="border p-3">${price.toFixed(2)}</td>
+                    <td class="border p-3 qty">1</td>
+                    <td class="border p-3 total">${price.toFixed(2)}</td>
+                `;
+                scannedItemsTable.appendChild(row);
+            }
+        }
+    </script>
 
 </body>
 </html>

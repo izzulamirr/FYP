@@ -1,53 +1,65 @@
 
 @extends('layouts.app')
 
-
 <div class="ml-64 p-8 w-full">
     <!-- Header -->
-    <div class="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
-        <h1 class="text-2xl font-bold text-gray-800">Suppliers Dashboard</h1>
-        <p class="text-gray-600">👤 {{ Auth::user()->name }}</p>
+    <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
+        <h1 class="text-3xl font-bold text-gray-800">Suppliers Dashboard</h1>
+        <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
     </div>
-<div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
 
+    <!-- Order History Section -->
+    <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Order History</h2>
 
-
-    
-    <h2 class="text-xl font-semibold mb-4">Order History</h2>
-    <div class="mt-3 overflow-auto max-h-[400px]">
-        <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="p-3 text-left">Order ID</th>
-                    <th class="p-3 text-left">Supplier Name</th>
-                    <th class="p-3 text-left">Total (RM)</th>
-                    <th class="p-3 text-left">Delivery Status</th>
-                    <th class="p-3 text-left">Order Date</th>
-                    <th class="p-3 text-left">Order Completed Date</th>
-                    <th class="p-3 text-left">Invoice Slip</th>
-                    <th class="p-3 text-left">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if ($orders->isEmpty())
+        <div class="mt-3 overflow-x-auto max-h-[400px]">
+            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-gray-200">
                     <tr>
-                        <td colspan="8" class="p-3 text-center text-gray-500">No orders available.</td>
+                        <th class="p-4 text-left font-semibold text-gray-700">Order ID</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Supplier Name</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Total (RM)</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Delivery Status</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Order Date</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Order Completed Date</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Invoice Slip</th>
+                        <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
                     </tr>
-                @else
-                    @foreach ($orders as $order)
+                </thead>
+                <tbody>
+                    @if ($orders->isEmpty())
                         <tr>
-                            <td class="p-3">{{ $order->order_id }}</td>
-                            <td class="p-3">{{ $order->supplier_name }}</td>
-                            <td class="p-3">RM {{ number_format($order->total, 2) }}</td>
-                            <td class="p-3">{{ $order->delivery_status }}</td>
-                            <td class="p-3">{{ $order->order_date }}</td>
-                            <td class="p-3">{{ $order->completed_date ?? 'N/A' }}</td>
-                            
-                          
+                            <td colspan="8" class="p-4 text-center text-gray-500">No orders available.</td>
                         </tr>
-                    @endforeach
-                @endif
-            </tbody>
-        </table>
+                    @else
+                        @foreach ($orders as $order)
+                            <tr class="hover:bg-gray-100 transition duration-200">
+                                <td class="p-4 border-b text-gray-800">{{ $order->order_id }}</td>
+                                <td class="p-4 border-b text-gray-800">{{ $order->supplier_name }}</td>
+                                <td class="p-4 border-b text-gray-800">RM {{ number_format($order->total, 2) }}</td>
+                                <td class="p-4 border-b">
+                                    @if ($order->delivery_status === 'Delivered')
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Delivered</span>
+                                    @else
+                                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">{{ $order->delivery_status }}</span>
+                                    @endif
+                                </td>
+                                <td class="p-4 border-b text-gray-800">{{ $order->order_date }}</td>
+                                <td class="p-4 border-b text-gray-800">{{ $order->completed_date ?? 'N/A' }}</td>
+                                <td class="p-4 border-b text-gray-800">
+                                   
+                                </td>
+                                <td class="p-4 border-b">
+                                    <div class="flex space-x-2">
+                                       
+                                       
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

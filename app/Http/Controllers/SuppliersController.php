@@ -15,12 +15,18 @@ class SuppliersController extends Controller
      */
     public function dashboard()
     {
-        // Fetch supplier statistics
-        $totalSuppliers = Supplier::count();
-        $suppliers = Supplier::all();
+        // Fetch all suppliers
+    $suppliers = Supplier::with('products')->get();
 
-        // Pass data to the view
-        return view('System.Supplies.dashboard', compact('totalSuppliers', 'suppliers'));
+    // Calculate statistics
+    $totalSuppliers = $suppliers->count();
+    $activeSuppliers = $suppliers->filter(function ($supplier) {
+        return $supplier->products->isNotEmpty();
+    })->count();
+    $inactiveSuppliers = $totalSuppliers - $activeSuppliers;
+
+    // Pass data to the view
+    return view('System.Supplies.dashboard', compact('suppliers', 'totalSuppliers', 'activeSuppliers', 'inactiveSuppliers'));
     }
 
     /**

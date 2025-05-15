@@ -1,78 +1,100 @@
-
 @extends('layouts.app')
 
 @section('content')
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Inventory - Report Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 <div class="ml-64 p-8 w-full">
-    <!-- Header with Username -->
-    <div class="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
-        <h1 class="text-2xl font-bold text-gray-800">Report Dashboard</h1>
-        <p class="text-gray-600">👤 {{ Auth::user()->name }}</p>
+    <!-- Header -->
+    <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
+        <h1 class="text-3xl font-bold text-gray-800">Report Dashboard</h1>
+        <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
     </div>
 
-    <!-- Revenue Section -->
-    <div class="mt-6 grid grid-cols-2 gap-4">
-        <div class="bg-white p-6 shadow-lg rounded-lg">
-            <h2 class="text-xl font-semibold">Current Revenue</h2>
-            <p class="text-gray-600 text-lg font-bold">${{ number_format($currentRevenue, 2) }}</p>
+    <!-- Statistics Section -->
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Current Revenue -->
+        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Current Revenue</h2>
+            <p class="text-4xl font-bold mt-2">${{ number_format($currentRevenue, 2) }}</p>
+        </div>
+
+        <!-- Low Stock Count -->
+        <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Low Stock Products</h2>
+            <p class="text-4xl font-bold mt-2">{{ $lowStockInventory->count() }}</p>
+        </div>
+
+        <!-- Top Selling Products Count -->
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Top Selling Products</h2>
+            <p class="text-4xl font-bold mt-2">{{ $topSellingProducts->count() }}</p>
         </div>
     </div>
 
-    <!-- Low Stock Inventory -->
-    <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
-        <h2 class="text-xl font-semibold">Low Stock Inventory</h2>
-        <canvas id="lowStockChart" class="mt-4" style="max-width: 400px; max-height: 400px; margin: 0 auto;"></canvas> <!-- Graph -->
+    <!-- Low Stock Inventory Section -->
+<div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
+    <h2 class="text-2xl font-semibold text-gray-800">Low Stock Inventory</h2>
+    <canvas id="lowStockChart" class="mt-4" style="max-width: 100%; height: 300px; width: 100%;"></canvas> <!-- Adjusted height -->
 
-        <table class="w-full mt-6 border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="border p-2">Name</th>
-                    <th class="border p-2">Quantity</th>
-                    <th class="border p-2">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($lowStockInventory as $product)
-                <tr>
-                    <td class="border p-2">{{ $product->name }}</td>
-                    <td class="border p-2">{{ $product->quantity }}</td>
-                    <td class="border p-2">
+    <table class="w-full mt-6 border-collapse border border-gray-300 rounded-lg overflow-hidden">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="border p-4 text-left font-semibold text-gray-700">Name</th>
+                <th class="border p-4 text-left font-semibold text-gray-700">Quantity</th>
+                <th class="border p-4 text-left font-semibold text-gray-700">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($lowStockInventory as $product)
+                <tr class="hover:bg-gray-100 transition duration-200">
+                    <td class="border p-4 text-gray-800">{{ $product->name }}</td>
+                    <td class="border p-4 text-gray-800">{{ $product->quantity }}</td>
+                    <td class="border p-4">
                         @if ($product->quantity < 5)
-                            <span class="text-red-500 font-semibold">Low Stock</span>
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">Low Stock</span>
                         @else
-                            <span class="text-green-500 font-semibold">In Stock</span>
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">In Stock</span>
                         @endif
                     </td>
                 </tr>
-                @empty
+            @empty
                 <tr>
-                    <td colspan="3" class="border p-2 text-center text-gray-500">No low stock products.</td>
+                    <td colspan="3" class="border p-4 text-center text-gray-500">No low stock products.</td>
                 </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
-    <!-- Top Selling Products -->
+
+    <!-- Top Selling Products Section -->
     <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
-        <h2 class="text-xl font-semibold">Top Selling Products</h2>
-        <table class="w-full mt-2 border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="border p-2">Name</th>
-                    <th class="border p-2">Sold</th>
-                    <th class="border p-2">Sales</th>
+        <h2 class="text-2xl font-semibold text-gray-800">Top Selling Products</h2>
+        <table class="w-full mt-4 border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="border p-4 text-left font-semibold text-gray-700">Name</th>
+                    <th class="border p-4 text-left font-semibold text-gray-700">Sold</th>
+                    <th class="border p-4 text-left font-semibold text-gray-700">Sales</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($topSellingProducts as $product)
-                    <tr>
-                        <td class="border p-2">{{ $product->name }}</td>
-                        <td class="border p-2">{{ $product->sold }}</td>
-                        <td class="border p-2">${{ number_format($product->sales, 2) }}</td>
+                    <tr class="hover:bg-gray-100 transition duration-200">
+                        <td class="border p-4 text-gray-800">{{ $product->name }}</td>
+                        <td class="border p-4 text-gray-800">{{ $product->sold }}</td>
+                        <td class="border p-4 text-gray-800">${{ number_format($product->sales, 2) }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="border p-2 text-center text-gray-500">No top selling products.</td>
+                        <td colspan="3" class="border p-4 text-center text-gray-500">No top selling products.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -90,20 +112,20 @@
     // Create the chart
     const ctx = document.getElementById('lowStockChart').getContext('2d');
     new Chart(ctx, {
-        type: 'bar', // Bar chart
+        type: 'bar',
         data: {
             labels: lowStockLabels,
             datasets: [{
                 label: 'Quantity',
                 data: lowStockData,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // Allow resizing
+            maintainAspectRatio: true, // Ensure the chart respects the canvas size
             plugins: {
                 legend: {
                     display: false
