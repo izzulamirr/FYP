@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Assuming staff are stored in the User model
+use App\Models\User; // Ensure the User model is imported
 use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
     // Display all users
-    public function index()
-    {
-        // Fetch all users from the database
-        $users = User::all();
+public function index()
+{
+    // Fetch all users
+    $users = User::all(); // Ensure the User model is imported
 
-        // Pass the users to the view
-        return view('System.Staff', compact('users'));
-    }
-
+    // Pass the $users variable to the view
+    return view('System.Staff', compact('users'));
+}
     public function create()
 {
     // Return the view for creating a new staff member
@@ -30,7 +29,7 @@ class StaffController extends Controller
     $user = User::findOrFail($id);
 
     // Return the edit view with the user data
-    return view('System.Staff.edit', compact('user'));
+    return view('System.Staff.edit', compact('users'));
 }
 
 public function update(Request $request, $id)

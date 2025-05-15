@@ -90,14 +90,6 @@ Route::post('/logout', function () {
 
 
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
-    Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
-    Route::get('/staff/edit/{id}', [StaffController::class, 'edit'])->name('staff.edit');
-    Route::put('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
-    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
-    Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
-});
 
 //Products pages
 Route::get('/Inventory', [InventoryController::class, 'index'])->name('Inventory');
@@ -157,7 +149,15 @@ Route::get('/api/suppliers/{supplier_code}/products', [OrderController::class, '
 
 
 // Staff
-Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create'); // Add Staff form
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
+    Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
+    Route::get('/staff/edit/{id}', [StaffController::class, 'edit'])->name('staff.edit');
+    Route::put('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
+    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
+    Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+});
 
 
 

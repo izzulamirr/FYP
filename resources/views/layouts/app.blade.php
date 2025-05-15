@@ -24,6 +24,12 @@
                         <span class="mr-3">🏠</span> Dashboard
                     </a>
                 </li>
+                 <!-- Transactinon -->
+                <li>
+                    <a href="{{ route('transactions.index') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
+                        <span class="mr-3">🏠</span> Transactions
+                    </a>
+                </li>
 
                 <!-- Inventory Dropdown -->
                 <li>
@@ -86,7 +92,7 @@
                 <!-- Staff -->
                 @if (Auth::user()->role === 'admin')
                 <li>
-                    <a href="{{ route('Staff') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
+                    <a href="{{ route('staff.index') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
                         <span class="mr-3">👥</span> Staff
                     </a>
                 </li>

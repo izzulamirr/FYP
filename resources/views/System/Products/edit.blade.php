@@ -37,7 +37,7 @@
             <!-- Quantity -->
             <div class="mb-4">
                 <label for="quantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
-                <input type="number" name="quantity" id="quantity" value="{{ $product->quantity }}" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
+                <input type="number" name="quantity" min="0" id="quantity" value="{{ $product->quantity }}" placeholder="Enter product quantity" required class="p-2 border rounded w-full">
             </div>
 
             <!-- Cost Price -->

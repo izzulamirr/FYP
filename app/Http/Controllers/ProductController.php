@@ -28,4 +28,16 @@ class ProductController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Product not found!'], 404);
     }
+
+    public function updateQuantity(Request $request, $id)
+{
+    $product = Product::findOrFail($id);
+
+    // Decrement the quantity but ensure it doesn't go below 0
+    $newQuantity = max(0, $product->quantity - $request->input('quantity_to_decrement'));
+
+    $product->update(['quantity' => $newQuantity]);
+
+    return redirect()->back()->with('success', 'Product quantity updated successfully.');
+}
 }

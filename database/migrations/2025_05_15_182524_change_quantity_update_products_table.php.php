@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('user'); // Default role is 'user'
-        });
+        Schema::table('products', function (Blueprint $table) {
+        $table->unsignedInteger('quantity')->change(); // Ensure quantity is always non-negative
+    });
     }
 
     /**
@@ -21,8 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

@@ -35,4 +35,10 @@ class Product extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function decrementQuantity($amount)
+    {
+      $this->quantity = max(0, $this->quantity - $amount); // Ensure quantity doesn't go below 0
+      $this->save();
+    }
 }

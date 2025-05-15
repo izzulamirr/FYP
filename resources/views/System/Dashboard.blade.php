@@ -120,7 +120,7 @@
             .catch(error => console.error('Error:', error));
         });
 
-        const qrScanner = new Html5QrcodeScanner("reader", { fps: 1, qrbox: { width: 300, height: 100 } });
+        const qrScanner = new Html5QrcodeScanner("reader", { fps: 5, qrbox: { width: 300, height: 100 } });
         qrScanner.render(onScanSuccess);
 
         function onScanSuccess(decodedText, decodedResult) {
@@ -131,13 +131,17 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        addScannedItem(data.product);
-                    } else {
-                        alert('Product not found!');
-                    }
-                })
-                .catch(error => console.error('Error fetching product:', error));
-        }
+                if (data.product.quantity > 0) {
+                    addScannedItem(data.product);
+                } else {
+                    alert('Item Sold Out!');
+                }
+            } else {
+                alert('Product not found!');
+            }
+        })
+        .catch(error => console.error('Error fetching product:', error));
+}
 
         barcodeInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
@@ -145,49 +149,52 @@
                 const barcode = barcodeInput.value.trim();
 
                 if (barcode) {
-                    fetch(`/api/products/${barcode}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                addScannedItem(data.product);
-                            } else {
-                                alert('Product not found!');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+            fetch(`/api/products/${barcode}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (data.product.quantity > 0) {
+                            addScannedItem(data.product);
+                        } else {
+                            alert('Item Sold Out!');
+                        }
+                    } else {
+                        alert('Product not found!');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
 
-                    barcodeInput.value = '';
-                }
-            }
-        });
-
-        function addScannedItem(product) {
-            const price = parseFloat(product.price);
-
-            if (isNaN(price)) {
-                alert('Invalid product price!');
-                return;
-            }
-
-            const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
-            if (existingRow) {
-                const qtyCell = existingRow.querySelector('.qty');
-                const totalCell = existingRow.querySelector('.total');
-                const newQty = parseInt(qtyCell.innerText) + 1;
-                qtyCell.innerText = newQty;
-                totalCell.innerText = (newQty * price).toFixed(2);
-            } else {
-                const row = document.createElement('tr');
-                row.setAttribute('data-id', product.id);
-                row.innerHTML = `
-                    <td class="border p-3">${product.name}</td>
-                    <td class="border p-3">${price.toFixed(2)}</td>
-                    <td class="border p-3 qty">1</td>
-                    <td class="border p-3 total">${price.toFixed(2)}</td>
-                `;
-                scannedItemsTable.appendChild(row);
-            }
+            barcodeInput.value = '';
         }
+    }
+});
+        function addScannedItem(product) {
+    const price = parseFloat(product.price);
+
+    if (isNaN(price)) {
+        alert('Invalid product price!');
+        return;
+    }
+
+    const existingRow = document.querySelector(`#scannedItems tr[data-id="${product.id}"]`);
+    if (existingRow) {
+        const qtyCell = existingRow.querySelector('.qty');
+        const totalCell = existingRow.querySelector('.total');
+        const newQty = Math.max(0, parseInt(qtyCell.innerText) + 1); // Ensure quantity doesn't go below 0
+        qtyCell.innerText = newQty;
+        totalCell.innerText = (newQty * price).toFixed(2);
+    } else {
+        const row = document.createElement('tr');
+        row.setAttribute('data-id', product.id);
+        row.innerHTML = `
+            <td class="border p-3">${product.name}</td>
+            <td class="border p-3">${price.toFixed(2)}</td>
+            <td class="border p-3 qty">1</td>
+            <td class="border p-3 total">${price.toFixed(2)}</td>
+        `;
+        scannedItemsTable.appendChild(row);
+    }
+}
     </script>
 
 </body>
