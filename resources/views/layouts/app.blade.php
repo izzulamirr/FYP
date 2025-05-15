@@ -15,16 +15,6 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* Page transition effect */
-        .fade-enter {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        .fade-enter-active {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
     </style>
 </head>
 <body class="bg-gray-100 flex fade-enter">
@@ -45,10 +35,11 @@
                         <span class="mr-3">🏠</span> Dashboard
                     </a>
                 </li>
-                 <!-- Transactinon -->
+
+                <!-- Transactions -->
                 <li>
                     <a href="{{ route('transactions.index') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
-                        <span class="mr-3">🏠</span> Transactions
+                        <span class="mr-3">💰</span> Transactions
                     </a>
                 </li>
 
@@ -73,7 +64,6 @@
                         </li>
                     </ul>
                 </li>
-                
 
                 <!-- Suppliers Dropdown -->
                 <li>
@@ -134,6 +124,7 @@
         </form>
     </div>
 
+  
     <script>
         function toggleDropdown(id) {
             const dropdown = document.getElementById(id);

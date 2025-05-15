@@ -11,8 +11,8 @@
 </head>
 <body class="bg-gray-100 flex">
 
-  <!-- Main Content -->
-  <div class="ml-64 p-8 w-full">
+  @section('content')
+    <div class="ml-64 p-8 w-full">
         <!-- Header with Username -->
         <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
             <h1 class="text-3xl font-bold text-gray-800">Cashier Dashboard</h1>

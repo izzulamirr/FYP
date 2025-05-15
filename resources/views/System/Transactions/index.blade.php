@@ -1,6 +1,7 @@
 
 @extends('layouts.app')
 
+
 <div class="ml-64 p-8 w-full">
     <!-- Header -->
     <div class="bg-white p-6 shadow-md">
