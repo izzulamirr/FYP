@@ -5,8 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Include Google Fonts for Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Apply Poppins font globally */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Page transition effect */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex">
+<body class="bg-gray-100 flex fade-enter">
 
     <!-- Sidebar -->
     <div class="w-64 h-screen bg-gray-900 text-white fixed top-0 left-0 flex flex-col">
@@ -46,6 +67,7 @@
                         </li>
                     </ul>
                 </li>
+                
 
                 <!-- Suppliers Dropdown -->
                 <li>
@@ -97,19 +119,26 @@
         <!-- Logout -->
         <form method="POST" action="{{ route('logout') }}" class="mt-auto">
             @csrf
-            <button type="submit" class="w-full flex items-center px-4 py-3 hover:bg-red-600 bg-red-500 rounded-lg transition duration-200">
-                <span class="mr-3">🚪</span> Log Out
+            <button type="submit" class="relative w-full flex items-center px-4 py-3 rounded-lg overflow-hidden group transition duration-200">
+                <span class="absolute inset-0 bg-red-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                <span class="relative flex items-center text-white group-hover:text-white transition duration-200">
+                    <span class="mr-3">🚪</span> Log Out
+                </span>
             </button>
         </form>
     </div>
-
-    
 
     <script>
         function toggleDropdown(id) {
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
         }
+
+        // Add fade-in effect on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.querySelector('body');
+            body.classList.add('fade-enter-active');
+        });
     </script>
 </body>
 </html>
