@@ -15,9 +15,8 @@
             Smart Inventory
         </div>
 
-<<<<<<< HEAD
         <!-- Navigation -->
-        <nav class="mt-4 flex-grow">
+        <nav class="flex-grow mt-4">
             <ul class="space-y-2">
                 <!-- Dashboard -->
                 <li>
@@ -25,48 +24,6 @@
                         <span class="mr-3">🏠</span> Dashboard
                     </a>
                 </li>
-
-                <!-- Transactions -->
-                <li>
-                    <a href="{{ route('transactions.index') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
-                        <span class="mr-3">💰</span> Transactions
-                    </a>
-                </li>
-=======
-            <!-- Suppliers with Dropdown -->
-            <li class="px-4 py-3 hover:bg-gray-700">
-                <button class="w-full flex items-center text-left" onclick="toggleDropdown('suppliersDropdown')">
-                    <span class="mr-3">📊</span> Suppliers
-                    <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <ul id="suppliersDropdown" class="hidden pl-6 mt-2 space-y-2">
-                    <li>
-                        <a href="{{ route('suppliers.dashboard') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
-                            Suppliers Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('supplies.index') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
-                            View Orders
-                        </a>
-                    </li>
-                    @if (Auth::user()->role === 'admin')
-                     <li>
-                        <a href="{{ route('orders.restock') }}" class="flex items-center hover:bg-gray-700 p-2 rounded-lg">
-                            Restock Inventory
-                         </a>
-                    </li>
-                    @endif
-                </ul>
-            </li>
-
-            <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('reports.dashboard') }}" class="flex items-center"><span class="mr-3">📊</span> Report</a></li>
-            @if (Auth::user()->role === 'admin')
-            <li class="px-4 py-3 hover:bg-gray-700"><a href="{{ route('staff.index') }}" class="flex items-center"><span class="mr-3">👤</span> Staff</a></li>
-            @endif
->>>>>>> acae8e7c42b34ea6b81e6e11ff87b56e29087ac0
 
                 <!-- Inventory Dropdown -->
                 <li>
@@ -109,8 +66,7 @@
                                 View Orders
                             </a>
                         </li>
-
-                            @if (Auth::user()->role === 'admin')
+                        @if (Auth::user()->role === 'admin')
                         <li>
                             <a href="{{ route('orders.restock') }}" class="flex items-center px-4 py-2 hover:bg-gray-700 rounded-lg transition duration-200">
                                 Restock Inventory
@@ -128,8 +84,7 @@
                 </li>
 
                 <!-- Staff -->
-                     @if (Auth::user()->role === 'admin')
-
+                @if (Auth::user()->role === 'admin')
                 <li>
                     <a href="{{ route('Staff') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
                         <span class="mr-3">👥</span> Staff
@@ -148,8 +103,7 @@
         </form>
     </div>
 
-    <!-- Main Content -->
-  
+    
 
     <script>
         function toggleDropdown(id) {
