@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,23 +37,53 @@
         .btn-register:hover {
             background: #333;
         }
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .form-button {
+            background: #555;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+        .form-button:hover {
+            background: #333;
+        }
     </style>
 </head>
 <body>
 
     <!-- Header with Login & Register -->
     <header class="header flex justify-between items-center px-6 py-4">
-        <h2 class="text-xl font-bold text-gray-800">Smart Inventory</h2>
+     <!--   <h2 class="text-xl font-bold text-gray-800">Smart Inventory</h2> 
         <div>
-            <a href="{{ route('login') }}" class="btn btn-login mr-3">Login</a>
-            <a href="{{ route('register') }}" class="btn btn-register">Register</a>
+            <!--<a href="{{ route('login') }}" class="btn btn-login mr-3">Login</a> -->
+            <!--<a href="{{ route('register') }}" class="btn btn-register">Register</a> -->
         </div>
     </header>
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-16 text-center">
-        <h1 class="text-4xl font-bold text-gray-800">Welcome to Smart Inventory System</h1>
-        <p class="text-lg text-gray-600 mt-4">Easily manage your stock, track inventory, and optimize your business.</p>
+        <h1 class="text-4xl font-bold text-gray-800">MAHALLAH FARUQ MART MANAGEMENT SYSTEM</h1>
+        <!-- <p class="text-lg text-gray-600 mt-4">Easily manage your stock, track inventory, and optimize your business.</p> -->
+
+        <!-- Login Section -->
+        <div class="mt-8 max-w-md mx-auto bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-2xl font-bold mb-4">Staff Login</h2>
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <input type="email" name="email" placeholder="Email" class="form-input" required>
+                <input type="password" name="password" placeholder="Password" class="form-input" required>
+                <button type="submit" class="form-button w-full mt-4">Login</button>
+            </form>
+        </div>
     </div>
 
 </body>
