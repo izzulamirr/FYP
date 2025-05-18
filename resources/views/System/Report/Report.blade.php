@@ -44,11 +44,11 @@
     <canvas id="lowStockChart" class="mt-4" style="max-width: 100%; height: 300px; width: 100%;"></canvas> <!-- Adjusted height -->
 
     <table class="w-full mt-6 border-collapse border border-gray-300 rounded-lg overflow-hidden">
-        <thead class="bg-gray-200">
+        <thead style="background-color: #1e293b;">
             <tr>
-                <th class="border p-4 text-left font-semibold text-gray-700">Name</th>
-                <th class="border p-4 text-left font-semibold text-gray-700">Quantity</th>
-                <th class="border p-4 text-left font-semibold text-gray-700">Status</th>
+                <th class="border p-4 text-left font-semibold text-white">Name</th>
+                <th class="border p-4 text-left font-semibold text-white">Quantity</th>
+                <th class="border p-4 text-left font-semibold text-white">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -78,11 +78,11 @@
     <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
         <h2 class="text-2xl font-semibold text-gray-800">Top Selling Products</h2>
         <table class="w-full mt-4 border-collapse border border-gray-300 rounded-lg overflow-hidden">
-            <thead class="bg-gray-200">
+            <thead style="background-color: #1e293b;">
                 <tr>
-                    <th class="border p-4 text-left font-semibold text-gray-700">Name</th>
-                    <th class="border p-4 text-left font-semibold text-gray-700">Sold</th>
-                    <th class="border p-4 text-left font-semibold text-gray-700">Sales</th>
+                    <th class="border p-4 text-left font-semibold text-white">Name</th>
+                    <th class="border p-4 text-left font-semibold text-white">Sold</th>
+                    <th class="border p-4 text-left font-semibold text-white">Sales</th>
                 </tr>
             </thead>
             <tbody>

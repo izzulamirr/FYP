@@ -64,14 +64,14 @@
         @else
             <div class="overflow-x-auto">
                 <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                    <thead class="bg-gray-200">
+                    <thead style="background-color: #1e293b;"> <!-- Change this hex to match your sidebar color -->
                         <tr>
-                            <th class="p-4 text-left font-semibold text-gray-700">Order ID</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Date</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Payment Time</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Total Sales</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Payment Method</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
+                            <th class="p-4 text-left font-semibold text-white">Order ID</th>
+                            <th class="p-4 text-left font-semibold text-white">Date</th>
+                            <th class="p-4 text-left font-semibold text-white">Payment Time</th>
+                            <th class="p-4 text-left font-semibold text-white">Total Sales</th>
+                            <th class="p-4 text-left font-semibold text-white">Payment Method</th>
+                            <th class="p-4 text-left font-semibold text-white">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
