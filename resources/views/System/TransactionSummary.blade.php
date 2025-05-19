@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
-
-
-    <!-- Header with Username -->
-    <div class="ml-64 p-8 w-full">
+<!-- Header with Username -->
+<div class="ml-64 p-8 w-full">
     <div class="container mx-auto mt-10">
         <h1 class="text-2xl font-bold mb-4">Transaction Summary</h1>
 
@@ -30,12 +28,17 @@
             </tbody>
         </table>
 
-        <p class="mt-4 text-lg font-bold">Total Price: RM{{ number_format($transaction['total'], 2) }}</p>
-
         <form action="{{ route('transactions.confirm') }}" method="POST">
             @csrf
+            <label for="payment_method" class="block mt-4 mb-2 font-semibold">Payment Method</label>
+            <select name="payment_method" id="payment_method" class="border p-2 rounded w-full" required>
+                <option value="Cash">Cash</option>
+                <option value="Online Banking">Online Banking</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Ewallet">Ewallet</option>
+            </select>
+            <p class="mt-4 text-lg font-bold">Total Price: RM{{ number_format($transaction['total'], 2) }}</p>
             <button type="submit" class="bg-green-500 text-white p-2 rounded mt-4">Confirm Purchase</button>
         </form>
     </div>
 </div>
-

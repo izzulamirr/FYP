@@ -162,8 +162,15 @@ public function store(Request $request)
         return view('System.TransactionSummary', ['transaction' => $transaction]);
     }
 
-    public function confirm()
+    public function confirm(Request $request)
 {
+
+
+      // Validate that the payment method exists in the payment_methods table (by name)
+    $request->validate([
+        'payment_method' => 'required',
+    ]);
+
     // Retrieve the transaction details from the session
     $transaction = session('transaction', null);
 
@@ -177,7 +184,7 @@ public function store(Request $request)
         'products' => json_encode($transaction['items']),
         'quantity' => array_sum(array_column($transaction['items'], 'quantity')),
         'total_price' => $transaction['total'],
-        'payment_method' => 'Cash', // You can replace this with a dynamic value if needed
+        'payment_method' => $request->payment_method, // Use the selected payment method name
     ]);
 
     // Clear the session data
