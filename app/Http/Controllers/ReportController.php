@@ -1,53 +1,83 @@
 <?php
 
+
 namespace App\Http\Controllers;
+
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
-
-
-
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
+    public function index()
+    {
+        // Fetch all orders
+        $orders = Order::all();
 
+        // Revenue and inventory stats
+        $currentRevenue = Transaction::sum('total_price');
+        $lowStockInventory = Product::where('quantity', '<', 5)->get();
 
-  public function index()
-{
-    $currentRevenue = Transaction::sum('total_price');
-    $lowStockInventory = Product::where('quantity', '<', 5)->get();
-    $topSellingProducts = Product::withCount(['orderItems as sold' => function($q) {
-        $q->select(\DB::raw("SUM(quantity)"));
-    }])->orderByDesc('sold')->take(5)->get()->map(function($product) {
-        $product->sales = $product->sold * $product->price;
-        return $product;
-    });
+        // Top selling products from transactions (not from order_items)
+        $productSales = [];
+        $transactions = Transaction::all();
+        foreach ($transactions as $trx) {
+            $products = json_decode($trx->products, true) ?? [];
+            foreach ($products as $prod) {
+                $id = $prod['id'] ?? null;
+                if (!$id) continue;
+                if (!isset($productSales[$id])) {
+                    $productSales[$id] = [
+                        'name' => $prod['name'] ?? 'Unknown',
+                        'sold' => 0,
+                        'sales' => 0,
+                    ];
+                }
+                $productSales[$id]['sold'] += $prod['quantity'] ?? 0;
+                $productSales[$id]['sales'] += ($prod['quantity'] ?? 0) * ($prod['price'] ?? 0);
+            }
+        }
+        // Sort and take top 5
+        $topSellingProducts = collect($productSales)
+            ->sortByDesc('sold')
+            ->take(5);
 
-    // Financial reports
-    $totalSales = $currentRevenue;
-    $totalTransactions = Transaction::count();
-    $averageSale = $totalTransactions ? $totalSales / $totalTransactions : 0;
-    $totalCOGS = Transaction::sum(\DB::raw('quantity * (SELECT cost_price FROM products WHERE products.id = JSON_EXTRACT(transactions.products, "$[0].id"))')); // Simplified, adjust as needed
-    $grossProfit = $totalSales - $totalCOGS;
+        // Stock purchases (restock cost)
+        $stockPurchases = 0;
+        foreach ($orders as $order) {
+            $products = json_decode($order->products, true) ?? [];
+            foreach ($products as $product) {
+                $stockPurchases += $product['cost_price'] * $product['quantity'];
+            }
+        }
 
-    $salesByPaymentMethod = Transaction::select('payment_method', \DB::raw('SUM(total_price) as total'))
-        ->groupBy('payment_method')
-        ->pluck('total', 'payment_method');
+        // Financial reports
+        $totalSales = $currentRevenue;
+        $totalTransactions = Transaction::count();
+        $averageSale = $totalTransactions ? $totalSales / $totalTransactions : 0;
+        $totalCOGS = $stockPurchases; // Use stock purchases as COGS
+        $grossProfit = $totalSales - $stockPurchases;
 
-    $recentTransactions = Transaction::orderBy('created_at', 'desc')->take(10)->get();
+        $salesByPaymentMethod = Transaction::select('payment_method', DB::raw('SUM(total_price) as total'))
+            ->groupBy('payment_method')
+            ->pluck('total', 'payment_method');
 
-    return view('System.Report.Report', compact(
-        'currentRevenue',
-        'lowStockInventory',
-        'topSellingProducts',
-        'totalSales',
-        'totalTransactions',
-        'averageSale',
-        'totalCOGS',
-        'grossProfit',
-        'salesByPaymentMethod',
-        'recentTransactions'
-    ));
-}
+        $recentTransactions = Transaction::orderBy('created_at', 'desc')->take(10)->get();
+
+        return view('System.Report.Report', compact(
+            'currentRevenue',
+            'lowStockInventory',
+            'topSellingProducts',
+            'totalSales',
+            'totalTransactions',
+            'averageSale',
+            'totalCOGS',
+            'grossProfit',
+            'salesByPaymentMethod',
+            'recentTransactions',
+            'stockPurchases'
+        ));
+    }
 }

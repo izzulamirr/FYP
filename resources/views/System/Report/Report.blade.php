@@ -19,7 +19,7 @@
         <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
     </div>
 
-    
+
      <div class="space-y-4">
 
 
@@ -80,9 +80,9 @@
                         <div class="text-xs text-gray-500">Total Sales</div>
                         <div class="text-lg font-bold text-green-600">RM{{ number_format($totalSales, 2) }}</div>
                     </div>
-                    <div>
-                        <div class="text-xs text-gray-500">Cost of Goods Sold</div>
-                        <div class="text-lg font-bold text-red-600">RM{{ number_format($totalCOGS, 2) }}</div>
+                   <div>
+                        <div class="text-xs text-gray-500">Stock Purchases</div>
+                        <div class="text-lg font-bold text-blue-600">RM{{ number_format($stockPurchases, 2) }}</div>
                     </div>
                     <div>
                         <div class="text-xs text-gray-500">Gross Profit</div>
@@ -91,6 +91,37 @@
                 </div>
             </div>
         </div>
+            <!-- Top Selling Products Table (Minimizable) -->
+    <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
+        <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+    <span class="font-semibold text-gray-700">Profit & Loss</span>
+    <span x-text="open ? '−' : '+'"></span>
+        </button>
+        <div x-show="open" class="p-4 border-t">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-2 text-left">Product Name</th>
+                        <th class="p-2 text-left">Units Sold</th>
+                        <th class="p-2 text-left">Total Sales (RM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($topSellingProducts as $product)
+                        <tr>
+                            <td class="p-2">{{ $product['name'] }}</td>
+                            <td class="p-2">{{ $product['sold'] }}</td>
+                            <td class="p-2">RM{{ number_format($product['sales'], 2) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="p-2 text-center text-gray-500">No sales data available.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
         <!-- Sales by Payment Method Section -->
         <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
