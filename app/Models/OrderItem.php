@@ -9,12 +9,13 @@ class OrderItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'transaction_id',
-        'product_id',
-        'quantity',
-        'price',
-    ];
+   protected $fillable = [
+    'order_id',        // <-- Add this line
+    'transaction_id',
+    'product_id',
+    'quantity',
+    'price',
+];
 
     public function transaction()
     {
@@ -25,4 +26,9 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+public function order()
+{
+    return $this->belongsTo(\App\Models\Order::class, 'order_id', 'id');
+}
 }

@@ -24,6 +24,7 @@ class Order extends Model
         'order_date',      // Date the order was placed
         'completed_date',  // Date the order was completed
         'invoice_slip',    // Path to the invoice slip
+        'products',        // JSON field for products in the order
     ];
 
     // Relationship with Supplier
@@ -31,4 +32,8 @@ class Order extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_code', 'supplier_code'); // Use supplier_code for the relationship
     }
+
+     
+
+
 }

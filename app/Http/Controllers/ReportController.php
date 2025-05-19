@@ -13,26 +13,41 @@ class ReportController extends Controller
 {
 
 
-   public function index()
-    {
-        // Fetch current revenue
-        $currentRevenue = Transaction::sum('total_price');
+  public function index()
+{
+    $currentRevenue = Transaction::sum('total_price');
+    $lowStockInventory = Product::where('quantity', '<', 5)->get();
+    $topSellingProducts = Product::withCount(['orderItems as sold' => function($q) {
+        $q->select(\DB::raw("SUM(quantity)"));
+    }])->orderByDesc('sold')->take(5)->get()->map(function($product) {
+        $product->sales = $product->sold * $product->price;
+        return $product;
+    });
 
-        // Fetch low stock inventory (products with quantity < 10)
-        $lowStockInventory = Product::where('quantity', '<', 10)->get();
+    // Financial reports
+    $totalSales = $currentRevenue;
+    $totalTransactions = Transaction::count();
+    $averageSale = $totalTransactions ? $totalSales / $totalTransactions : 0;
+    $totalCOGS = Transaction::sum(\DB::raw('quantity * (SELECT cost_price FROM products WHERE products.id = JSON_EXTRACT(transactions.products, "$[0].id"))')); // Simplified, adjust as needed
+    $grossProfit = $totalSales - $totalCOGS;
 
-        $topSellingProducts = DB::table('order_items')
-    ->join('products', 'order_items.product_id', '=', 'products.id')
-    ->select('products.name')
-    ->selectRaw('SUM(order_items.quantity) as total_sold')
-    ->groupBy('products.name')
-    ->orderByDesc('total_sold')
-    ->take(5) // Limit to top 5 products
-    ->get();
+    $salesByPaymentMethod = Transaction::select('payment_method', \DB::raw('SUM(total_price) as total'))
+        ->groupBy('payment_method')
+        ->pluck('total', 'payment_method');
 
+    $recentTransactions = Transaction::orderBy('created_at', 'desc')->take(10)->get();
 
-        // Pass the data to the view
-        return view('System.Report.Report', compact('currentRevenue', 'lowStockInventory' , 'topSellingProducts'));
-    }
-
+    return view('System.Report.Report', compact(
+        'currentRevenue',
+        'lowStockInventory',
+        'topSellingProducts',
+        'totalSales',
+        'totalTransactions',
+        'averageSale',
+        'totalCOGS',
+        'grossProfit',
+        'salesByPaymentMethod',
+        'recentTransactions'
+    ));
+}
 }

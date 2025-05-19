@@ -14,6 +14,8 @@ class OrderController extends Controller
     {  
             // Fetch all orders from the database
             $orders = Order::all();
+
+            
     
             // Pass the orders to the view
             return view('System.Supplies.Supplies', compact('orders'));
@@ -31,31 +33,33 @@ class OrderController extends Controller
 
 public function processRestock(Request $request)
 {
-    // Validate the request
     $request->validate([
         'supplier_code' => 'required|exists:suppliers,supplier_code',
         'product_id' => 'required|exists:products,id',
         'quantity' => 'required|integer|min:1',
     ]);
 
-    // Fetch the supplier and product details
     $supplier = Supplier::where('supplier_code', $request->supplier_code)->firstOrFail();
     $product = Product::findOrFail($request->product_id);
 
-    // Calculate the total (assuming the product has a price field)
+    $products = [[
+        'name' => $product->name,
+        'quantity' => $request->quantity,
+        'cost_price' => $product->cost_price,
+    ]];
+
     $total = $product->cost_price * $request->quantity;
 
-    // Create a new order
     Order::create([
-        'order_id' => 'ORD' . strtoupper(uniqid()), // Generate a unique order ID
+        'order_id' => 'ORD' . strtoupper(uniqid()),
         'supplier_code' => $supplier->supplier_code,
         'supplier_name' => $supplier->name,
         'total' => $total,
         'delivery_status' => 'pending',
         'order_date' => now(),
+        'products' => json_encode($products),
     ]);
 
-    // Redirect back with a success message
     return redirect()->route('orders.restock')->with('success', 'Order placed successfully.');
 }
 public function getProductsBySupplier($supplier_code)
@@ -67,5 +71,39 @@ public function getProductsBySupplier($supplier_code)
     return response()->json($products);
 }
 
+
+public function showInvoice($order_id)
+{
+        $orders = Order::findOrFail($order_id); // Fetch the ction by ID
+
+    // Pass the order to the invoice slip view
+    return view('System.Supplies.invoice_slip', compact('orders', 'order_id'));
+}
+
+
+
+public function confirm($order_id)
+{
+    $order = Order::where('order_id', $order_id)->firstOrFail();
+
+    // Decode products from the order
+    $products = json_decode($order->products, true);
+
+    // Update each product's quantity in the database
+    foreach ($products as $prod) {
+        $product = Product::where('name', $prod['name'])->first();
+        if ($product) {
+            $product->quantity += $prod['quantity'];
+            $product->save();
+        }
+    }
+
+    // Update order status
+    $order->delivery_status = 'Delivered';
+    $order->completed_date = now();
+    $order->save();
+
+    return redirect()->back()->with('success', 'Order confirmed and inventory updated!');
+}
    
 }

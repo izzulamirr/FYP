@@ -7,7 +7,15 @@
         <h2 class="text-3xl font-bold text-gray-800 mb-4">Restock Product</h2>
         <p class="text-gray-600">Easily restock products by selecting a supplier and product.</p>
     </div>
-
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <!-- Restock Form Section -->
     <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
         <!-- Success Message -->

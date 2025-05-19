@@ -31,33 +31,42 @@
                         <tr>
                             <td colspan="8" class="p-4 text-center text-gray-500">No orders available.</td>
                         </tr>
+                   @else
+    @foreach ($orders as $order)
+        <tr class="hover:bg-gray-100 transition duration-200">
+            <td class="p-4 border-b text-gray-800">{{ $order->order_id }}</td>
+            <td class="p-4 border-b text-gray-800">{{ $order->supplier_name }}</td>
+            <td class="p-4 border-b text-gray-800">RM {{ number_format($order->total, 2) }}</td>
+            <td class="p-4 border-b">
+                @if ($order->delivery_status === 'Delivered')
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Delivered</span>
+                @else
+                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">{{ $order->delivery_status }}</span>
+                @endif
+            </td>
+            <td class="p-4 border-b text-gray-800">{{ $order->order_date }}</td>
+            <td class="p-4 border-b text-gray-800">{{ $order->completed_date ?? 'N/A' }}</td>
+       <td class="p-4">
+                                    <a href="{{ route('orders.invoice_slip', $order->order_id) }}" 
+                                       class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
+                                        View
+                                    </a>
+                                </td>
+            <td class="p-4 border-b">
+                <div class="flex space-x-2">
+                    @if ($order->delivery_status !== 'Delivered')
+                        <form action="{{ route('orders.confirm', $order->order_id) }}" method="POST" onsubmit="return confirm('Approve and restock this order?');">
+    @csrf
+    <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded text-xs">Confirm</button>
+</form>
                     @else
-                        @foreach ($orders as $order)
-                            <tr class="hover:bg-gray-100 transition duration-200">
-                                <td class="p-4 border-b text-gray-800">{{ $order->order_id }}</td>
-                                <td class="p-4 border-b text-gray-800">{{ $order->supplier_name }}</td>
-                                <td class="p-4 border-b text-gray-800">RM {{ number_format($order->total, 2) }}</td>
-                                <td class="p-4 border-b">
-                                    @if ($order->delivery_status === 'Delivered')
-                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Delivered</span>
-                                    @else
-                                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">{{ $order->delivery_status }}</span>
-                                    @endif
-                                </td>
-                                <td class="p-4 border-b text-gray-800">{{ $order->order_date }}</td>
-                                <td class="p-4 border-b text-gray-800">{{ $order->completed_date ?? 'N/A' }}</td>
-                                <td class="p-4 border-b text-gray-800">
-                                   
-                                </td>
-                                <td class="p-4 border-b">
-                                    <div class="flex space-x-2">
-                                       
-                                       
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                        <span class="text-green-600 font-semibold text-xs">Approved</span>
                     @endif
+                </div>
+            </td>
+        </tr>
+    @endforeach
+@endif
                 </tbody>
             </table>
         </div>

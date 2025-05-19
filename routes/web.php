@@ -133,8 +133,7 @@ Route::get('/supplies', [SuppliersController::class, 'dashboard'])->name('suppli
 Route::put('/suppliers/{supplier_code}', [SuppliersController::class, 'update'])->name('suppliers.update');
 Route::get('/suppliers/{supplier_code}/edit', [SuppliersController::class, 'edit'])->name('suppliers.edit');
 Route::delete('/suppliers/{supplier_code}', [SuppliersController::class, 'destroy'])->name('suppliers.destroy');
-
-
+Route::post('/orders/confirm/{order_id}', [OrderController::class, 'confirm'])->name('orders.confirm');
 
 
 // Suppliers Dashboard
@@ -144,7 +143,8 @@ Route::get('/orders', [OrderController::class, 'index'])->name('supplies.index')
 Route::get('/orders/restock', [OrderController::class, 'restock'])->name('orders.restock');
 Route::post('/orders/restock', [OrderController::class, 'processRestock'])->name('orders.restock.process');
 Route::get('/api/suppliers/{supplier_code}/products', [OrderController::class, 'getProductsBySupplier']);
-
+Route::post('/orders/confirm/{order}', [OrderController::class, 'confirm'])->name('supplies.confirm');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
 
 

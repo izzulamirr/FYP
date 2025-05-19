@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Inventory - Report Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <div class="ml-64 p-8 w-full">
     <!-- Header -->
@@ -16,6 +18,10 @@
         <h1 class="text-3xl font-bold text-gray-800">Report Dashboard</h1>
         <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
     </div>
+
+    
+     <div class="space-y-4">
+
 
     <!-- Statistics Section -->
     <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -38,103 +44,157 @@
         </div>
     </div>
 
-    <!-- Low Stock Inventory Section -->
-<div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold text-gray-800">Low Stock Inventory</h2>
-    <canvas id="lowStockChart" class="mt-4" style="max-width: 100%; height: 300px; width: 100%;"></canvas> <!-- Adjusted height -->
+  <!-- Sales Summary Section -->
+        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
+            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+                <span class="font-semibold text-gray-700">Sales Summary</span>
+                <span x-text="open ? '−' : '+'"></span>
+            </button>
+            <div x-show="open" class="p-4 border-t">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <div class="text-xs text-gray-500">Total Sales</div>
+                        <div class="text-lg font-bold text-green-600">RM{{ number_format($totalSales, 2) }}</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500">Total Transactions</div>
+                        <div class="text-lg font-bold">{{ $totalTransactions }}</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500">Average Sale</div>
+                        <div class="text-lg font-bold">RM{{ number_format($averageSale, 2) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <table class="w-full mt-6 border-collapse border border-gray-300 rounded-lg overflow-hidden">
-        <thead style="background-color: #1e293b;">
-            <tr>
-                <th class="border p-4 text-left font-semibold text-white">Name</th>
-                <th class="border p-4 text-left font-semibold text-white">Quantity</th>
-                <th class="border p-4 text-left font-semibold text-white">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($lowStockInventory as $product)
-                <tr class="hover:bg-gray-100 transition duration-200">
-                    <td class="border p-4 text-gray-800">{{ $product->name }}</td>
-                    <td class="border p-4 text-gray-800">{{ $product->quantity }}</td>
-                    <td class="border p-4">
-                        @if ($product->quantity < 5)
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">Low Stock</span>
-                        @else
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">In Stock</span>
-                        @endif
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="3" class="border p-4 text-center text-gray-500">No low stock products.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
+        <!-- Profit & Loss Section -->
+        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
+            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+                <span class="font-semibold text-gray-700">Profit & Loss</span>
+                <span x-text="open ? '−' : '+'"></span>
+            </button>
+            <div x-show="open" class="p-4 border-t">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <div class="text-xs text-gray-500">Total Sales</div>
+                        <div class="text-lg font-bold text-green-600">RM{{ number_format($totalSales, 2) }}</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500">Cost of Goods Sold</div>
+                        <div class="text-lg font-bold text-red-600">RM{{ number_format($totalCOGS, 2) }}</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-500">Gross Profit</div>
+                        <div class="text-lg font-bold text-blue-600">RM{{ number_format($grossProfit, 2) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Sales by Payment Method Section -->
+        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
+            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+                <span class="font-semibold text-gray-700">Sales by Payment Method</span>
+                <span x-text="open ? '−' : '+'"></span>
+            </button>
+            <div x-show="open" class="p-4 border-t">
+                <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm">
+                    <thead style="background-color: #1e293b;">
+                        <tr>
+                            <th class="border p-2 text-left font-semibold text-white">Payment Method</th>
+                            <th class="border p-2 text-left font-semibold text-white">Total Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($salesByPaymentMethod as $method => $amount)
+                            <tr class="hover:bg-gray-100 transition duration-200">
+                                <td class="border p-2 text-gray-800">{{ $method }}</td>
+                                <td class="border p-2 text-gray-800">RM{{ number_format($amount, 2) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @php
+                    $paymentLabels = $salesByPaymentMethod->keys();
+                    $paymentData = $salesByPaymentMethod->values();
+                @endphp
+                <div class="mt-4">
+                    <canvas id="paymentMethodChart" style="max-width: 100%; height: 200px;"></canvas>
+                </div>
+            </div>
+        </div>
 
-    <!-- Top Selling Products Section -->
-    <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
-        <h2 class="text-2xl font-semibold text-gray-800">Top Selling Products</h2>
-        <table class="w-full mt-4 border-collapse border border-gray-300 rounded-lg overflow-hidden">
-            <thead style="background-color: #1e293b;">
-                <tr>
-                    <th class="border p-4 text-left font-semibold text-white">Name</th>
-                    <th class="border p-4 text-left font-semibold text-white">Sold</th>
-                    <th class="border p-4 text-left font-semibold text-white">Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($topSellingProducts as $product)
-                    <tr class="hover:bg-gray-100 transition duration-200">
-                        <td class="border p-4 text-gray-800">{{ $product->name }}</td>
-                        <td class="border p-4 text-gray-800">{{ $product->sold }}</td>
-                        <td class="border p-4 text-gray-800">${{ number_format($product->sales, 2) }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="border p-4 text-center text-gray-500">No top selling products.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <!-- Recent Transactions Section -->
+        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
+            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+                <span class="font-semibold text-gray-700">Recent Transactions</span>
+                <span x-text="open ? '−' : '+'"></span>
+            </button>
+            <div x-show="open" class="p-4 border-t">
+                <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm">
+                    <thead style="background-color: #1e293b;">
+                        <tr>
+                            <th class="border p-2 text-left font-semibold text-white">Order ID</th>
+                            <th class="border p-2 text-left font-semibold text-white">Date</th>
+                            <th class="border p-2 text-left font-semibold text-white">Total</th>
+                            <th class="border p-2 text-left font-semibold text-white">Payment Method</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($recentTransactions as $trx)
+                            <tr class="hover:bg-gray-100 transition duration-200">
+                                <td class="border p-2 text-gray-800">{{ $trx->order_id }}</td>
+                                <td class="border p-2 text-gray-800">{{ $trx->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="border p-2 text-gray-800">RM{{ number_format($trx->total_price, 2) }}</td>
+                                <td class="border p-2 text-gray-800">{{ $trx->payment_method }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Include Chart.js -->
+<!-- Chart.js for Payment Method Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Prepare data for the Low Stock Inventory chart
-    const lowStockLabels = @json($lowStockInventory->pluck('name')); // Product names
-    const lowStockData = @json($lowStockInventory->pluck('quantity')); // Quantities
+    const paymentLabels = @json($paymentLabels);
+    const paymentData = @json($paymentData);
 
-    // Create the chart
-    const ctx = document.getElementById('lowStockChart').getContext('2d');
-    new Chart(ctx, {
+    const ctxPayment = document.getElementById('paymentMethodChart').getContext('2d');
+    new Chart(ctxPayment, {
         type: 'bar',
         data: {
-            labels: lowStockLabels,
+            labels: paymentLabels,
             datasets: [{
-                label: 'Quantity',
-                data: lowStockData,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                label: 'Total Sales (RM)',
+                data: paymentData,
+                backgroundColor: [
+                    'rgba(34,197,94,0.7)',
+                    'rgba(59,130,246,0.7)',
+                    'rgba(244,63,94,0.7)',
+                    'rgba(251,191,36,0.7)',
+                    'rgba(139,92,246,0.7)'
+                ],
+                borderColor: [
+                    'rgba(34,197,94,1)',
+                    'rgba(59,130,246,1)',
+                    'rgba(244,63,94,1)',
+                    'rgba(251,191,36,1)',
+                    'rgba(139,92,246,1)'
+                ],
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true, // Ensure the chart respects the canvas size
             plugins: {
-                legend: {
-                    display: false
-                }
+                legend: { display: false }
             },
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { beginAtZero: true }
             }
         }
     });
