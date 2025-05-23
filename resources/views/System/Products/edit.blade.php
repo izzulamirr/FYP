@@ -14,12 +14,34 @@
         <div class="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
             <h1 class="text-2xl font-bold text-gray-800">Edit Product</h1>
         </div>
+        @if ($errors->any())
+    <div class="mb-4 text-red-500">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
         <form action="{{ route('products.update', $product->id) }}" method="POST" class="mt-6 bg-white p-6 shadow-md rounded-lg">
     @csrf
     <input type="hidden" name="_method" value="PUT">
     <!-- Edit Product Form -->
+
+     <!-- Show current image -->
+@if($product->image)
+    <div class="mb-4 flex justify-center">
+        <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-64 h-64 object-cover rounded mb-2 shadow">
+    </div>
+@endif
     
+      <!-- File input for new image 
+    <div class="mb-4">
+        <label for="image" class="block font-semibold mb-1">Change Image</label>
+        <input type="file" name="image" id="image" accept="image/*" class="block w-full">
+        <small class="text-gray-500">Leave blank to keep current image.</small>
+    </div>-->
   
 
             <!-- SKU (Non-editable) -->
@@ -33,6 +55,12 @@
                 <label for="name" class="block text-gray-700 font-bold mb-2">Product Name</label>
                 <input type="text" name="name" id="name" value="{{ $product->name }}" placeholder="Enter product name" required class="p-2 border rounded w-full">
             </div>
+            
+            
+            <div class="mb-4">
+    <label for="barcode" class="block text-gray-700 font-bold mb-2">Barcode</label>
+    <input type="text" name="barcode" id="barcode" value="{{ old('barcode', $product->barcode) }}" class="p-2 border rounded w-full bg-gray-100" readonly>
+</div>
 
             <!-- Quantity -->
             <div class="mb-4">
@@ -68,9 +96,30 @@
     <label for="image" class="block text-gray-700 font-bold mb-2">Product Image</label>
     <input type="file" name="image" id="image" class="p-2 border rounded w-full">
 </div>--> 
-            <!-- Submit Button -->
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Update Product</button>
-        </form>
+            <!-- Submit and Delete Buttons Row -->
+<!-- Update Product Form -->
+<form action="{{ route('products.update', $product->id) }}" method="POST" class="mt-6 bg-white p-6 shadow-md rounded-lg">
+    @csrf
+    @method('PUT')
+    <!-- ...your update fields and Update Product button... -->
+    <div class="flex justify-between items-center mt-6">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded shadow">
+            Update Product
+        </button>
     </div>
+</form>
+
+<!-- Delete Product Form (OUTSIDE the update form) -->
+@if(auth()->user() && auth()->user()->hasPermission('Delete'))
+<div class="flex justify-end mt-4">
+    <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow">
+            Delete Product
+        </button>
+    </form>
+</div>
+@endif
 </body>
 </html>

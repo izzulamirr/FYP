@@ -87,7 +87,7 @@ public function update(Request $request, $supplier_code)
     $supplier->update($request->only('name', 'email', 'phone'));
 
     // Redirect back with a success message
-    return redirect()->route('suppliers.dashboard')->with('success', 'Supplier updated successfully.');
+   return redirect()->route('suppliers.dashboard')->with('success', 'Supplier update successfully.');
 }
 
 public function destroy($supplier_code)

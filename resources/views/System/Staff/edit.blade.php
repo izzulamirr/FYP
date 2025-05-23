@@ -8,6 +8,16 @@
             @csrf
             @method('PUT')
 
+            @if ($errors->any())
+    <div class="mb-4 text-red-500">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-bold mb-2">Name:</label>
                 <input type="text" name="name" id="name" value="{{ $user->name }}" 
@@ -27,6 +37,15 @@
                     <option value="staff" {{ $user->role == 'staff' ? 'selected' : '' }}>Staff</option>
                 </select>
             </div>
+
+
+       <div class="mb-4">
+    <label for="profile_picture" class="block font-semibold mb-1">Profile Picture</label>
+    <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="block w-full">
+    @if($user->profile_picture)
+        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" class="w-20 h-20 rounded-full mt-2">
+    @endif
+</div>
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
                 Update Staff

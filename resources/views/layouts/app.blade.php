@@ -6,7 +6,12 @@
     <title>Smart Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">  
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <style> 
         body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
@@ -18,6 +23,7 @@
         <div class="p-5 text-center text-2xl font-bold border-b border-gray-700">
             Smart Inventory
         </div>
+        
 
         <!-- Navigation -->
         <nav class="flex-grow mt-4">
@@ -138,6 +144,14 @@
                 @endif
             </ul>
         </nav>
+
+          <!-- Back Button -->
+        <button onclick="window.history.back();" class="mx-4 my-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+        </button>
 
         <!-- Logout -->
         <form method="POST" action="{{ route('logout') }}" class="mt-auto">

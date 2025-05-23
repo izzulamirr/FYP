@@ -36,7 +36,7 @@
                             <th class="p-4 text-left font-semibold text-gray-700">Cost Price</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Price</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Supplier Code</th>
-@if (auth()->user() && auth()->user()->hasPermission('Create'))
+                            @if (auth()->user() && auth()->user()->hasPermission('Update'))
 
                             <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
                                 @endif
@@ -60,7 +60,7 @@
                                 <td class="p-4 border-b text-gray-800">${{ number_format($product->price, 2) }}</td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->supplier_code }}</td>
                                    
-@if (auth()->user() && auth()->user()->hasPermission('Create'))
+@if (auth()->user() && auth()->user()->hasPermission('Update'))
                                 <td class="p-4 border-b">
                                     <a href="{{ route('products.edit', $product->id) }}" 
                                        class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-200" 

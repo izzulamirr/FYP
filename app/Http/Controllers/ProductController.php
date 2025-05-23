@@ -40,4 +40,12 @@ class ProductController extends Controller
 
     return redirect()->back()->with('success', 'Product quantity updated successfully.');
 }
+
+public function destroy($id)
+{
+    $product = Product::findOrFail($id);
+    $product->delete();
+
+    return redirect()->route('inventory.index')->with('success', 'Product deleted successfully.');
+}
 }

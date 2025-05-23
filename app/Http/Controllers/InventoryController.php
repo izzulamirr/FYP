@@ -19,7 +19,10 @@ class InventoryController extends Controller
 
     $products = $query->get();
 
-    return view('System.Inventory', compact('categories', 'products'));
+// In your controller
+    $recentProducts = Product::orderBy('created_at', 'desc')->take(10)->get();
+
+    return view('System.Inventory', compact('categories', 'products', 'recentProducts'));
 }
 
     public function list(Request $request)
@@ -70,15 +73,28 @@ class InventoryController extends Controller
             'price' => 'required|numeric',
             'category' => 'required',
             'barcode' => 'nullable|string|unique:products,barcode,' . $id, // Allow updating barcode
+            //'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+
         ]);
 
         // Find the product and update its details
         $product = Product::findOrFail($id);
-        $product->update($request->all());
+       // Find the product and update its details
+    $product = Product::findOrFail($id);
 
-        // Redirect back with a success message
-        return redirect()->route('products.view', ['category' => $product->category])->with('success', 'Product updated successfully.');
-    }
+    $product->name = $request->name;
+    $product->quantity = $request->quantity;
+    $product->cost_price = $request->cost_price;
+    $product->price = $request->price;
+    $product->category = $request->category;
+    $product->barcode = $request->barcode; // This will keep or update the barcode
+
+    $product->save();
+
+    // Redirect back with a success message
+    return redirect()->route('products.view', ['category' => $product->category])
+        ->with('success', 'Product updated successfully.');
+}
 
     // Store a new product in the database
    public function store(Request $request)
@@ -93,6 +109,7 @@ class InventoryController extends Controller
         'category' => 'required|string|max:255',
         'supplier_code' => 'required|string|max:255',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+
     ]);
 
     // Handle the image upload
@@ -128,10 +145,11 @@ class InventoryController extends Controller
     ]);
 
     // Redirect back with a success message
-    return redirect()->route('products.list')->with('success', 'Product added successfully.');
+   // return redirect()->route('products.list')->with('success', 'Product added successfully.');
    
 // Redirect back with a success message
-    return redirect()->route('products.create')->with('success', 'Product added successfully.');
+return redirect()->route('inventory.index')->with('success', 'Product added successfully.');
+
 }
     public function destroy($id)
     {
