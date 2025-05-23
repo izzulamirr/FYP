@@ -5,16 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Include Google Fonts for Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
-        /* Apply Poppins font globally */
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-
+        body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
 <body class="bg-gray-100 flex fade-enter">
@@ -32,28 +25,46 @@
                 <!-- Dashboard -->
                 <li>
                     <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
-                        <span class="mr-3">🏠</span> Dashboard
+                        <span class="mr-3">
+                            <!-- Home Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v6a2 2 0 002 2h4a2 2 0 002-2v-6m-6 0h6" />
+                            </svg>
+                        </span>
+                        Dashboard
                     </a>
                 </li>
 
                 <!-- Transactions -->
                 <li>
                     <a href="{{ route('transactions.index') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
-                        <span class="mr-3">💰</span> Transactions
+                        <span class="mr-3">
+                            <!-- Credit Card Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H9a2 2 0 00-2 2v2M5 11h14M5 15h14M7 19h10a2 2 0 002-2v-6a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                            </svg>
+                        </span>
+                        Transactions
                     </a>
                 </li>
 
                 <!-- Inventory Dropdown -->
                 <li>
                     <button class="w-full flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200" onclick="toggleDropdown('inventoryDropdown')">
-                        <span class="mr-3">📦</span> Inventory
-                        <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <span class="mr-3">
+                            <!-- Cube Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12l-8 4-8-4m16 0l-8-4-8 4m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6" />
+                            </svg>
+                        </span>
+                        Inventory
+                        <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
                     <ul id="inventoryDropdown" class="hidden pl-6 mt-2 space-y-2">
                         <li>
-                            <a href="{{ route('Inventory') }}" class="flex items-center px-4 py-2 hover:bg-gray-700 rounded-lg transition duration-200">
+                            <a href="{{ route('inventory.index') }}" class="flex items-center px-4 py-2 hover:bg-gray-700 rounded-lg transition duration-200">
                                 Inventory Dashboard
                             </a>
                         </li>
@@ -68,8 +79,14 @@
                 <!-- Suppliers Dropdown -->
                 <li>
                     <button class="w-full flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200" onclick="toggleDropdown('suppliersDropdown')">
-                        <span class="mr-3">📊</span> Suppliers
-                        <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <span class="mr-3">
+                            <!-- Truck Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 2v2m-6 0h6m-6 0a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2m-6 0a2 2 0 01-2-2v-2a2 2 0 012-2h6a2 2 0 012 2v2a2 2 0 01-2 2" />
+                            </svg>
+                        </span>
+                        Suppliers
+                        <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
@@ -84,8 +101,7 @@
                                 View Orders
                             </a>
                         </li>
-                        @if (Auth::user()->role === 'admin')
-                        <li>
+@if (\App\Models\Role::where('name', 'admin')->where('user_id', Auth::id())->exists())                        <li>
                             <a href="{{ route('orders.restock') }}" class="flex items-center px-4 py-2 hover:bg-gray-700 rounded-lg transition duration-200">
                                 Restock Inventory
                             </a>
@@ -97,15 +113,26 @@
                 <!-- Reports -->
                 <li>
                     <a href="{{ route('reports.dashboard') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
-                        <span class="mr-3">📊</span> Reports
+                        <span class="mr-3">
+                            <!-- Chart Bar Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m4 0v-2a2 2 0 012-2h2a2 2 0 012 2v2m4 0v-10a2 2 0 00-2-2h-2a2 2 0 00-2 2v10" />
+                            </svg>
+                        </span>
+                        Reports
                     </a>
                 </li>
 
                 <!-- Staff -->
-                @if (Auth::user()->role === 'admin')
-                <li>
+@if (\App\Models\Role::where('name', 'admin')->where('user_id', Auth::id())->exists())                <li>
                     <a href="{{ route('staff.index') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
-                        <span class="mr-3">👥</span> Staff
+                        <span class="mr-3">
+                            <!-- Users Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M16 3.13a4 4 0 010 7.75M8 3.13a4 4 0 010 7.75" />
+                            </svg>
+                        </span>
+                        Staff
                     </a>
                 </li>
                 @endif
@@ -118,20 +145,23 @@
             <button type="submit" class="relative w-full flex items-center px-4 py-3 rounded-lg overflow-hidden group transition duration-200">
                 <span class="absolute inset-0 bg-red-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
                 <span class="relative flex items-center text-white group-hover:text-white transition duration-200">
-                    <span class="mr-3">🚪</span> Log Out
+                    <span class="mr-3">
+                        <!-- Logout Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
+                        </svg>
+                    </span>
+                    Log Out
                 </span>
             </button>
         </form>
     </div>
 
-  
     <script>
         function toggleDropdown(id) {
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
         }
-
-        // Add fade-in effect on page load
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.querySelector('body');
             body.classList.add('fade-enter-active');

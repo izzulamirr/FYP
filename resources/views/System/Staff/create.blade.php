@@ -25,6 +25,14 @@
                        class="w-full border-gray-300 rounded-md shadow-sm" required>
             </div>
 
+            <div class="mb-4">
+                <label for="role" class="block text-gray-700 font-bold mb-2">Role:</label>
+                <select name="role" id="role" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
+
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
                 Add Staff
             </button>

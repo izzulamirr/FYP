@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-        $table->string('order_id')->primary(); // Set order_id as the primary key
+        Schema::table('users', function (Blueprint $table) {
+        //            $table->dropColumn('role');
 
         });
     }
@@ -22,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 };

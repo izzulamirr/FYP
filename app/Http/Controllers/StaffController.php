@@ -3,82 +3,114 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Ensure the User model is imported
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
     // Display all users
-public function index()
-{
-    // Fetch all users
-    $users = User::all(); // Ensure the User model is imported
+    public function index()
+    {
+        // Eager load the user-specific role
+        $users = User::with('role.permissions')->get();
+        return view('System.Staff', compact('users'));
+    }
 
-    // Pass the $users variable to the view
-    return view('System.Staff', compact('users'));
-}
-    public function create()
+    public function updateRole(Request $request, $id)
+    {
+        $request->validate([
+            'role' => 'required|in:admin,staff',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        // Update or create the user-specific role
+        Role::updateOrCreate(
+            ['user_id' => $user->id],
+            ['name' => $request->role]
+        );
+
+        return redirect()->back()->with('success', 'Role updated successfully.');
+    }
+
+    public function permissions($id)
 {
-    // Return the view for creating a new staff member
-    return view('System.Staff.create');
+    $user = User::with('role.permissions')->findOrFail($id);
+    $allPermissions =Permission::all();
+    return view('System.Staff.permissions', compact('user', 'allPermissions'));
 }
+
+public function updatePermissions(Request $request, $id)
+{
+    $user = User::with('role')->findOrFail($id);
+    $role = $user->role;
+    if ($role) {
+        $role->permissions()->sync($request->permissions ?? []);
+    }
+    return redirect()->route('staff.index')->with('success', 'Permissions updated.');
+}
+
+    public function create()
+    {
+        return view('System.Staff.create');
+    }
 
     public function edit($id)
-{
-    // Fetch the staff member by ID
-    $user = User::findOrFail($id);
-
-    // Return the edit view with the user data
-    return view('System.Staff.edit', compact('users'));
-}
-
-public function update(Request $request, $id)
-{
-    // Validate the request
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $id,
-        'role' => 'required|string|in:admin,staff',
-    ]);
-
-    // Find the user and update their details
-    $user = User::findOrFail($id);
-    $user->update($request->only('name', 'email', 'role'));
-
-    // Redirect back with a success message
-    return redirect()->route('Staff')->with('success', 'Staff updated successfully.');
-}
-
-    // Store a new staff member
-    public function store(Request $request)
     {
-        // Validate the incoming request
+        $user = User::findOrFail($id);
+        return view('System.Staff.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'role' => 'required|string|in:admin,staff',
         ]);
 
-        // Create a new user with the 'staff' role
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'user', // Default role for new staff
-        ]);
+        $user = User::findOrFail($id);
+        $user->update($request->only('name', 'email'));
 
-        // Redirect back with a success message
-        return redirect()->route('Staff')->with('success', 'Staff member added successfully.');
+        // Update or create the user-specific role
+        Role::updateOrCreate(
+            ['user_id' => $user->id],
+            ['name' => $request->role]
+        );
+
+        return redirect()->route('Staff')->with('success', 'Staff updated successfully.');
     }
 
-    // Delete a staff member
+   public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+    ]);
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => \Hash::make($request->password),
+    ]);
+
+    Role::create([
+        'user_id' => $user->id,
+        'name' => $request->role,
+    ]);
+
+    return redirect()->route('staff.index')->with('success', 'Staff member added successfully.');
+}
+
     public function destroy($id)
     {
-        // Find the user by ID and delete them
         $user = User::findOrFail($id);
+        // Optionally delete the user's role as well
+        Role::where('user_id', $user->id)->delete();
         $user->delete();
 
-        // Redirect back with a success message
-        return redirect()->route('Staff')->with('success', 'Staff member deleted successfully.');
-    }
+        return redirect()->route('staff.index')->with('success', 'Staff deleted.');    }
 }
