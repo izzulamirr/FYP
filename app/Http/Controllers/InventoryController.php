@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
@@ -7,17 +8,19 @@ use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
-    public function index()
-    {
-        // Retrieve the 10 most recently added products
-        $products = Product::latest()->take(10)->get();
+    public function index(Request $request)
+{
+    $categories = \App\Models\Product::distinct()->pluck('category');
+    $query = \App\Models\Product::query();
 
-        // Fetch unique categories from the products table
-        $categories = Product::select('category')->distinct()->pluck('category');
-
-        // Pass the products to the view
-        return view('System.Inventory', compact('products', 'categories'));
+    if ($request->has('category')) {
+        $query->where('category', $request->category);
     }
+
+    $products = $query->get();
+
+    return view('System.Inventory', compact('categories', 'products'));
+}
 
     public function list(Request $request)
     {

@@ -22,11 +22,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('order_id'); // Drop the column
-        });
-
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->string('order_id')->after('id'); // Recreate the column without a default value
-        });
-    }
+             if (Schema::hasColumn('orders', 'order_id')) {
+            $table->dropPrimary(['order_id']);
+            $table->dropColumn('order_id');
+        }
+    });
+}
 };

@@ -29,7 +29,7 @@
             </div>
 
             <!-- Product Summary -->
-            <a href="{{ route('Inventory') }}" class="block">
+            <a href="{{ route('inventory.index') }}" class="block">
                 <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300">
                     <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
                     <p class="text-lg">Total Products: <span class="font-bold">{{ $totalProducts }}</span></p>

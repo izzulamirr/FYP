@@ -94,16 +94,16 @@
             <!-- Top Selling Products Table (Minimizable) -->
     <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
         <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
-    <span class="font-semibold text-gray-700">Profit & Loss</span>
+    <span class="font-semibold text-gray-700">Top Selling Products</span>
     <span x-text="open ? '−' : '+'"></span>
         </button>
         <div x-show="open" class="p-4 border-t">
             <table class="w-full table-auto">
                 <thead>
-                    <tr class="bg-gray-200">
-                        <th class="p-2 text-left">Product Name</th>
-                        <th class="p-2 text-left">Units Sold</th>
-                        <th class="p-2 text-left">Total Sales (RM)</th>
+                    <tr class="bg-gray-900">
+                        <th class="text-gray-100 p-2 text-left">Product Name</th>
+                        <th class="text-gray-100 p-2 text-left">Units Sold</th>
+                        <th class="text-gray-100 p-2 text-left">Total Sales (RM)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -156,34 +156,7 @@
             </div>
         </div>
 
-        <!-- Recent Transactions Section -->
-        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
-            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
-                <span class="font-semibold text-gray-700">Recent Transactions</span>
-                <span x-text="open ? '−' : '+'"></span>
-            </button>
-            <div x-show="open" class="p-4 border-t">
-                <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm">
-                    <thead style="background-color: #1e293b;">
-                        <tr>
-                            <th class="border p-2 text-left font-semibold text-white">Order ID</th>
-                            <th class="border p-2 text-left font-semibold text-white">Date</th>
-                            <th class="border p-2 text-left font-semibold text-white">Total</th>
-                            <th class="border p-2 text-left font-semibold text-white">Payment Method</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($recentTransactions as $trx)
-                            <tr class="hover:bg-gray-100 transition duration-200">
-                                <td class="border p-2 text-gray-800">{{ $trx->order_id }}</td>
-                                <td class="border p-2 text-gray-800">{{ $trx->created_at->format('Y-m-d H:i') }}</td>
-                                <td class="border p-2 text-gray-800">RM{{ number_format($trx->total_price, 2) }}</td>
-                                <td class="border p-2 text-gray-800">{{ $trx->payment_method }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        
         </div>
     </div>
 </div>
