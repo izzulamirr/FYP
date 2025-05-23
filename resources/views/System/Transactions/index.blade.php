@@ -80,8 +80,7 @@
                                 <td class="p-4 text-gray-800">{{ $transaction->order_id }}</td>
                                 <td class="p-4 text-gray-800">{{ $transaction->created_at->format('Y-m-d') }}</td>
                                 <td class="p-4 text-gray-800">
-                                    {{ $transaction->payment_time ? $transaction->payment_time->format('H:i:s') : 'N/A' }}
-                                </td>
+                                {{ $transaction->created_at->format(' h:i A') }}                                  </td>
                                 <td class="p-4 text-gray-800">RM {{ number_format($transaction->total_price, 2) }}</td>
                                 <td class="p-4 text-gray-800">{{ $transaction->payment_method }}</td>
                                 <td class="p-4">

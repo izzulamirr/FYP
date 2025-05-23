@@ -12,13 +12,10 @@ class OrderController extends Controller
 {
     public function index()
     {  
-            // Fetch all orders from the database
-            $orders = Order::all();
+// Fetch all orders except rejected ones
+    $orders = Order::where('delivery_status', '!=', 'Rejected')->get();
 
-            
-    
-            // Pass the orders to the view
-            return view('System.Supplies.Supplies', compact('orders'));
+    return view('System.Supplies.Supplies', compact('orders'));
         
     }
 
@@ -28,7 +25,11 @@ class OrderController extends Controller
     $suppliers = Supplier::all();
 
     // Return the restock view
+    if (!auth()->user()->hasPermission('Restock')) {
+    abort(403, 'Unauthorized');
+}   else {
     return view('System.Supplies.restock', compact('suppliers'));
+}
 }
 
 public function processRestock(Request $request)
@@ -51,7 +52,7 @@ public function processRestock(Request $request)
     $total = $product->cost_price * $request->quantity;
 
     Order::create([
-        'order_id' => 'ORD' . strtoupper(uniqid()),
+        'order_id' => 'SORD' . mt_rand(100000, 999999),
         'supplier_code' => $supplier->supplier_code,
         'supplier_name' => $supplier->name,
         'total' => $total,
@@ -104,6 +105,16 @@ public function confirm($order_id)
     $order->save();
 
     return redirect()->back()->with('success', 'Order confirmed and inventory updated!');
+}
+
+public function reject($order_id)
+{
+    $order = Order::where('order_id', $order_id)->firstOrFail();
+    $order->delivery_status = 'Rejected';
+    $order->completed_date = now();
+    $order->save();
+
+    return redirect()->back()->with('success', 'Order has been rejected.');
 }
    
 }

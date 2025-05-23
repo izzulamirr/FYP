@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
   // Add the order_id column without specifying a position
-        $table->string('order_id')->unique();
+      //  $table->string('order_id')->unique();
 
         // Set order_id as the primary key
-        $table->primary('order_id');
+       // $table->primary('order_id');
              });
     }
 

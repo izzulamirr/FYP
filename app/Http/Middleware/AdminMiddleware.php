@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\StaffController;
+use App\Models\Role; // Ensure the Role model is imported
 
 class AdminMiddleware
 {
@@ -16,15 +17,20 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {// Check if the user is authenticated
+        // Check if the user is authenticated
+        
         if (!auth()->check()) {
-            return redirect()->route('login'); // Redirect to login if not authenticated
+            return redirect()->route('login');
         }
 
-        // Allow only 'admin' role
-        if (auth()->user()->role !== 'admin') {
-            abort(403, 'Unauthorized.'); // Block access if the role is not 'admin'
-        }
+        // Check if there is a role with name 'admin' and user_id == current user's id
+        $isAdmin = Role::where('name', 'admin')
+            ->where('user_id', auth()->id())
+            ->exists();
 
+        if (!$isAdmin) {
+            abort(403, 'Unauthorized.');
+        }
         return $next($request);
     }
 }

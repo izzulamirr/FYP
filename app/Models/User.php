@@ -7,14 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
-    use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -27,13 +25,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
     ];
 
 
     protected $table = 'users'; // Explicitly define the table name (optional)
 
     /**
+     * 
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -45,9 +43,9 @@ class User extends Authenticatable
         'two_factor_secret',
     ];
 
-    protected $attributes = [
-        'role' => 'user', // Default role is 'user' if not specified
-    ];
+   // protected $attributes = [
+    //    'role' => 'staff', // Default role is 'user' if not specified
+    //];
 
     /**
      * The attributes that should be cast.
@@ -66,4 +64,16 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+public function role()
+{
+    return $this->hasOne(\App\Models\Role::class, 'user_id', 'id');
+}
+public function hasPermission($permission)
+{
+    return $this->role && $this->role->permissions->contains('Description', $permission);
+}
+
+
 }

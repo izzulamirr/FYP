@@ -11,7 +11,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\Auth\RegisterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +28,11 @@ use App\Http\Controllers\OrderController;
    // return view('welcome');
 //});
 
+
+Route::post('/admin/assign-permissions', [AdminController::class, 'assignDefaultPermissions'])->name('admin.assignPermissions');
+Route::get('/staff/{id}/permissions', [StaffController::class, 'permissions'])->name('staff.permissions');
+Route::put('/staff/{id}/permissions', [StaffController::class, 'updatePermissions'])->name('staff.updatePermissions');
+
 Route::get('/', function () {
     return view('System.Homepage');
      })->name('Home');
@@ -39,6 +44,11 @@ Route::get('/Supplies', function () {
     Route::get('/suppliers', [SuppliersController::class, 'list'])->name('suppliers.list');
 
 
+Route::get('register', [RegisterController::class, 'create'])
+    ->middleware('guest')
+    ->name('register');
+Route::post('register', [RegisterController::class, 'store'])
+    ->middleware('guest');
   
 
 Route::get('/Inventory', function () {
@@ -46,11 +56,11 @@ Route::get('/Inventory', function () {
     })->name('Inventory');
 
     
-    Route::middleware(['auth', 'admin'])->group(function () {
-        Route::get('/Staff', function () {
-            return view('System.Staff');
-        })->name('Staff');
-    });
+    //Route::middleware(['auth', 'admin'])->group(function () {
+    //    Route::get('/Staff', function () {
+    //        return view('System.Staff');
+    //    })->name('Staff');
+   // });
 
     //camera
     Route::get('/camera', function () {
@@ -59,10 +69,9 @@ Route::get('/Inventory', function () {
 
 
 
-    Route::middleware([
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified',
+   Route::middleware([
+    'auth',
+    'verified',
     ])->group(function () {
         // Dashboard route using DashboardController
         Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
@@ -92,7 +101,7 @@ Route::post('/logout', function () {
 
 
 //Products pages
-Route::get('/Inventory', [InventoryController::class, 'index'])->name('Inventory');
+Route::get('/Inventory', [InventoryController::class, 'index'])->name('inventory.index');
 Route::get('/products', [InventoryController::class, 'list'])->name('products.list');
 //Route::get('/products/create', [InventoryController::class, 'create'])->name('products.create');
 Route::get('/products/category/{category}', [InventoryController::class, 'list'])->name('products.view');
@@ -121,7 +130,7 @@ Route::post('/transactions/confirm', [TransactionController::class, 'confirm'])-
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Display all orders
 Route::get('/orders/invoice_slip/{id}', [OrderController::class, 'showInvoice'])->name('orders.invoice_slip'); // Display invoice for a specific order
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Store a new order
-
+Route::post('/orders/reject/{order_id}', [OrderController::class, 'reject'])->name('orders.reject');
 
 
 
@@ -145,6 +154,7 @@ Route::post('/orders/restock', [OrderController::class, 'processRestock'])->name
 Route::get('/api/suppliers/{supplier_code}/products', [OrderController::class, 'getProductsBySupplier']);
 Route::post('/orders/confirm/{order}', [OrderController::class, 'confirm'])->name('supplies.confirm');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::post('/orders/{order}/upload-invoice', [OrderController::class, 'uploadInvoice'])->name('orders.uploadInvoice');
 
 
 
@@ -157,7 +167,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
-});
+     Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
+     Route::post('/staff/{id}/role', [StaffController::class, 'updateRole'])->name('staff.updateRole');
+    //Route::get('/staff', [StaffController::class, 'index'])->name('Staff');
+    });
+
+
 
 
 

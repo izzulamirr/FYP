@@ -70,8 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
-
+    'timezone' => 'Asia/Kuala_Lumpur',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

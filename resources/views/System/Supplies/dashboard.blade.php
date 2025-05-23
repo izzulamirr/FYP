@@ -42,7 +42,7 @@
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-semibold text-gray-800">Suppliers List</h2>
 
-            @if (Auth::user()->role === 'admin')
+@if (auth()->user() && auth()->user()->hasPermission('Create'))
             <a href="{{ route('suppliers.create') }}" 
                class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
                 + Add New Supplier
@@ -52,15 +52,15 @@
 
         <div class="overflow-x-auto">
             <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead class="bg-gray-200">
+                <thead class="bg-gray-900">
                     <tr>
-                        <th class="p-4 text-left font-semibold text-gray-700">Supplier Code</th>
-                        <th class="p-4 text-left font-semibold text-gray-700">Name</th>
-                        <th class="p-4 text-left font-semibold text-gray-700">Email</th>
-                        <th class="p-4 text-left font-semibold text-gray-700">Phone</th>
-                        <th class="p-4 text-left font-semibold text-gray-700">Status</th>
+                        <th class="p-4 text-left font-semibold text-gray-100">Supplier Code</th>
+                        <th class="p-4 text-left font-semibold text-gray-100">Name</th>
+                        <th class="p-4 text-left font-semibold text-gray-100">Email</th>
+                        <th class="p-4 text-left font-semibold text-gray-100">Phone</th>
+                        <th class="p-4 text-left font-semibold text-gray-100">Status</th>
                             @if (Auth::user()->role === 'admin')
-                        <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
+                        <th class="p-4 text-left font-semibold text-gray-100">Actions</th>
                             @endif
                     </tr>
                 </thead>
