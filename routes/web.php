@@ -121,9 +121,6 @@ Route::delete('/products/{product}', [ProductController::class, 'destroy'])->nam
 //scanner
 
 Route::get('/api/products/{barcode}', [ProductController::class, 'getProductByBarcode']);
-
-//Transaction
-// Route to list all transactions
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 // Route to show a specific transaction
 Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
