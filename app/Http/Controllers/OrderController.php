@@ -117,4 +117,22 @@ public function reject($order_id)
     return redirect()->back()->with('success', 'Order has been rejected.');
 }
    
+
+public function uploadInvoice(Request $request, $order_id)
+{
+    $request->validate([
+        'invoice_slip' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048', // Accepts PDF and images, max 2MB
+    ]);
+
+    $order = Order::where('order_id', $order_id)->firstOrFail();
+
+    // Store the uploaded file
+    $path = $request->file('invoice_slip')->store('invoices', 'public');
+
+    // Save the invoice path to the order (use the correct column name)
+    $order->invoice_slip = $path;
+    $order->save();
+
+    return redirect()->back()->with('success', 'Invoice uploaded successfully.');
+}
 }

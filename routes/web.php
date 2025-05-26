@@ -44,6 +44,8 @@ Route::get('/Supplies', function () {
     Route::get('/suppliers', [SuppliersController::class, 'list'])->name('suppliers.list');
 
 
+    
+
 Route::get('register', [RegisterController::class, 'create'])
     ->middleware('guest')
     ->name('register');
@@ -132,7 +134,7 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); 
 Route::get('/orders/invoice_slip/{id}', [OrderController::class, 'showInvoice'])->name('orders.invoice_slip'); // Display invoice for a specific order
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Store a new order
 Route::post('/orders/reject/{order_id}', [OrderController::class, 'reject'])->name('orders.reject');
-
+Route::post('/orders/{order_id}/upload-invoice', [OrderController::class, 'uploadInvoice'])->name('orders.uploadInvoice');
 
 
 //suppliers

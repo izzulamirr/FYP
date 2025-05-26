@@ -98,7 +98,7 @@ public function updatePermissions(Request $request, $id)
         ['name' => $request->role]
     );
 
-    return redirect()->route('Staff')->with('success', 'Staff updated successfully.');
+    return redirect()->route('staff.index')->with('success', 'Staff updated successfully.');
 }
 
    public function store(Request $request)

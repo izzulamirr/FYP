@@ -26,6 +26,23 @@
         <!-- Login Section -->
         <div class="mt-12 max-w-md mx-auto bg-white p-8 shadow-lg rounded-lg">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Staff Login</h2>
+
+            <!-- Error and status messages -->
+    @if (session('error'))
+        <div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="mb-4 p-3 bg-red-100 text-red-700 rounded text-left">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <!-- Email Input -->

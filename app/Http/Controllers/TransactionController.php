@@ -73,7 +73,7 @@ public function store(Request $request)
 
     // Create the transaction
     $transaction = Transaction::create([
-        'order_id' => uniqid('ORD'),
+        'purchase_id' => uniqid('PUR'),
         'total_price' => 0, // Temporary, will update later
         'payment_method' => $request->payment_method,
     ]);
@@ -180,7 +180,7 @@ public function store(Request $request)
 
     // Optionally store the transaction in the database
     Transaction::create([
-        'order_id' => uniqid('ORD'),
+        'purchase_id' => uniqid('PUR'),
         'products' => json_encode($transaction['items']),
         'quantity' => array_sum(array_column($transaction['items'], 'quantity')),
         'total_price' => $transaction['total'],

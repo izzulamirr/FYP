@@ -77,7 +77,7 @@
                     <tbody>
                         @foreach ($transactions as $transaction)
                             <tr class="hover:bg-gray-100 transition duration-200">
-                                <td class="p-4 text-gray-800">{{ $transaction->order_id }}</td>
+                                <td class="p-4 text-gray-800">{{ $transaction->purchase_id }}</td>
                                 <td class="p-4 text-gray-800">{{ $transaction->created_at->format('Y-m-d') }}</td>
                                 <td class="p-4 text-gray-800">
                                 {{ $transaction->created_at->format(' h:i A') }}                                  </td>
