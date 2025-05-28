@@ -11,43 +11,28 @@ class TransactionController extends Controller
 {
 
     public function index(Request $request)
-    {
-        $query = \App\Models\Transaction::query();
+{
+    $query = \App\Models\Transaction::query();
 
-        // Search by Order ID or Payment Method
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('order_id', 'like', "%{$search}%")
-                  ->orWhere('payment_method', 'like', "%{$search}%");
-            });
-        }
-
-        // Sort by Date or Payment Method
-        if ($request->filled('sort')) {
-            if ($request->input('sort') === 'date') {
-                $query->orderBy('created_at', 'desc');
-            } elseif ($request->input('sort') === 'payment_method') {
-                $query->orderBy('payment_method', 'asc');
-            }
-        } else {
-            $query->orderBy('created_at', 'desc'); // Default sort
-        }
-
-        // Filter by Date
-        if ($request->filled('date')) {
-            $query->whereDate('created_at', $request->input('date'));
-        }
-
-        // Filter by Payment Method
-        if ($request->filled('payment_method')) {
-            $query->where('payment_method', $request->input('payment_method'));
-        }
-
-        $transactions = $query->get();
-
-        return view('System.Transactions.index', compact('transactions'));
+    // Filter by Order ID (purchase_id)
+    if ($request->filled('search')) {
+        $query->where('purchase_id', 'like', '%' . $request->search . '%');
     }
+
+    // Filter by date
+    if ($request->filled('date')) {
+        $query->whereDate('created_at', $request->date);
+    }
+
+    // Filter by payment method
+    if ($request->filled('payment_method')) {
+        $query->where('payment_method', $request->payment_method);
+    }
+
+    $transactions = $query->orderBy('created_at', 'desc')->paginate(15);
+
+    return view('System.Transactions.index', compact('transactions'));
+}
 
     public function show($id)
     {

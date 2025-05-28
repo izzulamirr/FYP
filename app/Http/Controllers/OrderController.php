@@ -22,13 +22,13 @@ class OrderController extends Controller
     public function restock()
 {
     // Fetch all suppliers
-    $suppliers = Supplier::all();
+    $products = \App\Models\Product::with('supplier')->get();
 
     // Return the restock view
     if (!auth()->user()->hasPermission('Restock')) {
     abort(403, 'Unauthorized');
 }   else {
-    return view('System.Supplies.restock', compact('suppliers'));
+return view('System.Supplies.restock', compact('products'));
 }
 }
 
@@ -40,28 +40,45 @@ public function processRestock(Request $request)
         'quantity' => 'required|integer|min:1',
     ]);
 
-    $supplier = Supplier::where('supplier_code', $request->supplier_code)->firstOrFail();
-    $product = Product::findOrFail($request->product_id);
+    // Find the product
+    $product = \App\Models\Product::where('id', $request->product_id)
+        ->where('supplier_code', $request->supplier_code)
+        ->first();
 
-    $products = [[
-        'name' => $product->name,
-        'quantity' => $request->quantity,
-        'cost_price' => $product->cost_price,
-    ]];
+    if (!$product) {
+        return back()->withErrors(['product_id' => 'Product and supplier do not match.']);
+    }
 
+    // Increase the product quantity
+    $product->quantity += $request->quantity;
+    $product->save();
     $total = $product->cost_price * $request->quantity;
+$supplierName = $product->supplier ? $product->supplier->name : null;
 
-    Order::create([
+
+    // Optionally, create an order record (if you want to track restocks)
+    \App\Models\Order::create([
         'order_id' => 'SORD' . mt_rand(100000, 999999),
-        'supplier_code' => $supplier->supplier_code,
-        'supplier_name' => $supplier->name,
+        'product_id' => $product->id,
+        'supplier_code' => $request->supplier_code,
+        'quantity' => $request->quantity,
+        'supplier_name' => $supplierName, // <-- Add this line
+
         'total' => $total,
         'delivery_status' => 'pending',
         'order_date' => now(),
-        'products' => json_encode($products),
+        'products' => json_encode([
+        [
+            'name' => $product->name,
+            'quantity' => $request->quantity,
+            'sku' => $product->sku,
+        ]
+    ]),
+        //'delivery_status' => 'Restocked',
+        // Add other fields as needed
     ]);
 
-    return redirect()->route('orders.restock')->with('success', 'Order placed successfully.');
+    return back()->with('success', 'Product restocked successfully!');
 }
 public function getProductsBySupplier($supplier_code)
 {
@@ -89,6 +106,10 @@ public function confirm($order_id)
 
     // Decode products from the order
     $products = json_decode($order->products, true);
+
+    if (!is_array($products)) {
+        return redirect()->back()->withErrors(['products' => 'No products found in this order.']);
+    }
 
     // Update each product's quantity in the database
     foreach ($products as $prod) {

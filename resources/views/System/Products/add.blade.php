@@ -54,11 +54,11 @@
             </div>
              <div class="mb-4">
                 <label for="price" class="block text-gray-700 font-bold mb-2">Price</label>
-                <input type="number" step="0.01" name="price" id="price" placeholder="Enter product price" required class="p-2 border rounded w-full">
+                <input type="number" step="0.01"  min="0" name="price" id="price" placeholder="Enter product price" required class="p-2 border rounded w-full">
             </div>
             <div class="mb-4">
                 <label for="cost_price" class="block text-gray-700 font-bold mb-2">Cost price</label>
-                <input type="number" step="0.01" name="cost_price" id="cost_price" placeholder="Enter product cost_price" required class="p-2 border rounded w-full">
+                <input type="number" step="0.01"    min="0" name="cost_price" id="cost_price" placeholder="Enter product cost_price" required class="p-2 border rounded w-full">
             </div>
             <div class="mb-4">
                 <label for="category" class="block text-gray-700 font-bold mb-2">Category</label>

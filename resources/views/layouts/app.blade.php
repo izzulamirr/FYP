@@ -1,3 +1,7 @@
+@php
+    use App\Models\Role;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +10,7 @@
     <title>Smart Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">  
 <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -107,8 +112,8 @@
                                 View Orders
                             </a>
                         </li>
-@if (\App\Models\Role::where('name', 'admin')->where('user_id', Auth::id())->exists())                        <li>
-                            <a href="{{ route('orders.restock') }}" class="flex items-center px-4 py-2 hover:bg-gray-700 rounded-lg transition duration-200">
+@if (Role::whereIn('name', ['admin', 'manager'])->where('user_id', Auth::id())->exists())                           
+ <a href="{{ route('orders.restock') }}" class="flex items-center px-4 py-2 hover:bg-gray-700 rounded-lg transition duration-200">
                                 Restock Inventory
                             </a>
                         </li>

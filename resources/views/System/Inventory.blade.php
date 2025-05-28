@@ -73,6 +73,63 @@
         </ul>
     </div>
 @endif
+ @if($lowStockProducts->count() > 0)
+<div 
+    x-data="{
+        start: 0,
+        visible: 4,
+        get items() { return {{ $lowStockProducts->toJson() }}; },
+        get total() { return this.items.length; },
+        next() { this.start = (this.start + this.visible) % this.total; },
+        prev() { this.start = (this.start - this.visible + this.total) % this.total; },
+        shown() {
+            let arr = [];
+            for(let i=0; i<this.visible; i++) {
+                arr.push(this.items[(this.start + i) % this.total]);
+            }
+            return arr;
+        }
+    }"
+    class="mb-8"
+>
+    <h2 class="text-lg font-bold text-red-700 mb-4 flex items-center gap-2">
+        Low Stock Items
+        <button @click="prev" class="ml-auto mr-2 bg-gray-200 hover:bg-gray-300 rounded-full p-2">
+            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <button @click="next" class="bg-gray-200 hover:bg-gray-300 rounded-full p-2">
+            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <template x-for="product in shown()" :key="product.id">
+            <div class="bg-white border border-red-200 rounded-lg shadow p-4 flex flex-col items-center">
+                <template x-if="product.image">
+                    <img :src="'/storage/' + product.image" :alt="product.name" class="w-24 h-24 object-cover rounded mb-2">
+                </template>
+                <template x-if="!product.image">
+                    <div class="w-24 h-24 flex items-center justify-center bg-gray-100 rounded text-gray-400 text-2xl border-2 border-dashed border-red-200 mb-2">
+                        <span>No Image</span>
+                    </div>
+                </template>
+                <div class="text-center w-full">
+                    <h3 class="font-bold text-gray-800 mb-1" x-text="product.name"></h3>
+                    <div class="text-sm text-gray-600 mb-1">Qty: <span class="font-semibold text-red-600" x-text="product.quantity"></span></div>
+                    <div class="text-xs text-gray-500 mb-2">SKU: <span x-text="product.sku"></span></div>
+                    <a :href="'{{ url('orders/restock') }}?product=' + product.id"
+                       class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-xs transition duration-200">
+                        Restock
+                    </a>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
+@endif
    <!-- 10 Most Recent Products Grid -->
     <div>
         <h2 class="text-2xl font-bold text-gray-800 mb-6">10 Most Recent Products</h2>
@@ -96,7 +153,9 @@
                 <span class="bg-yellow-50 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Qty: {{ $product->quantity }}</span>
                 <span class="bg-purple-50 text-purple-700 px-2 py-1 rounded text-xs font-semibold">Price: RM{{ number_format($product->price, 2) }}</span>
             </div>
+            @if (App\models\Role::whereIn('name', ['admin', 'manager'])->where('user_id', Auth::id())->exists())                           
             <div class="text-gray-600 text-xs mb-1"><span class="font-semibold">Cost:</span> RM{{ number_format($product->cost_price, 2) }}</div>
+            @endif
             <div class="text-gray-600 text-xs mb-1"><span class="font-semibold">Category:</span> {{ $product->category }}</div>
             <div class="text-gray-600 text-xs mb-1"><span class="font-semibold">Supplier:</span> {{ $product->supplier_code }}</div>
         </div>
@@ -106,4 +165,5 @@
 @endforelse
         </div>
     </div>
+   
 </div>

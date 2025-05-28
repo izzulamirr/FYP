@@ -33,8 +33,8 @@
             <label for="payment_method" class="block mt-4 mb-2 font-semibold">Payment Method</label>
             <select name="payment_method" id="payment_method" class="border p-2 rounded w-full" required>
                 <option value="Cash">Cash</option>
-                <option value="Online Banking">Online Banking</option>
-                <option value="Credit Card">Credit Card</option>
+                <option value="Online Banking"> QR </option>
+                <option value="Credit Card">Credit Card / Debit Card </option>
                 <option value="Ewallet">Ewallet</option>
             </select>
             <p class="mt-4 text-lg font-bold">Total Price: RM{{ number_format($transaction['total'], 2) }}</p>

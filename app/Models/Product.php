@@ -22,8 +22,11 @@ class Product extends Model
       // Relationship with Supplier
       public function supplier()
       {
-        return $this->belongsTo(Supplier::class, 'supplier_code', 'supplier_code');
+    return $this->belongsTo(Supplier::class, 'supplier_code', 'supplier_code');
       }
+
+        // Accessor for Barcode
+      
 
         // Accessor for Image URL
     public function getImageUrlAttribute()

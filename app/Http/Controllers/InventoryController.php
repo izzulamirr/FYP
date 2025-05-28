@@ -21,8 +21,9 @@ class InventoryController extends Controller
 
 // In your controller
     $recentProducts = Product::orderBy('created_at', 'desc')->take(10)->get();
-
-    return view('System.Inventory', compact('categories', 'products', 'recentProducts'));
+    $lowStockProducts = \App\Models\Product::where('quantity', '<', 10)->get(); // adjust threshold as needed
+    $lowStockCount = \App\Models\Product::where('quantity', '<', 10)->count(); // adjust threshold as needed
+    return view('System.Inventory', compact('categories', 'products', 'recentProducts', 'lowStockCount', 'lowStockProducts'));
 }
 
     public function list(Request $request)
@@ -69,8 +70,8 @@ class InventoryController extends Controller
         $request->validate([
             'name' => 'required',
             'quantity' => 'required|integer',
-            'cost_price' => 'required|numeric',
-            'price' => 'required|numeric',
+            'cost_price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
             'category' => 'required',
             'barcode' => 'nullable|string|unique:products,barcode,' . $id, // Allow updating barcode
             //'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -92,7 +93,7 @@ class InventoryController extends Controller
     $product->save();
 
     // Redirect back with a success message
-    return redirect()->route('products.view', ['category' => $product->category])
+    return redirect()->route('inventory.index', ['category' => $product->category])
         ->with('success', 'Product updated successfully.');
 }
 

@@ -228,7 +228,7 @@
     });
 
     // QR Scanner
-    const qrScanner = new Html5QrcodeScanner("reader", { fps: 1, qrbox: { width: 300, height: 100 } });
+    const qrScanner = new Html5QrcodeScanner("reader", { fps: 2, qrbox: { width: 500, height: 100 } });
     qrScanner.render(onScanSuccess);
 
     function onScanSuccess(decodedText, decodedResult) {

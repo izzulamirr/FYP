@@ -44,9 +44,6 @@ class User extends Authenticatable
         'two_factor_secret',
     ];
 
-   // protected $attributes = [
-    //    'role' => 'staff', // Default role is 'user' if not specified
-    //];
 
     /**
      * The attributes that should be cast.
