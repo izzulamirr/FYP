@@ -22,11 +22,13 @@
         <!-- Cards Section -->
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Transactions Summary -->
+             <a href="{{ route('transactions.index') }}" class="block">
             <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300">
                 <h2 class="text-xl font-semibold mb-2">💰 Transactions Summary</h2>
-                <p class="text-lg">Total Transactions: <span class="font-bold">{{ $totalTransactions }}</span></p>
-                <p class="text-lg">Today's Sales: <span class="font-bold">${{ number_format($todaysSales, 2) }}</span></p>
+                <p class="text-lg">Today's Transactions: <span class="font-bold">{{ $todaysTransactions }}</span></p>
+                <p class="text-lg">Today's Sales: <span class="font-bold">RM{{ number_format($todaysSales, 2) }}</span></p>
             </div>
+            </a>
 
             <!-- Product Summary -->
             <a href="{{ route('inventory.index') }}" class="block">
