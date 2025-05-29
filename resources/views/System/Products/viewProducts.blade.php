@@ -29,6 +29,7 @@
                 <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
                     <thead class="bg-gray-200">
                         <tr>
+                            <th class="p-4 text-left font-semibold text-gray-700">Image</th>
                             <th class="p-4 text-left font-semibold text-gray-700">SKU</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Name</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Barcode</th>
@@ -37,14 +38,22 @@
                             <th class="p-4 text-left font-semibold text-gray-700">Price</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Supplier Code</th>
                             @if (auth()->user() && auth()->user()->hasPermission('Update'))
-
-                            <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
-                                @endif
+                                <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($products as $product)
                             <tr class="hover:bg-gray-100 transition duration-200">
+                                <td class="p-4 border-b text-gray-800">
+                                    @if ($product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-16 h-16 object-cover rounded shadow">
+                                    @else
+                                        <div class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-400 rounded shadow">
+                                            <span class="text-xs">No Image</span>
+                                        </div>
+                                    @endif
+                                </td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->sku }}</td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->name }}</td>
                                 <td class="p-4 border-b text-gray-800">
@@ -59,7 +68,6 @@
                                 <td class="p-4 border-b text-gray-800">${{ number_format($product->cost_price, 2) }}</td>
                                 <td class="p-4 border-b text-gray-800">${{ number_format($product->price, 2) }}</td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->supplier_code }}</td>
-                                   
 @if (auth()->user() && auth()->user()->hasPermission('Update'))
                                 <td class="p-4 border-b">
                                     <a href="{{ route('products.edit', $product->id) }}" 
@@ -78,7 +86,7 @@
                                         </button>
                                     </form>
                                 </td>
-                                @endif
+@endif
                             </tr>
                         @endforeach
                     </tbody>
