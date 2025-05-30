@@ -2,6 +2,8 @@
 
 @section('content')
 
+
+
 <div class="ml-64 p-8 w-full bg-gray-50 min-h-screen">
     
     <!-- Header -->
@@ -12,34 +14,36 @@
         </div>
     </div>
 
-   <!-- Categories Section -->
-    <div class="p-8 w-full">
-        <div class="mt-6 bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Categories</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-               @foreach ($categories as $index => $category)
-    <a href="{{ route('products.catagories', ['category' => $category]) }}"
-        class="category-btn p-6 shadow-md rounded-lg text-center cursor-pointer transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400
-        @if($index % 10 === 0) bg-red-200 hover:bg-red-400
-        @elseif($index % 10 === 1) bg-blue-200 hover:bg-blue-400
-        @elseif($index % 10=== 2) bg-green-200 hover:bg-green-400
-        @elseif($index % 10 === 3) bg-yellow-200 hover:bg-yellow-400
-        @elseif($index % 10 === 4) bg-purple-200 hover:bg-purple-400
-        @elseif($index % 10 === 5) bg-pink-200 hover:bg-pink-400
-        @elseif($index % 10 === 6) bg-indigo-200 hover:bg-indigo-400
-        @elseif($index % 10 === 7) bg-teal-200 hover:bg-teal-400
-        @elseif($index % 10 === 8) bg-orange-200 hover:bg-orange-400
-        @elseif($index % 10 === 9) bg-gray-200 hover:bg-gray-400
-        
-        @endif"
-        data-category="{{ $category }}"
-    >
-        <h3 class="text-lg font-bold text-gray-800">{{ $category }}</h3>
-    </a>
-@endforeach
-            </div>
+  <!-- Categories Dropdown -->
+<!-- Categories Section (Collapsible Card Style) -->
+<div x-data="{ open: true }" class="bg-white rounded-lg shadow mb-8">
+    <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+        <span class="font-semibold text-gray-700">Categories</span>
+        <span x-text="open ? '−' : '+'"></span>
+    </button>
+    <div x-show="open" class="p-4 border-t" x-transition>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            @foreach ($categories as $index => $category)
+                <a href="{{ route('products.catagories', ['category' => $category]) }}"
+                   class="block p-4 rounded-lg text-center font-semibold text-gray-800 shadow transition-all duration-200 hover:scale-105
+                   @if($index % 10 === 0) bg-red-100 hover:bg-red-200
+                   @elseif($index % 10 === 1) bg-blue-100 hover:bg-blue-200
+                   @elseif($index % 10 === 2) bg-green-100 hover:bg-green-200
+                   @elseif($index % 10 === 3) bg-yellow-100 hover:bg-yellow-200
+                   @elseif($index % 10 === 4) bg-purple-100 hover:bg-purple-200
+                   @elseif($index % 10 === 5) bg-pink-100 hover:bg-pink-200
+                   @elseif($index % 10 === 6) bg-indigo-100 hover:bg-indigo-200
+                   @elseif($index % 10 === 7) bg-teal-100 hover:bg-teal-200
+                   @elseif($index % 10 === 8) bg-orange-100 hover:bg-orange-200
+                   @elseif($index % 10 === 9) bg-gray-100 hover:bg-gray-200
+                   @endif">
+                    {{ $category }}
+                </a>
+            @endforeach
         </div>
     </div>
+</div>
+
 
     <!-- Add Product Button -->
     @if (auth()->user() && auth()->user()->hasPermission('Create'))
@@ -120,10 +124,12 @@
                     <h3 class="font-bold text-gray-800 mb-1" x-text="product.name"></h3>
                     <div class="text-sm text-gray-600 mb-1">Qty: <span class="font-semibold text-red-600" x-text="product.quantity"></span></div>
                     <div class="text-xs text-gray-500 mb-2">SKU: <span x-text="product.sku"></span></div>
+                    @if (auth()->user() && auth()->user()->hasPermission('Restock'))
                     <a :href="'{{ url('orders/restock') }}?product=' + product.id"
                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-xs transition duration-200">
                         Restock
                     </a>
+                    @endif
                 </div>
             </div>
         </template>

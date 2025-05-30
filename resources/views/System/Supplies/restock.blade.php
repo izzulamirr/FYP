@@ -56,7 +56,7 @@
     <!-- Quantity Input -->
     <div class="mb-6">
         <label for="quantity" class="block text-gray-700 font-semibold mb-2">Quantity</label>
-        <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" required class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500">
+        <input type="number" name="quantity" min='0' id="quantity" placeholder="Enter quantity" required class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500">
     </div>
 
     <!-- Submit Button -->

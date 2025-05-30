@@ -37,8 +37,8 @@
 <tr>
     <td class="border p-2">{{ $product['name'] }}</td>
     <td class="border p-2">{{ $product['quantity'] }}</td>
-    <td class="border p-2">RM{{ number_format($product['cost_price'], 2) }}</td>
-    <td class="border p-2">RM{{ number_format($product['cost_price'] * $product['quantity'], 2) }}</td>
+    <td class="border p-2">RM{{ number_format($product['cost_price'] ?? 0, 2) }}</td>
+    <td class="border p-2">RM{{ number_format(($product['cost_price'] ?? 0) * ($product['quantity'] ?? 0), 2) }}</td>
 </tr>
 @endforeach
 </tbody>

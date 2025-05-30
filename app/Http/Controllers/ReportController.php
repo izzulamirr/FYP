@@ -18,7 +18,7 @@ class ReportController extends Controller
 
         // Revenue and inventory stats
         $currentRevenue = Transaction::sum('total_price');
-        $lowStockInventory = Product::where('quantity', '<', 5)->get();
+        $lowStockInventory = Product::where('quantity', '<', 10)->get();
 
         // Top selling products from transactions (not from order_items)
         $productSales = [];
@@ -46,38 +46,66 @@ class ReportController extends Controller
 
         // Stock purchases (restock cost)
         $stockPurchases = 0;
-        foreach ($orders as $order) {
-            $products = json_decode($order->products, true) ?? [];
-            foreach ($products as $product) {
-                $stockPurchases += $product['cost_price'] * $product['quantity'];
-            }
+    foreach ($orders as $order) {
+        $products = json_decode($order->products, true) ?? [];
+        foreach ($products as $product) {
+            $stockPurchases += ($product['cost_price'] ?? 0) * ($product['quantity'] ?? 0);
         }
-
-        // Financial reports
-        $totalSales = $currentRevenue;
-        $totalTransactions = Transaction::count();
-        $averageSale = $totalTransactions ? $totalSales / $totalTransactions : 0;
-        $totalCOGS = $stockPurchases; // Use stock purchases as COGS
-        $grossProfit = $totalSales - $stockPurchases;
-
-        $salesByPaymentMethod = Transaction::select('payment_method', DB::raw('SUM(total_price) as total'))
-            ->groupBy('payment_method')
-            ->pluck('total', 'payment_method');
-
-        $recentTransactions = Transaction::orderBy('created_at', 'desc')->take(10)->get();
-
-        return view('System.Report.Report', compact(
-            'currentRevenue',
-            'lowStockInventory',
-            'topSellingProducts',
-            'totalSales',
-            'totalTransactions',
-            'averageSale',
-            'totalCOGS',
-            'grossProfit',
-            'salesByPaymentMethod',
-            'recentTransactions',
-            'stockPurchases'
-        ));
     }
+
+    // Financial reports
+    $totalSales = $currentRevenue;
+    $totalTransactions = Transaction::count();
+    $averageSale = $totalTransactions ? $totalSales / $totalTransactions : 0;
+    $totalCOGS = $stockPurchases; // Use stock purchases as COGS
+    $grossProfit = $totalSales - $stockPurchases;
+
+    $salesByPaymentMethod = Transaction::select('payment_method', DB::raw('SUM(total_price) as total'))
+        ->groupBy('payment_method')
+        ->pluck('total', 'payment_method');
+
+    $recentTransactions = Transaction::orderBy('created_at', 'desc')->take(10)->get();
+
+    // --- MOVE THIS BLOCK UP ---
+    $monthlyFinancials = Transaction::select(
+        DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
+        DB::raw("SUM(total_price) as total_sales")
+    )
+    ->groupBy('month')
+    ->orderBy('month', 'asc')
+    ->take(12)
+    ->get()
+    ->keyBy('month');
+
+    // Prepare arrays for Chart.js
+    $months = [];
+    $days = [];
+    $sales = [];
+    foreach ($monthlyFinancials as $month => $data) {
+        $months[] = $month;
+        $days[] = date('F Y', strtotime($month)); // Format month for display
+        $sales[] = $data->total_sales;
+    }
+    // --- END MOVE ---
+
+    return view('System.Report.Report', compact(
+        'currentRevenue',
+        'lowStockInventory',
+        'topSellingProducts',
+        'totalSales',
+        'totalTransactions',
+        'averageSale',
+        'totalCOGS',
+        'grossProfit',
+        'salesByPaymentMethod',
+        'recentTransactions',
+        'stockPurchases',
+        'months',
+        'sales'
+        
+    ));
+
+}
+
+
 }

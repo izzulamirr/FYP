@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Inventory - Report Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <div class="ml-64 p-8 w-full">
@@ -18,8 +17,6 @@
         <h1 class="text-3xl font-bold text-gray-800">Report Dashboard</h1>
         <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
     </div>
-
-
      <div class="space-y-4">
 
 
@@ -28,7 +25,7 @@
         <!-- Current Revenue -->
         <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 class="text-lg font-semibold">Current Revenue</h2>
-            <p class="text-4xl font-bold mt-2">${{ number_format($currentRevenue, 2) }}</p>
+            <p class="text-4xl font-bold mt-2">RM{{ number_format($currentRevenue, 2) }}</p>
         </div>
 
         <!-- Low Stock Count -->
@@ -156,6 +153,14 @@
             </div>
         </div>
 
+
+        <!-- Financial Report Line Graph -->
+<div class="bg-white rounded-xl shadow p-6 mb-8">
+    <h2 class="text-xl font-bold mb-4 text-blue-800">Monthly Sales (Last 12 Months)</h2>
+    <canvas id="financialLineChart" height="100"></canvas>
+</div>
+
+
         
         </div>
     </div>
@@ -163,6 +168,7 @@
 
 <!-- Chart.js for Payment Method Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const paymentLabels = @json($paymentLabels);
     const paymentData = @json($paymentData);
@@ -202,4 +208,39 @@
             }
         }
     });
+   
+    const ctx = document.getElementById('financialLineChart').getContext('2d');
+const financialLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {!! json_encode($months) !!}, // <-- use days here
+        datasets: [{
+            label: 'Total Sales',
+            data: {!! json_encode($sales) !!},
+            borderColor: 'rgba(59, 130, 246, 1)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true },
+            title: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return 'RM ' + value;
+                    }
+                }
+            }
+        }
+    }
+});
 </script>

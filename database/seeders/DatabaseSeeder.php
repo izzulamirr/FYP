@@ -8,43 +8,22 @@ use App\Models\Role;
 use App\Models\Permission;
 use App\Models\User;
 
+use Illuminate\Support\Facades\DB;
+
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create permissions (avoid duplicates)
-        $create = Permission::firstOrCreate(['Description' => 'Create']);
-        $update = Permission::firstOrCreate(['Description' => 'Update']);
-        $restock = Permission::firstOrCreate(['Description' => 'Restock']);
+    // Seed roles
+Role::firstOrCreate(['name' => 'admin']);
+Role::firstOrCreate(['name' => 'manager']);
+Role::firstOrCreate(['name' => 'staff']);
 
-        // Create users (avoid duplicates)
-        $adminUser = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            ['name' => 'Admin User', 'password' => bcrypt('password')]
-        );
-
-        $staffUser = User::firstOrCreate(
-            ['email' => 'staff@example.com'],
-            ['name' => 'Staff User', 'password' => bcrypt('password')]
-        );
-
-        // Create user-specific roles (avoid duplicates)
-        $adminRole = Role::firstOrCreate(
-            ['name' => 'admin', 'user_id' => $adminUser->id]
-        );
-        $staffRole = Role::firstOrCreate(
-            ['name' => 'staff', 'user_id' => $staffUser->id]
-        );
-
-        // Assign permissions to roles
-        $adminRole->permissions()->sync([
-            $create->PermissionID,
-            $update->PermissionID,
-            $restock->PermissionID
-        ]);
-
-        $staffRole->permissions()->sync([
-            $create->PermissionID
-        ]);
+        
+DB::table('role_user')->insert([
+    'user_id' => 11,
+    'role_id' => 10, // Use the correct RoleID from your roles table
+]);
+        
     }
 }
