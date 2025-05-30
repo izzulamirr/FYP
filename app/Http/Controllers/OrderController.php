@@ -39,8 +39,12 @@ class OrderController extends Controller
         $query->where('delivery_status', $request->delivery_status);
     }
 
-$supplies = $query->orderBy('order_date', 'desc')->paginate(6);
-    return view('System.Supplies.Supplies', compact('supplies'));
+$supplies = $query
+    ->orderBy('order_date', 'desc')
+    ->orderBy('created_at', 'desc')
+    ->paginate(6);
+    
+return view('System.Supplies.Supplies', compact('supplies'));
 }
 
     public function restock()
@@ -73,37 +77,37 @@ public function processRestock(Request $request)
         return back()->withErrors(['product_id' => 'Product and supplier do not match.']);
     }
 
-    // Increase the product quantity
-    $product->quantity += $request->quantity;
-    $product->save();
+    // DO NOT increase the product quantity here!
+    // $product->quantity += $request->quantity;
+    // $product->save();
+
     $total = $product->cost_price * $request->quantity;
-$supplierName = $product->supplier ? $product->supplier->name : null;
+    $supplierName = $product->supplier ? $product->supplier->name : null;
 
-
-    // Optionally, create an order record (if you want to track restocks)
+    // Create an order record (restock request)
     \App\Models\Order::create([
         'order_id' => 'SORD' . mt_rand(100000, 999999),
         'product_id' => $product->id,
         'supplier_code' => $request->supplier_code,
         'quantity' => $request->quantity,
-        'supplier_name' => $supplierName, // <-- Add this line
-
+        'supplier_name' => $supplierName,
         'total' => $total,
         'delivery_status' => 'pending',
         'order_date' => now(),
         'products' => json_encode([
-        [
-            'name' => $product->name,
-            'quantity' => $request->quantity,
-            'sku' => $product->sku,
-        ]
-    ]),
-        //'delivery_status' => 'Restocked',
+            [
+                'name' => $product->name,
+                'quantity' => $request->quantity,
+                'sku' => $product->sku,
+            ]
+        ]),
         // Add other fields as needed
     ]);
 
-    return back()->with('success', 'Product restocked successfully!');
+    return back()->with('success', 'Restock order placed successfully! Awaiting approval.');
 }
+
+
 public function getProductsBySupplier($supplier_code)
 {
     // Fetch products for the given supplier

@@ -1,6 +1,4 @@
-@php
-    use App\Models\Role;
-@endphp
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +111,7 @@
                                 View Orders
                             </a>
                         </li>
-@if (Role::whereIn('name', ['admin', 'manager'])->where('user_id', Auth::id())->exists())                           
+    @if (auth()->user() && auth()->user()->hasPermission('Restock'))
  <a href="{{ route('orders.restock') }}" class="flex items-center px-4 py-2 hover:bg-gray-700 rounded-lg transition duration-200">
                                 Restock Inventory
                             </a>
@@ -124,6 +122,9 @@
 
                 <!-- Reports -->
                 <li>
+
+                    @if (\App\Models\Role::where('name', 'admin')->where('user_id', Auth::id())->exists())                <li>
+
                     <a href="{{ route('reports.dashboard') }}" class="flex items-center px-4 py-3 hover:bg-gray-700 rounded-lg transition duration-200">
                         <span class="mr-3">
                             <!-- Chart Bar Icon -->
@@ -133,6 +134,7 @@
                         </span>
                         Reports
                     </a>
+                    @endif
                 </li>
 
                 <!-- Staff -->

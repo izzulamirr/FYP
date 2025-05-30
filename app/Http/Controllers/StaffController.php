@@ -21,7 +21,7 @@ class StaffController extends Controller
     public function updateRole(Request $request, $id)
     {
         $request->validate([
-    'role' => 'required|in:admin,staff,manager', // <-- update here
+    'role' => 'required|in:admin,staff', // <-- update here
         ]);
 
         $user = User::findOrFail($id);
@@ -68,7 +68,7 @@ public function updatePermissions(Request $request, $id)
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email,' . $id,
-    'role' => 'required|string|in:admin,staff,manager', // <-- update here
+    'role' => 'required|string|in:admin,staff', // <-- update here
         'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:3072', // Allow up to 3MB
     ]);
 
@@ -107,7 +107,7 @@ public function updatePermissions(Request $request, $id)
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:6',
-    'role' => 'required|string|in:admin,staff,manager', // <-- update here
+    'role' => 'required|string|in:admin,staff', // <-- update here
         'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5072',
     ]);
 

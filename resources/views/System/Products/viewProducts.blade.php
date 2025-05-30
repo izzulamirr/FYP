@@ -1,3 +1,6 @@
+@php
+    use App\Models\Role;
+@endphp
 @extends('layouts.app')
 
 <div class="ml-64 p-8 w-full">
@@ -34,7 +37,9 @@
                             <th class="p-4 text-left font-semibold text-gray-700">Name</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Barcode</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Quantity</th>
+                            @if (Role::whereIn('name', ['admin', 'manager'])->where('user_id', Auth::id())->exists())                           
                             <th class="p-4 text-left font-semibold text-gray-700">Cost Price</th>
+                            @endif
                             <th class="p-4 text-left font-semibold text-gray-700">Price</th>
                             <th class="p-4 text-left font-semibold text-gray-700">Supplier Code</th>
                             @if (auth()->user() && auth()->user()->hasPermission('Update'))
@@ -65,7 +70,9 @@
                                     @endif
                                 </td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->quantity }}</td>
+                                @if (Role::whereIn('name', ['admin', 'manager'])->where('user_id', Auth::id())->exists())                           
                                 <td class="p-4 border-b text-gray-800">${{ number_format($product->cost_price, 2) }}</td>
+                                 @endif
                                 <td class="p-4 border-b text-gray-800">${{ number_format($product->price, 2) }}</td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->supplier_code }}</td>
 @if (auth()->user() && auth()->user()->hasPermission('Update'))

@@ -44,7 +44,6 @@
                 <select name="role" id="role" class="w-full border-gray-300 rounded-md shadow-sm" required>
                     <option value="admin">Admin</option>
                     <option value="staff">Staff</option>
-                    <option value="manager">Manager</option>
                 </select>
             </div>
 
