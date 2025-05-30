@@ -7,6 +7,40 @@
         <p class="text-gray-600 text-base mt-2 sm:mt-0">👤 {{ Auth::user()->name }}</p>
     </div>
 
+    <!-- Filter Section -->
+<div class="flex justify-center mb-6">
+    <form method="GET" action="{{ route('supplies.index') }}" class="bg-white p-4 rounded-lg shadow flex flex-wrap gap-4 items-end">
+        <div>
+            <label class="block text-xs text-gray-600 mb-1">Order Date</label>
+            <input type="date" name="order_date" value="{{ request('order_date') }}" class="border rounded px-2 py-1 text-sm">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-600 mb-1">Supplier Name</label>
+            <input type="text" name="supplier_name" value="{{ request('supplier_name') }}" placeholder="Supplier Name" class="border rounded px-2 py-1 text-sm">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-600 mb-1">Supplier Code</label>
+            <input type="text" name="supplier_code" value="{{ request('supplier_code') }}" placeholder="Supplier Code" class="border rounded px-2 py-1 text-sm">
+        </div>
+        <div>
+            <label class="block text-xs text-gray-600 mb-1">Status</label>
+            <select name="delivery_status" class="border rounded px-2 py-1 text-sm">
+                <option value="">All</option>
+                <option value="Delivered" @if(request('delivery_status')=='Delivered') selected @endif>Delivered</option>
+                <option value="Pending" @if(request('delivery_status')=='Pending') selected @endif>Pending</option>
+                <option value="Processing" @if(request('delivery_status')=='Processing') selected @endif>Processing</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs text-gray-600 mb-1">Order ID</label>
+            <input type="text" name="order_id" value="{{ request('order_id') }}" placeholder="Order ID" class="border rounded px-2 py-1 text-sm">
+        </div>
+        <div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">Filter</button>
+        </div>
+    </form>
+</div>
+
     <!-- Order History Section -->
     <div class="bg-white p-4 shadow-lg rounded-lg">
         <h2 class="text-xl font-semibold mb-4 text-gray-800">Order History</h2>
@@ -27,7 +61,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($orders as $order)
+@forelse ($supplies as $order)
                         <tr class="hover:bg-gray-100 transition duration-200">
                             <td class="p-3 border-b text-gray-800 whitespace-nowrap">{{ $order->order_id }}</td>
                             <td class="p-3 border-b text-gray-800 whitespace-nowrap">{{ $order->supplier_name }}</td>
@@ -87,12 +121,16 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="9" class="p-4 text-center text-gray-500">No orders available.</td>
-                        </tr>
-                    @endforelse
+    <tr>
+        <td colspan="9" class="p-4 text-center text-gray-500">No orders available.</td>
+    </tr>
+@endforelse
                 </tbody>
             </table>
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $supplies->links() }}
+            </div>
         </div>
     </div>
 </div>

@@ -10,14 +10,38 @@ use Illuminate\Support\Facades\Hash;
 
 class OrderController extends Controller
 {
-    public function index()
-    {  
-// Fetch all orders except rejected ones
-    $orders = Order::where('delivery_status', '!=', 'Rejected')->get();
-
-    return view('System.Supplies.Supplies', compact('orders'));
-        
+   public function index(Request $request)
+{
+    $query = Order::where('delivery_status', '!=', 'Rejected');
+    
+    // Filter by Order ID
+    if ($request->filled('order_id')) {
+        $query->where('order_id', 'like', '%' . $request->order_id . '%');
     }
+
+    // Filter by date
+    if ($request->filled('order_date')) {
+        $query->whereDate('order_date', $request->order_date);
+    }
+
+    // Filter by supplier name
+    if ($request->filled('supplier_name')) {
+        $query->where('supplier_name', 'like', '%' . $request->supplier_name . '%');
+    }
+
+    // Filter by supplier code
+    if ($request->filled('supplier_code')) {
+        $query->where('supplier_code', 'like', '%' . $request->supplier_code . '%');
+    }
+
+    // Filter by delivery status
+    if ($request->filled('delivery_status')) {
+        $query->where('delivery_status', $request->delivery_status);
+    }
+
+$supplies = $query->orderBy('order_date', 'desc')->paginate(6);
+    return view('System.Supplies.Supplies', compact('supplies'));
+}
 
     public function restock()
 {

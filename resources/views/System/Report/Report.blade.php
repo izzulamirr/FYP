@@ -152,12 +152,15 @@
                 </div>
             </div>
         </div>
-
-
-        <!-- Financial Report Line Graph -->
-<div class="bg-white rounded-xl shadow p-6 mb-8">
-    <h2 class="text-xl font-bold mb-4 text-blue-800">Monthly Sales (Last 12 Months)</h2>
-    <canvas id="financialLineChart" height="100"></canvas>
+<!-- Financial Report Line Graph (Minimizable, same size as bar graph) -->
+        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
+            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+        <span class="font-semibold text-blue-800 text-lg">Monthly Sales (Last 12 Months)</span>
+        <span x-text="open ? '−' : '+'"></span>
+    </button>
+    <div x-show="open" class="pt-4" x-transition>
+        <canvas id="financialLineChart" class="w-full h-48" style="max-width:100%;height:200px;"></canvas>
+    </div>
 </div>
 
 

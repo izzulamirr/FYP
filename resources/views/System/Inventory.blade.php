@@ -82,13 +82,19 @@
     x-data="{
         start: 0,
         visible: 4,
-        get items() { return {{ $lowStockProducts->toJson() }}; },
+        items: @js($lowStockProducts->map(fn($p) => [
+            'id' => $p->id,
+            'name' => $p->name,
+            'quantity' => $p->quantity,
+            'sku' => $p->sku,
+            'image' => $p->image ? asset('storage/' . $p->image) : null,
+        ])),
         get total() { return this.items.length; },
         next() { this.start = (this.start + this.visible) % this.total; },
         prev() { this.start = (this.start - this.visible + this.total) % this.total; },
         shown() {
             let arr = [];
-            for(let i=0; i<this.visible; i++) {
+            for(let i=0; i<this.visible && i<this.total; i++) {
                 arr.push(this.items[(this.start + i) % this.total]);
             }
             return arr;
@@ -113,7 +119,7 @@
         <template x-for="product in shown()" :key="product.id">
             <div class="bg-white border border-red-200 rounded-lg shadow p-4 flex flex-col items-center">
                 <template x-if="product.image">
-                    <img :src="'/storage/' + product.image" :alt="product.name" class="w-24 h-24 object-cover rounded mb-2">
+                    <img :src="product.image" :alt="product.name" class="w-24 h-24 object-cover rounded mb-2">
                 </template>
                 <template x-if="!product.image">
                     <div class="w-24 h-24 flex items-center justify-center bg-gray-100 rounded text-gray-400 text-2xl border-2 border-dashed border-red-200 mb-2">
