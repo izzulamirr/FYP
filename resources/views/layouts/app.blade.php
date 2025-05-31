@@ -24,8 +24,8 @@
     <!-- Sidebar -->
     <div class="w-64 h-screen bg-gray-900 text-white fixed top-0 left-0 flex flex-col">
         <!-- Logo Section -->
-        <div class="p-5 text-center text-2xl font-bold border-b border-gray-700">
-            Smart Inventory
+        <div class="p-7 text-center text-2xl  font-bold border-b border-gray-700">
+            SMart
         </div>
         
 
