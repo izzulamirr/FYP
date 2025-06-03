@@ -29,8 +29,10 @@ class TransactionController extends Controller
         $query->where('payment_method', $request->payment_method);
     }
 
-    $transactions = $query->orderBy('created_at', 'desc')->paginate(10);
-    return view('System.Transactions.index', compact('transactions'));
+$transactions = $query->orderBy('created_at', 'desc')
+    ->paginate(10)
+    ->appends(request()->except('page'));
+        return view('System.Transactions.index', compact('transactions'));
 }
 
     public function show($id)
