@@ -14,15 +14,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-    // Seed roles
-Role::firstOrCreate(['name' => 'admin']);
-Role::firstOrCreate(['name' => 'manager']);
-Role::firstOrCreate(['name' => 'staff']);
+ //$this->call([
+   //     TransactionSeeder::class,
+    //]);
 
-        
-DB::table('role_user')->insert([
-    'user_id' => 11,
-    'role_id' => 10, // Use the correct RoleID from your roles table
+    $this->call([
+    SupplierSeeder::class,
+    // other seeders...
 ]);
         
     }

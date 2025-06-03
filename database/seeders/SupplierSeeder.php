@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Supplier; // Import the Supplier model
+use Illuminate\Support\Facades\DB;
 
 
 class SupplierSeeder extends Seeder
@@ -14,38 +15,49 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        Supplier::insert([
-            [
-                'id' => 'SUP001',
-                'name' => 'Tech Supplies Inc.',
-                'email' => 'techsupplies@Gmail.com',
-                'phone' => '123-456-7890',
-            ],
-            [
-                'id' => 'SUP002',
-                'name' => 'Mobile World',
-                'email' => 'mobileworld@Gmail.com',
-                'phone' => '987-654-3210',
-            ],
-            [
-                'id' => 'SUP003',
-                'name' => 'Hardware Depot',
-                'email' => 'hardwaredepot@Gmail.com',
-                'phone' => '555-123-4567',
-            ],
-            [
-                'id' => 'SUP004',
-                'name' => 'Stationery Hub',
-                'email' => 'stationeryhub@gmail.com',
-                'phone' => '444-987-6543',
-            ],
-            [
-                'id' => 'SUP005',
-                'name' => 'Beverage Supplies Co.',
-                'email' => 'beverages@gmail.com',
-                'phone' => '333-222-1111',
-            ],
+       $suppliers = [
+        [
+            'supplier_code' => 'SP1001',
+            'name' => 'EcoShop Supplies',
+            'email' => 'contact@ecoshop.com',
+            'phone' => '03-1111 2222',
+        ],
+        [
+            'supplier_code' => 'SP1002',
+            'name' => 'TechnoMart',
+            'email' => 'sales@technomart.com',
+            'phone' => '03-2222 3333',
+        ],
+        [
+            'supplier_code' => 'SP1003',
+            'name' => 'GreenGrocer',
+            'email' => 'info@greengrocer.com',
+            'phone' => '03-3333 4444',
+        ],
+        [
+            'supplier_code' => 'SP1004',
+            'name' => 'Stationery World',
+            'email' => 'hello@stationeryworld.com',
+            'phone' => '03-4444 5555',
+        ],
+        [
+            'supplier_code' => 'SP1005',
+            'name' => 'HealthPlus Pharma',
+            'email' => 'support@healthplus.com',
+            'phone' => '03-5555 6666',
+        ],
+    ];
+
+    foreach ($suppliers as $supplier) {
+        DB::table('suppliers')->insert([
+            'supplier_code' => $supplier['supplier_code'],
+            'name' => $supplier['name'],
+            'email' => $supplier['email'],
+            'phone' => $supplier['phone'],
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+    }
     }
     }
 

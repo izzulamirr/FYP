@@ -2,6 +2,11 @@
 
 @section('content')
 
+             @php
+                $paymentLabels = $salesByPaymentMethod->keys();
+                $paymentData = $salesByPaymentMethod->values();
+            @endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,30 +46,51 @@
         </div>
     </div>
 
-  <!-- Sales Summary Section -->
-        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
-            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
-                <span class="font-semibold text-gray-700">Sales Summary</span>
-                <span x-text="open ? '−' : '+'"></span>
-            </button>
-            <div x-show="open" class="p-4 border-t">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <div class="text-xs text-gray-500">Total Sales</div>
-                        <div class="text-lg font-bold text-green-600">RM{{ number_format($totalSales, 2) }}</div>
-                    </div>
-                    <div>
-                        <div class="text-xs text-gray-500">Total Transactions</div>
-                        <div class="text-lg font-bold">{{ $totalTransactions }}</div>
-                    </div>
-                    <div>
-                        <div class="text-xs text-gray-500">Average Sale</div>
-                        <div class="text-lg font-bold">RM{{ number_format($averageSale, 2) }}</div>
-                    </div>
-                </div>
+    
+
+<!-- Sales by Payment Method & Monthly Sales Graphs Side by Side -->
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Sales by Payment Method Section -->
+    <div x-data="{ open: true }" class="bg-white rounded-lg shadow h-[500px] flex flex-col">
+        <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+            <span class="font-semibold text-gray-700">Sales by Payment Method</span>
+            <span x-text="open ? '−' : '+'"></span>
+        </button>
+        <div x-show="open" class="flex-1 flex flex-col p-4 border-t overflow-hidden">
+            <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm mb-4">
+                <thead style="background-color: #1e293b;">
+                    <tr>
+                        <th class="border p-2 text-left font-semibold text-white">Payment Method</th>
+                        <th class="border p-2 text-left font-semibold text-white">Total Sales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($salesByPaymentMethod as $method => $amount)
+                        <tr class="hover:bg-gray-100 transition duration-200">
+                            <td class="border p-2 text-gray-800">{{ $method }}</td>
+                            <td class="border p-2 text-gray-800">RM{{ number_format($amount, 2) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="flex-1 flex items-end">
+                <canvas id="paymentMethodChart" style="width:100%;height:260px;max-height:260px;"></canvas>
             </div>
         </div>
-
+    </div>
+    <!-- Financial Report Line Graph (same size as Payment Method) -->
+    <div x-data="{ open: true }" class="bg-white rounded-lg shadow h-[500px] flex flex-col">
+        <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
+            <span class="font-semibold text-blue-800 text-lg">Monthly Sales (Last 12 Months)</span>
+            <span x-text="open ? '−' : '+'"></span>
+        </button>
+        <div x-show="open" class="flex-1 flex flex-col pt-4 px-4 border-t overflow-hidden">
+            <div class="flex-1 flex items-end">
+                <canvas id="financialLineChart" style="width:100%;height:530px";></canvas>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- Profit & Loss Section -->
         <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
             <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
@@ -120,49 +146,7 @@
         </div>
     </div>
 
-        <!-- Sales by Payment Method Section -->
-        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
-            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
-                <span class="font-semibold text-gray-700">Sales by Payment Method</span>
-                <span x-text="open ? '−' : '+'"></span>
-            </button>
-            <div x-show="open" class="p-4 border-t">
-                <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm">
-                    <thead style="background-color: #1e293b;">
-                        <tr>
-                            <th class="border p-2 text-left font-semibold text-white">Payment Method</th>
-                            <th class="border p-2 text-left font-semibold text-white">Total Sales</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($salesByPaymentMethod as $method => $amount)
-                            <tr class="hover:bg-gray-100 transition duration-200">
-                                <td class="border p-2 text-gray-800">{{ $method }}</td>
-                                <td class="border p-2 text-gray-800">RM{{ number_format($amount, 2) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @php
-                    $paymentLabels = $salesByPaymentMethod->keys();
-                    $paymentData = $salesByPaymentMethod->values();
-                @endphp
-                <div class="mt-4">
-                    <canvas id="paymentMethodChart" style="max-width: 100%; height: 200px;"></canvas>
-                </div>
-            </div>
-        </div>
-<!-- Financial Report Line Graph (Minimizable, same size as bar graph) -->
-        <div x-data="{ open: true }" class="bg-white rounded-lg shadow">
-            <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
-        <span class="font-semibold text-blue-800 text-lg">Monthly Sales (Last 12 Months)</span>
-        <span x-text="open ? '−' : '+'"></span>
-    </button>
-    <div x-show="open" class="pt-4" x-transition>
-        <canvas id="financialLineChart" class="w-full h-48" style="max-width:100%;height:200px;"></canvas>
-    </div>
-</div>
-
+       
 
         
         </div>

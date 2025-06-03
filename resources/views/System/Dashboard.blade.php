@@ -94,6 +94,7 @@
     </div>
 
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <audio id="beepSound" src="/beep.mp3" preload="auto"></audio>
 <script>
     const scannedItemsTable = document.querySelector('#scannedItems');
     const barcodeInput = document.getElementById('barcodeInput');
@@ -230,27 +231,30 @@
     });
 
     // QR Scanner
-    const qrScanner = new Html5QrcodeScanner("reader", { fps: 2, qrbox: { width: 500, height: 100 } });
+    const qrScanner = new Html5QrcodeScanner("reader", { fps: 2, qrbox: { width: 400, height: 100 } });
     qrScanner.render(onScanSuccess);
 
     function onScanSuccess(decodedText, decodedResult) {
         document.getElementById('qrResult').innerText = decodedText;
 
-        fetch(`/api/products/${decodedText}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    if (data.product.quantity > 0) {
-                        addScannedItem(data.product);
-                    } else {
-                        alert('Item Sold Out!');
-                    }
+        document.getElementById('beepSound').play();
+
+        
+       fetch(`/api/products/${decodedText}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (data.product.quantity > 0) {
+                    addScannedItem(data.product);
                 } else {
-                    alert('Product not found!');
+                    alert('Item Sold Out!');
                 }
-            })
-            .catch(error => console.error('Error fetching product:', error));
-    }
+            } else {
+                alert('Product not found!');
+            }
+        })
+        .catch(error => console.error('Error fetching product:', error));
+}
 </script>
 </body>
 </html>
