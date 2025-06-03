@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-<div class="ml-64 p-4 w-full">
+<div class="ml-64 p-3 w-full">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-4 shadow-md rounded-lg mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Suppliers Dashboard</h1>
+    <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-5 shadow-md rounded-lg mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Supplier Dashboard</h1>
         <p class="text-gray-600 text-base mt-2 sm:mt-0">👤 {{ Auth::user()->name }}</p>
     </div>
 
@@ -54,7 +54,7 @@
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Total (RM)</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Delivery Status</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Order Date</th>
-                        <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Order Completed Date</th>
+                        <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Order Completed</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Purchase Receipt</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Actions</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Invoice Slip</th>
@@ -63,21 +63,21 @@
                 <tbody>
 @forelse ($supplies as $order)
                         <tr class="hover:bg-gray-100 transition duration-200">
-                            <td class="p-3 border-b text-gray-800 whitespace-nowrap">{{ $order->order_id }}</td>
-                            <td class="p-3 border-b text-gray-800 whitespace-nowrap">{{ $order->supplier_name }}</td>
-                            <td class="p-3 border-b text-gray-800 whitespace-nowrap">RM {{ number_format($order->total, 2) }}</td>
+                            <td class="p-3 border-b text-center text-gray-800 whitespace-nowrap">{{ $order->order_id }}</td>
+                            <td class="p-3 border-b text-center text-gray-800 whitespace-nowrap">{{ $order->supplier_name }}</td>
+                            <td class="p-3 border-b text-center text-gray-800 whitespace-nowrap">RM {{ number_format($order->total, 2) }}</td>
                             <td class="p-3 border-b whitespace-nowrap">
                                 @if ($order->delivery_status === 'Delivered')
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Delivered</span>
+                                    <span class="bg-green-100 text-center text-green-700 px-3 py-1 rounded-full text-xs font-medium">Delivered</span>
                                 @else
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">{{ $order->delivery_status }}</span>
+                                    <span class="bg-yellow-100 text-center text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">{{ $order->delivery_status }}</span>
                                 @endif
                             </td>
-                            <td class="p-3 border-b text-gray-800 whitespace-nowrap">{{ $order->order_date }}</td>
-                            <td class="p-3 border-b text-gray-800 whitespace-nowrap">{{ $order->completed_date ?? 'N/A' }}</td>
+                            <td class="p-3 border-b text-center text-gray-800 whitespace-nowrap">{{ $order->order_date }}</td>
+                            <td class="p-3 border-b text-center text-gray-800 whitespace-nowrap">{{ $order->completed_date ?? 'N/A' }}</td>
                             <td class="p-3 border-b whitespace-nowrap">
                                 <a href="{{ route('orders.invoice_slip', $order->order_id) }}" 
-                                   class="bg-blue-500 text-white px-3 py-1 rounded shadow hover:bg-blue-600 transition">
+                                   class="bg-blue-500 text-center text-white px-3 py-1 rounded shadow hover:bg-blue-600 transition">
                                     View
                                 </a>
                             </td>

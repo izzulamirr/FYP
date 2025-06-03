@@ -30,7 +30,6 @@ class TransactionController extends Controller
     }
 
     $transactions = $query->orderBy('created_at', 'desc')->paginate(10);
-    $transactions = Transaction::paginate(10);
     return view('System.Transactions.index', compact('transactions'));
 }
 

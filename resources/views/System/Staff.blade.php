@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="ml-64 p-8 w-full">
+<div class="ml-64 p-3 w-full">
     <!-- Header -->
-    <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
+    <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg">
         <h1 class="text-3xl font-bold text-gray-800">Staff Dashboard</h1>
         <a href="{{ route('staff.create') }}" 
            class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition duration-300">

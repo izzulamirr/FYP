@@ -181,5 +181,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
   // Report
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.dashboard');
-
+    Route::get('/report/monthly-revenue/pdf', [\App\Http\Controllers\ReportController::class, 'exportMonthlyRevenuePdf'])->name('report.monthlyRevenuePdf');
 

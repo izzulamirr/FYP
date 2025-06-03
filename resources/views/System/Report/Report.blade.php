@@ -16,42 +16,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<div class="ml-64 p-8 w-full">
+<div class="ml-64 p-3 w-full min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
     <!-- Header -->
-    <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
-        <h1 class="text-3xl font-bold text-gray-800">Report Dashboard</h1>
-        <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
+    <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+            Report Dashboard
+        </h1>
+        <div class="flex items-center gap-3">
+            <span class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</span>
+        </div>
     </div>
-     <div class="space-y-4">
+
+    <div class="space-y-6">
 
 
     <!-- Statistics Section -->
-    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Current Revenue -->
-        <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <h2 class="text-lg font-semibold">Current Revenue</h2>
-            <p class="text-4xl font-bold mt-2">RM{{ number_format($currentRevenue, 2) }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Current Revenue Card as Button -->
+            <a href="{{ route('report.monthlyRevenuePdf') }}" target="_blank" class="block">
+                <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer flex flex-col items-center">
+                    <h2 class="text-lg font-semibold mb-1">This Month's Gross Profit</h2>
+                    <p class="text-4xl font-extrabold mt-2 mb-1 tracking-tight">RM{{ number_format($grossProfit, 2) }}</p>
+                    <p class="text-xs mt-1 opacity-80">Click to print PDF</p>
+                </div>
+            </a>
+            <!-- Low Stock Count -->
+            <div class="bg-gradient-to-br from-red-500 via-red-400 to-red-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center">
+                <h2 class="text-lg font-semibold mb-1">Low Stock Products</h2>
+                <p class="text-4xl font-extrabold mt-2 mb-1 tracking-tight">{{ $lowStockInventory->count() }}</p>
+            </div>
+            <!-- Top Selling Products Count -->
+            <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center">
+                <h2 class="text-lg font-semibold mb-1">Top Selling Products</h2>
+                <p class="text-4xl font-extrabold mt-2 mb-1 tracking-tight">{{ $topSellingProducts->count() }}</p>
+            </div>
         </div>
-
-        <!-- Low Stock Count -->
-        <div class="bg-gradient-to-br from-red-500 via-red-400 to-red-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <h2 class="text-lg font-semibold">Low Stock Products</h2>
-            <p class="text-4xl font-bold mt-2">{{ $lowStockInventory->count() }}</p>
-        </div>
-
-        <!-- Top Selling Products Count -->
-        <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <h2 class="text-lg font-semibold">Top Selling Products</h2>
-            <p class="text-4xl font-bold mt-2">{{ $topSellingProducts->count() }}</p>
-        </div>
-    </div>
-
-    
 
 <!-- Sales by Payment Method & Monthly Sales Graphs Side by Side -->
 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Sales by Payment Method Section -->
-    <div x-data="{ open: true }" class="bg-white rounded-lg shadow h-[500px] flex flex-col">
+    <div x-data="{ open: true }" class="bg-white rounded-lg shadow h-[350px] flex flex-col">
         <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
             <span class="font-semibold text-gray-700">Sales by Payment Method</span>
             <span x-text="open ? '−' : '+'"></span>
@@ -74,19 +78,19 @@
                 </tbody>
             </table>
             <div class="flex-1 flex items-end">
-                <canvas id="paymentMethodChart" style="width:100%;height:260px;max-height:260px;"></canvas>
+                <canvas id="paymentMethodChart" style="width:100%;height:160px;"></canvas>
             </div>
         </div>
     </div>
     <!-- Financial Report Line Graph (same size as Payment Method) -->
-    <div x-data="{ open: true }" class="bg-white rounded-lg shadow h-[500px] flex flex-col">
+    <div x-data="{ open: true }" class="bg-white rounded-lg shadow h-[350px] flex flex-col">
         <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
             <span class="font-semibold text-blue-800 text-lg">Monthly Sales (Last 12 Months)</span>
             <span x-text="open ? '−' : '+'"></span>
         </button>
         <div x-show="open" class="flex-1 flex flex-col pt-4 px-4 border-t overflow-hidden">
             <div class="flex-1 flex items-end">
-                <canvas id="financialLineChart" style="width:100%;height:530px";></canvas>
+                <canvas id="financialLineChart" style="width:100%;height:300px";></canvas>
             </div>
         </div>
     </div>

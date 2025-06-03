@@ -7,13 +7,16 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * Define the application's command schedule.
-     */
-    protected function schedule(Schedule $schedule): void
+
+
+     protected $commands = [
+        \App\Console\Commands\StoreAndResetRevenue::class,
+    ];
+     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('revenue:store-and-reset')->monthlyOn(1, '00:10');
     }
+
 
     /**
      * Register the commands for the application.
@@ -28,5 +31,12 @@ class Kernel extends ConsoleKernel
     protected $routeMiddleware = [
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ];
+
+   
     
+    
+
+
+
 }
+

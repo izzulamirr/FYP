@@ -4,10 +4,10 @@
 
 
 
-<div class="ml-64 p-8 w-full bg-gray-50 min-h-screen">
+<div class="ml-64 p-3 w-full bg-gray-50 min-h-screen">
     
     <!-- Header -->
-    <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg mb-8">
+    <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Inventory Dashboard</h1>
         <div class="flex items-center space-x-3">
             <span class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</span>
@@ -145,7 +145,7 @@
    <!-- 10 Most Recent Products Grid -->
     <div>
         <h2 class="text-2xl font-bold text-gray-800 mb-6">10 Most Recent Products</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8">
             @forelse($recentProducts as $product)
     <a href="{{ route('products.edit', $product->id) }}" class="block bg-white rounded-2xl shadow-xl hover:shadow-2xl transition p-6 flex flex-col items-center border border-blue-100 hover:ring-2 hover:ring-blue-400 focus:outline-none">
         @if($product->image)

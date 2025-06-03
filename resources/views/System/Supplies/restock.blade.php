@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="ml-64 p-8 w-full">
+<div class="ml-64 p-3 w-full">
     <!-- Header -->
-    <div class="bg-white p-6 shadow-lg rounded-lg">
-        <h2 class="text-3xl font-bold text-gray-800 mb-4">Restock Product</h2>
-        <p class="text-gray-600">Easily restock products by selecting a supplier and product.</p>
+    <div class="bg-white p-5 shadow-lg rounded-lg">
+        <h2 class="text-3xl font-bold text-gray-800">Restock Product</h2>
+        
     </div>
 @if ($errors->any())
     <div class="alert alert-danger">

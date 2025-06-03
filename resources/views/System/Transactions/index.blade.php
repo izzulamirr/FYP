@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 
-<div class="ml-64 p-8 w-full">
+<div class="ml-64 p-3 w-full">
     <!-- Header -->
-    <div class="bg-white p-6 shadow-md">
+    <div class="bg-white p-5 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-3xl font-bold text-gray-800">Transactions</h1>
             <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>

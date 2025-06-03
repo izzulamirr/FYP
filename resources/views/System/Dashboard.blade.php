@@ -12,9 +12,9 @@
 <body class="bg-gray-100 flex">
 
   @section('content')
-    <div class="ml-64 p-8 w-full">
+    <div class="ml-64 p-2 w-full">
         <!-- Header with Username -->
-        <div class="flex justify-between items-center bg-white p-6 shadow-md rounded-lg">
+        <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg">
             <h1 class="text-3xl font-bold text-gray-800">Cashier Dashboard</h1>
             <p class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</p>
         </div>
@@ -23,7 +23,7 @@
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Transactions Summary -->
              <a href="{{ route('transactions.index') }}" class="block">
-            <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-95 transition-transform duration-200">
                 <h2 class="text-xl font-semibold mb-2">💰 Transactions Summary</h2>
                 <p class="text-lg">Today's Transactions: <span class="font-bold">{{ $todaysTransactions }}</span></p>
                 <p class="text-lg">Today's Sales: <span class="font-bold">RM{{ number_format($todaysSales, 2) }}</span></p>
@@ -32,7 +32,7 @@
 
             <!-- Product Summary -->
             <a href="{{ route('inventory.index') }}" class="block">
-                <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-95 transition-transform duration-300">
                     <h2 class="text-xl font-semibold mb-2">📦 Product Summary</h2>
                     <p class="text-lg">Total Products: <span class="font-bold">{{ $totalProducts }}</span></p>
                     <p class="text-lg">Low Stock: <span class="text-red-500 font-bold">{{ $lowStockProducts }}</span></p>

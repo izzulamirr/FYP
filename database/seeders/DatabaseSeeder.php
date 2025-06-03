@@ -14,14 +14,14 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
- //$this->call([
-   //     TransactionSeeder::class,
-    //]);
+$this->call([
+        TransactionSeeder::class,
+    ]);
 
-    $this->call([
-    SupplierSeeder::class,
+    //$this->call([
+    //SupplierSeeder::class,
     // other seeders...
-]);
+//]);
         
     }
 }

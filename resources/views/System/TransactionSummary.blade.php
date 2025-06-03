@@ -21,8 +21,8 @@
                         <td class="border p-2">{{ $item['id'] }}</td>
                         <td class="border p-2">{{ $item['name'] }}</td>
                         <td class="border p-2">{{ $item['quantity'] }}</td>
-                        <td class="border p-2">${{ number_format($item['price'], 2) }}</td>
-                        <td class="border p-2">${{ number_format($item['quantity'] * $item['price'], 2) }}</td>
+                        <td class="border p-2">RM{{ number_format($item['price'], 2) }}</td>
+                        <td class="border p-2">RM{{ number_format($item['quantity'] * $item['price'], 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
