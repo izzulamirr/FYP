@@ -22,7 +22,7 @@
         <span x-text="open ? '−' : '+'"></span>
     </button>
     <div x-show="open" class="p-4 border-t" x-transition>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1">
             @foreach ($categories as $index => $category)
                 <a href="{{ route('products.catagories', ['category' => $category]) }}"
                    class="block p-4 rounded-lg text-center font-semibold text-gray-800 shadow transition-all duration-200 hover:scale-105

@@ -41,10 +41,12 @@
                 </div>
             </a>
             <!-- Low Stock Count -->
-            <div class="bg-gradient-to-br from-red-500 via-red-400 to-red-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center">
+            <a href="{{ route('inventory.index') }}">
+            <div class="bg-gradient-to-br from-red-500 via-red-400 to-red-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-95 transition-transform duration-300 flex flex-col items-center">
                 <h2 class="text-lg font-semibold mb-1">Low Stock Products</h2>
                 <p class="text-4xl font-extrabold mt-2 mb-1 tracking-tight">{{ $lowStockInventory->count() }}</p>
             </div>
+            </a>
             <!-- Top Selling Products Count -->
             <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center">
                 <h2 class="text-lg font-semibold mb-1">Top Selling Products</h2>
@@ -60,8 +62,8 @@
             <span class="font-semibold text-gray-700">Sales by Payment Method</span>
             <span x-text="open ? '−' : '+'"></span>
         </button>
-        <div x-show="open" class="flex-1 flex flex-col p-4 border-t overflow-hidden">
-            <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm mb-4">
+        <div x-show="open" class="flex-1 flex flex-col p-2 border-t overflow-hidden">
+            <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm mb-">
                 <thead style="background-color: #1e293b;">
                     <tr>
                         <th class="border p-2 text-left font-semibold text-white">Payment Method</th>
@@ -78,7 +80,7 @@
                 </tbody>
             </table>
             <div class="flex-1 flex items-end">
-                <canvas id="paymentMethodChart" style="width:100%;height:160px;"></canvas>
+                <canvas id="paymentMethodChart" style="width:100%;height:115px;"></canvas>
             </div>
         </div>
     </div>
