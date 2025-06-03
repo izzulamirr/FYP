@@ -17,7 +17,7 @@
     </div>
 @endif
     <!-- Restock Form Section -->
-    <div class="mt-6 bg-white p-6 shadow-lg rounded-lg">
+    <div class="mt-4 bg-white p-3 shadow-lg rounded-lg">
         <!-- Success Message -->
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
@@ -29,7 +29,7 @@
 <form action="{{ route('orders.restock.process') }}" method="POST">
     @csrf
    <!-- Product Dropdown -->
-<div class="mb-6">
+<div class="mb-4">
     <label for="product_id" class="block text-gray-700 font-semibold mb-2">Select Product</label>
     <select name="product_id" id="product_id" required class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500">
     <option value="" disabled {{ request('product') ? '' : 'selected' }}>Select a product</option>

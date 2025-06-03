@@ -5,8 +5,8 @@
     <div id="invoice" class="bg-white p-6 shadow-lg rounded-lg max-w-lg mx-auto border border-gray-300">
         <!-- Header -->
         <div class="text-center border-b pb-4">
-            <h1 class="text-2xl font-bold text-gray-800">Invoice Slip</h1>
-            <p class="text-gray-600">Supplier Restock Invoice</p>
+            <h1 class="text-2xl font-bold text-gray-800">Purchase Order</h1>
+            <p class="text-gray-600">WA-8332819 K</p>
         </div>
 
         <!-- Order Details -->
@@ -52,14 +52,14 @@
 
         <!-- Footer -->
         <div class="text-center mt-6 border-t pt-4">
-            <p class="text-sm text-gray-600">This is a computer-generated invoice slip.</p>
+            <p class="text-sm text-gray-600">This is a computer-generated purchase order.</p>
         </div>
     </div>
 
     <!-- Print Button -->
     <div class="text-center mt-6 no-print">
         <button onclick="printInvoice()" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
-            Print Invoice
+            Print Purchase Order
         </button>
     </div>
     

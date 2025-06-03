@@ -18,7 +18,7 @@
 </head>
 <div class="ml-64 p-3 w-full min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
     <!-- Header -->
-    <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg mb-6">
+    <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg mb-4">
         <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
             Report Dashboard
         </h1>
@@ -34,7 +34,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Current Revenue Card as Button -->
             <a href="{{ route('report.monthlyRevenuePdf') }}" target="_blank" class="block">
-                <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer flex flex-col items-center">
+                <div class="bg-gradient-to-br from-green-500 via-green-400 to-green-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-95 transition-shadow duration-300 cursor-pointer flex flex-col items-center">
                     <h2 class="text-lg font-semibold mb-1">This Month's Gross Profit</h2>
                     <p class="text-4xl font-extrabold mt-2 mb-1 tracking-tight">RM{{ number_format($grossProfit, 2) }}</p>
                     <p class="text-xs mt-1 opacity-80">Click to print PDF</p>

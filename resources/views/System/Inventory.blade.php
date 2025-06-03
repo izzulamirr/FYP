@@ -2,12 +2,10 @@
 
 @section('content')
 
-
-
 <div class="ml-64 p-3 w-full bg-gray-50 min-h-screen">
     
     <!-- Header -->
-    <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg mb-8">
+    <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg mb-3">
         <h1 class="text-3xl font-bold text-gray-800">Inventory Dashboard</h1>
         <div class="flex items-center space-x-3">
             <span class="text-gray-600 text-lg">👤 {{ Auth::user()->name }}</span>
@@ -16,7 +14,7 @@
 
   <!-- Categories Dropdown -->
 <!-- Categories Section (Collapsible Card Style) -->
-<div x-data="{ open: true }" class="bg-white rounded-lg shadow mb-8">
+<div x-data="{ open: true }" class="bg-white rounded-lg shadow mb-3">
     <button @click="open = !open" class="w-full flex justify-between items-center px-4 py-2 focus:outline-none">
         <span class="font-semibold text-gray-700">Categories</span>
         <span x-text="open ? '−' : '+'"></span>
@@ -44,10 +42,9 @@
     </div>
 </div>
 
-
     <!-- Add Product Button -->
     @if (auth()->user() && auth()->user()->hasPermission('Create'))
-        <div class="mb-8 flex justify-end">
+        <div class="mb-3 flex justify-end">
             <a href="{{ route('products.create') }}" 
                class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition duration-200">
                 ➕ Add Product
@@ -57,7 +54,7 @@
 
      <!-- Success Notification -->
         @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-3" role="alert">
                 <strong class="font-bold">Success!</strong>
                 <span class="block sm:inline">{{ session('success') }}</span>
                 <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none';">
@@ -100,7 +97,7 @@
             return arr;
         }
     }"
-    class="mb-8"
+    class="mb-3"
 >
     <h2 class="text-lg font-bold text-red-700 mb-4 flex items-center gap-2">
         Low Stock Items

@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 <!DOCTYPE html>
@@ -17,7 +16,7 @@
     </div>
 
     <!-- Statistics Section -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
         <!-- Total Suppliers -->
         <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 class="text-lg font-semibold">Total Suppliers</h2>
@@ -60,31 +59,31 @@
     </div>
 @endif
 
-    <!-- Suppliers Table -->
-    <div class="mt-8 bg-white p-6 shadow-lg rounded-lg">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-semibold text-gray-800">Suppliers List</h2>
-
-@if (auth()->user() && auth()->user()->hasPermission('Create'))
+    <!-- Suppliers List Card -->
+    <div class="mt-4 bg-white p-2 shadow-lg rounded-lg mb-4 flex items-center justify-between">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-0">Suppliers List</h2>
+        @if (auth()->user() && auth()->user()->hasPermission('Create'))
             <a href="{{ route('suppliers.create') }}" 
                class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
                 + Add New Supplier
             </a>
-            @endif
-        </div>
+        @endif
+    </div>
 
+    <!-- Suppliers Table Card -->
+    <div class="bg-white p-0 shadow-lg rounded-lg">
         <div class="overflow-x-auto">
             <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead class="bg-gray-900">
+                <thead style="background-color: #1e293b;">
                     <tr>
-                        <th class="p-4 text-left font-semibold text-gray-100">Supplier Code</th>
-                        <th class="p-4 text-left font-semibold text-gray-100">Name</th>
-                        <th class="p-4 text-left font-semibold text-gray-100">Email</th>
-                        <th class="p-4 text-left font-semibold text-gray-100">Phone</th>
-                        <th class="p-4 text-left font-semibold text-gray-100">Status</th>
-                            @if (Auth::user()->role === 'admin')
-                        <th class="p-4 text-left font-semibold text-gray-100">Actions</th>
-                            @endif
+                        <th class="p-4 text-left font-semibold text-white">Supplier Code</th>
+                        <th class="p-4 text-left font-semibold text-white">Name</th>
+                        <th class="p-4 text-left font-semibold text-white">Email</th>
+                        <th class="p-4 text-left font-semibold text-white">Phone</th>
+                        <th class="p-4 text-left font-semibold text-white">Status</th>
+                        @if (Auth::user()->role === 'admin')
+                            <th class="p-4 text-left font-semibold text-white">Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -101,8 +100,7 @@
                                     <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">Inactive</span>
                                 @endif
                             </td>
-
-                                @if (Auth::user()->role === 'admin')
+                            @if (Auth::user()->role === 'admin')
                             <td class="p-4 border-b">
                                 <div class="flex space-x-2">
                                     <!-- Edit Button -->
@@ -110,7 +108,6 @@
                                        class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-200">
                                         Edit
                                     </a>
-
                                     <!-- Delete Button -->
                                     <form action="{{ route('suppliers.destroy', $supplier->supplier_code) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this supplier?')">
                                         @csrf
@@ -122,7 +119,7 @@
                                     </form>
                                 </div>
                             </td>
-                                @endif
+                            @endif
                         </tr>
                     @empty
                         <tr>

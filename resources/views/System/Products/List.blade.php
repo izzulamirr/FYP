@@ -30,7 +30,7 @@
                             <td class="p-3">{{ $product->sku }}</td>
                             <td class="p-3">{{ $product->name }}</td>
                             <td class="p-3">{{ $product->quantity }}</td>
-                            <td class="p-3">${{ number_format($product->price, 2) }}</td>
+                            <td class="p-3">RM{{ number_format($product->price, 2) }}</td>
                             <td class="p-3">{{ $product->category }}</td>
                             <td class="p-3">{{ $product->supplier_code }}</td>
                         </tr>

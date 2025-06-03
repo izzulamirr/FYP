@@ -2,13 +2,13 @@
 
 <div class="ml-64 p-3 w-full">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-5 shadow-md rounded-lg mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Supplier Dashboard</h1>
+    <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-5 shadow-md rounded-lg mb-4">
+        <h1 class="text-3xl font-bold text-gray-800">Order History</h1>
         <p class="text-gray-600 text-base mt-2 sm:mt-0">👤 {{ Auth::user()->name }}</p>
     </div>
 
     <!-- Filter Section -->
-<div class="flex justify-center mb-6">
+<div class="flex justify-center mb-4">
     <form method="GET" action="{{ route('supplies.index') }}" class="bg-white p-4 rounded-lg shadow flex flex-wrap gap-4 items-end">
         <div>
             <label class="block text-xs text-gray-600 mb-1">Order Date</label>
@@ -42,8 +42,8 @@
 </div>
 
     <!-- Order History Section -->
-    <div class="bg-white p-4 shadow-lg rounded-lg">
-        <h2 class="text-xl font-semibold mb-4 text-gray-800">Order History</h2>
+    <div class="bg-white p-0 shadow-lg rounded-lg">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800"></h2>
 
         <div class="overflow-x-auto">
             <table class="min-w-[900px] w-full bg-white shadow-md rounded-lg overflow-hidden text-sm">
@@ -55,7 +55,7 @@
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Delivery Status</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Order Date</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Order Completed</th>
-                        <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Purchase Receipt</th>
+                        <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Purchase Slip</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Actions</th>
                         <th class="p-3 text-left font-semibold text-gray-100 whitespace-nowrap">Invoice Slip</th>
                     </tr>

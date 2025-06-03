@@ -11,7 +11,7 @@
     </div>
 
     <!-- Categories Dropdown -->
-    <div class="mt-6 bg-white p-6 shadow-md rounded-lg">
+    <div class="mt-4 bg-white p-5 shadow-md rounded-lg">
         <form action="{{ route('products.list') }}" method="GET">
             <label for="category" class="block text-gray-700 font-bold mb-2">Filter by Category:</label>
             <select name="category" id="category" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
@@ -24,26 +24,26 @@
     </div>
 
     <!-- Products Table -->
-    <div class="mt-6 bg-white p-6 shadow-md rounded-lg">
+    <div class="mt-4 bg-white p-0 shadow-md rounded-lg">
         @if ($products->isEmpty())
             <p class="text-gray-600 text-center text-lg">No products available in this category.</p>
         @else
             <div class="overflow-x-auto">
                 <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                    <thead class="bg-gray-200">
+                    <thead style="background-color: #1e293b;">
                         <tr>
-                            <th class="p-4 text-left font-semibold text-gray-700">Image</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">SKU</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Name</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Barcode</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Quantity</th>
+                            <th class="p-4 text-left font-semibold text-white">Image</th>
+                            <th class="p-4 text-left font-semibold text-white">SKU</th>
+                            <th class="p-4 text-left font-semibold text-white">Name</th>
+                            <th class="p-4 text-left font-semibold text-white">Barcode</th>
+                            <th class="p-4 text-left font-semibold text-white">Quantity</th>
                             @if (Role::whereIn('name', ['admin', 'manager'])->where('user_id', Auth::id())->exists())                           
-                            <th class="p-4 text-left font-semibold text-gray-700">Cost Price</th>
+                            <th class="p-4 text-left font-semibold text-white">Cost Price</th>
                             @endif
-                            <th class="p-4 text-left font-semibold text-gray-700">Price</th>
-                            <th class="p-4 text-left font-semibold text-gray-700">Supplier Code</th>
+                            <th class="p-4 text-left font-semibold text-white">Price</th>
+                            <th class="p-4 text-left font-semibold text-white">Supplier Code</th>
                             @if (auth()->user() && auth()->user()->hasPermission('Update'))
-                                <th class="p-4 text-left font-semibold text-gray-700">Actions</th>
+                                <th class="p-4 text-left font-semibold text-white">Actions</th>
                             @endif
                         </tr>
                     </thead>
@@ -71,9 +71,9 @@
                                 </td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->quantity }}</td>
                                 @if (Role::whereIn('name', ['admin', 'manager'])->where('user_id', Auth::id())->exists())                           
-                                <td class="p-4 border-b text-gray-800">${{ number_format($product->cost_price, 2) }}</td>
+                                <td class="p-4 border-b text-gray-800">RM{{ number_format($product->cost_price, 2) }}</td>
                                  @endif
-                                <td class="p-4 border-b text-gray-800">${{ number_format($product->price, 2) }}</td>
+                                <td class="p-4 border-b text-gray-800">RM{{ number_format($product->price, 2) }}</td>
                                 <td class="p-4 border-b text-gray-800">{{ $product->supplier_code }}</td>
 @if (auth()->user() && auth()->user()->hasPermission('Update'))
                                 <td class="p-4 border-b">

@@ -34,9 +34,9 @@
     </div>
 @endif
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
     @foreach ($users as $user)
-    <div class="bg-white p-8 rounded-2xl shadow-lg flex flex-col items-center hover:shadow-2xl transition-shadow duration-300">
+    <div class="bg-white p-4 rounded-2xl shadow-lg flex flex-col items-center hover:shadow-2xl transition-shadow duration-300">
         @if($user->profile_picture)
             <img src="{{ asset('storage/' . $user->profile_picture) }}"
                  alt="Profile Picture"

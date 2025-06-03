@@ -11,7 +11,7 @@
     </div>
 
     <!-- Sort & Search Bar -->
-    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center mt-6 mb-4 gap-4">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center mt-4 mb-2 gap-4">
         <!-- Filter by Date -->
         <form method="GET" action="{{ route('transactions.index') }}" class="flex items-center gap-2">
             <label for="date" class="text-gray-700 font-medium">By date:</label>
@@ -55,16 +55,16 @@
     </div>
 
     <!-- Content Section -->
-    <div class="flex-grow container mx-auto p-8">
+    <div class="bg-white p-0 shadow-md">
         <!-- Customer Receipt List -->
         @if ($transactions->isEmpty())
-            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <div class="bg-white p-5 rounded-lg shadow-md text-center">
                 <p class="text-gray-600 text-lg">No customer receipts available.</p>
             </div>
         @else
             <div class="overflow-x-auto">
                 <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                    <thead style="background-color: #1e293b;"> <!-- Change this hex to match your sidebar color -->
+                    <thead style="background-color: #1e293b;"> 
                         <tr>
                             <th class="p-4 text-left font-semibold text-white">Order ID</th>
                             <th class="p-4 text-left font-semibold text-white">Date</th>

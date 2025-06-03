@@ -12,7 +12,7 @@
 <body class="bg-gray-100 flex">
 
   @section('content')
-    <div class="ml-64 p-2 w-full">
+    <div class="ml-64 p-3 w-full">
         <!-- Header with Username -->
         <div class="flex justify-between items-center bg-white p-5 shadow-md rounded-lg">
             <h1 class="text-3xl font-bold text-gray-800">Cashier Dashboard</h1>
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Cards Section -->
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Transactions Summary -->
              <a href="{{ route('transactions.index') }}" class="block">
             <div class="bg-gradient-to-br from-blue-500 via-blue-400 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-95 transition-transform duration-200">
@@ -41,7 +41,7 @@
         </div>
 
         <!-- Cashier System & QR Scanner -->
-        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Cashier System -->
             <div class="bg-white p-6 shadow-lg rounded-lg">
             <h2 class="text-2xl font-semibold mb-4">Scan or Enter Barcode</h2>

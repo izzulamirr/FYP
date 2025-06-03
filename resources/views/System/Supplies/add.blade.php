@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="ml-64 p-8 w-full">
-    <div class="bg-white p-6 shadow-lg rounded-lg">
+<div class="ml-64 p-3 w-full">
+    <div class="bg-white p-5 shadow-lg rounded-lg">
         <h2 class="text-xl font-semibold">Add New Supplier</h2>
         <form action="{{ route('suppliers.store') }}" method="POST" class="mt-4">
             @csrf
